@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://jfym8s2dj5yl"]
+
+[ext_resource type="Script" path="res://scripts/tile.gd" id="1_kfh2d"]
+[ext_resource type="Texture2D" uid="uid://1ed15h53wfk6" path="res://assets/tiles.9.25.png" id="2_mvyhu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uek0m"]
+atlas = ExtResource("2_mvyhu")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2sd8b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uek0m")
+}],
+"loop": true,
+"name": &"pebble",
+"speed": 5.0
+}]
+
+[node name="tile" type="Area2D"]
+script = ExtResource("1_kfh2d")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2sd8b")
+animation = &"pebble"
+
+[node name="Polygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(64, 32, 0, 64, -64, 32, -64, 0, 0, -32, 64, 0)
