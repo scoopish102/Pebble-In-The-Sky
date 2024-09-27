@@ -1,17 +1,18 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://jrm1isw7r256"]
+[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://dkdsu5qxri58a"]
 
-[ext_resource type="Texture2D" uid="uid://1ed15h53wfk6" path="res://assets/tiles.9.25.png" id="1_peet8"]
+[ext_resource type="Texture2D" uid="uid://bocwcso5awb48" path="res://assets/tiles.9.26.png" id="1_mducy"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_myrbf"]
-resource_name = "Base"
-texture = ExtResource("1_peet8")
-texture_region_size = Vector2i(128, 64)
-1:6/size_in_atlas = Vector2i(1, 2)
-1:6/0 = 0
-1:6/0/texture_origin = Vector2i(0, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_26nad"]
+atlas = ExtResource("1_mducy")
+region = Rect2(128, 128, 128, 128)
 
 [resource]
-tile_shape = 1
-tile_layout = 5
-tile_size = Vector2i(128, 64)
-sources/0 = SubResource("TileSetAtlasSource_myrbf")
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26nad")
+}],
+"loop": true,
+"name": &"pebble",
+"speed": 5.0
+}]
