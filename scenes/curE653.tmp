@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://cp4vwm6sh6d5l"]
+
+[ext_resource type="Script" path="res://scripts/cursor.gd" id="1_jemva"]
+[ext_resource type="Texture2D" uid="uid://dpk7o7wmr8dbo" path="res://assets/cursor.10.1.png" id="2_di6wh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_if8wr"]
+atlas = ExtResource("2_di6wh")
+region = Rect2(32, 32, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8vyc"]
+atlas = ExtResource("2_di6wh")
+region = Rect2(0, 48, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx5rh"]
+atlas = ExtResource("2_di6wh")
+region = Rect2(64, 48, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkg3q"]
+atlas = ExtResource("2_di6wh")
+region = Rect2(32, 64, 64, 32)
+
+[node name="cursor" type="Node2D" node_paths=PackedStringArray("subcursors", "display")]
+z_index = 4096
+script = ExtResource("1_jemva")
+subcursors = [NodePath("altitude/up"), NodePath("altitude/left"), NodePath("altitude/right"), NodePath("altitude/down")]
+display = NodePath("altitude")
+
+[node name="altitude" type="Node2D" parent="."]
+position = Vector2(0, -16)
+
+[node name="up" type="Sprite2D" parent="altitude"]
+texture = SubResource("AtlasTexture_if8wr")
+
+[node name="left" type="Sprite2D" parent="altitude"]
+z_index = 1
+texture = SubResource("AtlasTexture_t8vyc")
+
+[node name="right" type="Sprite2D" parent="altitude"]
+z_index = 1
+texture = SubResource("AtlasTexture_sx5rh")
+
+[node name="down" type="Sprite2D" parent="altitude"]
+z_index = 2
+texture = SubResource("AtlasTexture_xkg3q")

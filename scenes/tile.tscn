@@ -1,57 +1,32 @@
 [gd_scene load_steps=4 format=3 uid="uid://jfym8s2dj5yl"]
 
 [ext_resource type="Script" path="res://scripts/tile.gd" id="1_kfh2d"]
-[ext_resource type="SpriteFrames" uid="uid://dkdsu5qxri58a" path="res://resources/tileset.tres" id="2_vtaew"]
-[ext_resource type="SpriteFrames" uid="uid://c4ogsdvua0wox" path="res://resources/terrainset.tres" id="3_7qdet"]
+[ext_resource type="PackedScene" uid="uid://cgfnmgfilouu1" path="res://scenes/subtile.tscn" id="2_v1yvq"]
+[ext_resource type="Texture2D" uid="uid://bbtlwcij8txl3" path="res://assets/seatile.png" id="4_a46sr"]
 
-[node name="tile" type="Area2D"]
+[node name="tile" type="Node2D" node_paths=PackedStringArray("subtiles", "display", "sea")]
 script = ExtResource("1_kfh2d")
+subtiles = [NodePath("display/up"), NodePath("display/left"), NodePath("display/right"), NodePath("display/down")]
+display = NodePath("display")
+sea = NodePath("display/sea")
 
-[node name="tile" type="Node2D" parent="."]
-position = Vector2(0, 16)
+[node name="display" type="Node2D" parent="."]
 
-[node name="up" type="AnimatedSprite2D" parent="tile"]
-sprite_frames = ExtResource("2_vtaew")
-animation = &"pebble"
-offset = Vector2(0, -16)
+[node name="up" parent="display" instance=ExtResource("2_v1yvq")]
 
-[node name="left" type="AnimatedSprite2D" parent="tile"]
-sprite_frames = ExtResource("2_vtaew")
-animation = &"pebble"
-offset = Vector2(-32, 0)
+[node name="left" parent="display" instance=ExtResource("2_v1yvq")]
+z_index = 1
+position = Vector2(-32, 16)
 
-[node name="right" type="AnimatedSprite2D" parent="tile"]
-sprite_frames = ExtResource("2_vtaew")
-animation = &"pebble"
-offset = Vector2(32, 0)
+[node name="right" parent="display" instance=ExtResource("2_v1yvq")]
+z_index = 1
+position = Vector2(32, 16)
 
-[node name="down" type="AnimatedSprite2D" parent="tile"]
-sprite_frames = ExtResource("2_vtaew")
-animation = &"pebble"
-offset = Vector2(0, 16)
+[node name="down" parent="display" instance=ExtResource("2_v1yvq")]
+z_index = 2
+position = Vector2(0, 32)
 
-[node name="terrain" type="Node2D" parent="."]
-
-[node name="right" type="AnimatedSprite2D" parent="terrain"]
-sprite_frames = ExtResource("3_7qdet")
-animation = &"crater"
-offset = Vector2(32, 0)
-
-[node name="up" type="AnimatedSprite2D" parent="terrain"]
-sprite_frames = ExtResource("3_7qdet")
-animation = &"crater"
-offset = Vector2(0, -16)
-
-[node name="left" type="AnimatedSprite2D" parent="terrain"]
-sprite_frames = ExtResource("3_7qdet")
-animation = &"crater"
-offset = Vector2(-32, 0)
-
-[node name="down" type="AnimatedSprite2D" parent="terrain"]
-sprite_frames = ExtResource("3_7qdet")
-animation = &"crater"
-offset = Vector2(0, 16)
-
-[node name="hitbox" type="CollisionPolygon2D" parent="."]
+[node name="sea" type="Sprite2D" parent="display"]
 visible = false
-polygon = PackedVector2Array(64, 32, 0, 64, -64, 32, -64, 0, 0, -32, 64, 0)
+texture = ExtResource("4_a46sr")
+offset = Vector2(0, -1)

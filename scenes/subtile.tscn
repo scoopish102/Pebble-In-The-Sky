@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgfnmgfilouu1"]
+
+[ext_resource type="SpriteFrames" uid="uid://dkdsu5qxri58a" path="res://resources/tileset.tres" id="1_38aud"]
+[ext_resource type="Script" path="res://scripts/subtile.gd" id="1_54wk8"]
+[ext_resource type="SpriteFrames" uid="uid://c4ogsdvua0wox" path="res://resources/terrainset.tres" id="2_fqo6r"]
+
+[node name="subtile" type="Node2D" node_paths=PackedStringArray("tile", "terrain")]
+script = ExtResource("1_54wk8")
+tile = NodePath("subtile")
+terrain = NodePath("subterrain")
+
+[node name="subtile" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 16)
+sprite_frames = ExtResource("1_38aud")
+animation = &"pebble"
+offset = Vector2(0, -16)
+
+[node name="subterrain" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_fqo6r")
+animation = &"CRATER"
+offset = Vector2(0, -16)

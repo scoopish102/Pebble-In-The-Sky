@@ -1,17 +1,17 @@
 [gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://c4ogsdvua0wox"]
 
-[ext_resource type="Texture2D" uid="uid://bocwcso5awb48" path="res://assets/tiles.9.26.png" id="1_4x8rv"]
+[ext_resource type="Texture2D" uid="uid://bocwcso5awb48" path="res://assets/tiles.9.27.png" id="1_7ft3c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3tccl"]
-atlas = ExtResource("1_4x8rv")
+atlas = ExtResource("1_7ft3c")
 region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_msypl"]
-atlas = ExtResource("1_4x8rv")
+atlas = ExtResource("1_7ft3c")
 region = Rect2(128, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oyyyu"]
-atlas = ExtResource("1_4x8rv")
+atlas = ExtResource("1_7ft3c")
 region = Rect2(0, 128, 128, 128)
 
 [resource]
@@ -27,11 +27,11 @@ animations = [{
 "texture": SubResource("AtlasTexture_oyyyu")
 }],
 "loop": true,
-"name": &"crater",
+"name": &"CRATER",
 "speed": 5.0
 }, {
 "frames": [],
 "loop": true,
-"name": &"plain",
+"name": &"PLAIN",
 "speed": 5.0
 }]

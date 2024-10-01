@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://6fwdjhwe1s06"]
+[gd_scene load_steps=6 format=3 uid="uid://6fwdjhwe1s06"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_wjt5s"]
 [ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="2_ea1j2"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="3_13y1w"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="4_4fw7i"]
+[ext_resource type="PackedScene" uid="uid://cp4vwm6sh6d5l" path="res://scenes/cursor.tscn" id="5_5xvi1"]
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_wjt5s")
@@ -14,3 +15,6 @@ script = ExtResource("3_13y1w")
 [node name="map" type="Node2D" parent="."]
 script = ExtResource("4_4fw7i")
 tileBlueprint = ExtResource("2_ea1j2")
+
+[node name="cursor" parent="." node_paths=PackedStringArray("map") instance=ExtResource("5_5xvi1")]
+map = NodePath("../map")
