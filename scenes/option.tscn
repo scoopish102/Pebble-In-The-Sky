@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=3 uid="uid://ddxwn18d7v2xv"]
+
+[ext_resource type="Script" path="res://scripts/option.gd" id="1_d68u3"]
+[ext_resource type="Texture2D" uid="uid://bbbymjm0qkofp" path="res://resources/uiBoxTexture.tres" id="2_hdoc8"]
+[ext_resource type="LabelSettings" uid="uid://dhg0jvasrq6o6" path="res://resources/fontSettings.tres" id="3_2beh3"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_onkuj"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="InputEventKey" id="InputEventKey_t1yox"]
+device = -1
+keycode = 90
+unicode = 122
+
+[sub_resource type="Shortcut" id="Shortcut_ha4ca"]
+events = [SubResource("InputEventKey_onkuj"), SubResource("InputEventKey_t1yox")]
+
+[node name="option" type="Control" node_paths=PackedStringArray("hitbox", "defaultSprite", "hoverSprite", "disabledSprite", "label")]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_vertical = 0
+script = ExtResource("1_d68u3")
+hitbox = NodePath("hitbox")
+defaultSprite = NodePath("default")
+hoverSprite = NodePath("default/hover")
+disabledSprite = NodePath("default/disabled")
+label = NodePath("default/label")
+
+[node name="hitbox" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+shortcut = SubResource("Shortcut_ha4ca")
+flat = true
+
+[node name="default" type="NinePatchRect" parent="."]
+self_modulate = Color(0.866667, 0.866667, 0.866667, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hdoc8")
+region_rect = Rect2(128, 0, 128, 128)
+patch_margin_left = 56
+patch_margin_top = 56
+patch_margin_right = 56
+patch_margin_bottom = 56
+
+[node name="hover" type="NinePatchRect" parent="default"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hdoc8")
+region_rect = Rect2(128, 0, 128, 128)
+patch_margin_left = 56
+patch_margin_top = 56
+patch_margin_right = 56
+patch_margin_bottom = 56
+
+[node name="disabled" type="NinePatchRect" parent="default"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hdoc8")
+region_rect = Rect2(0, 0, 128, 128)
+patch_margin_left = 56
+patch_margin_top = 56
+patch_margin_right = 56
+patch_margin_bottom = 56
+
+[node name="label" type="Label" parent="default"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "OPTIONAL OPTIONS!!!"
+label_settings = ExtResource("3_2beh3")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[connection signal="pressed" from="hitbox" to="." method="_on_pressed"]

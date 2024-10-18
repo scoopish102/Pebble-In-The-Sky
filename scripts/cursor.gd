@@ -11,14 +11,35 @@ var tile : Vector2i
 
 func _process(_delta):
 	mousePosition = get_global_mouse_position()
-	tile = positionToTile(mousePosition)
-	if not tile == Vector2i(-1, -1):
+	if not Global.selected:
+		tile = positionToTile(mousePosition)
 		Global.selectedTile = tile
+	else:
+		if Input.is_action_just_pressed("ui_select"): 
+			deselect()
+			return
+	if not tile == Vector2i(-1, -1):
+		visible = true
 		position = map.tileMap[tile].position
 		display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
 		alignAltitude(tile)
-		map.tileMap[tile].hover = true
+		if Input.is_action_just_pressed("ui_select"): 
+			select()
+	else:
+		visible = false
 
+func select():
+	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight - 20
+	map.tileMap[tile].selected = true
+	Global.selected = true
+	modulate = Color(255, 0, 0)
+
+func deselect():
+	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight
+	map.tileMap[tile].selected = false
+	Global.selected = false
+	modulate = Color(255, 250, 0)
+	
 func alignAltitude(_tile):
 	if map.tileMap[tile].waterlogged: 
 		subcursors[0].position = Vector2(0, 0)

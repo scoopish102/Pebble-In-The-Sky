@@ -30,15 +30,19 @@ position = Vector2(0, -16)
 
 [node name="up" type="Sprite2D" parent="altitude"]
 texture = SubResource("AtlasTexture_if8wr")
+offset = Vector2(0, -1)
 
 [node name="left" type="Sprite2D" parent="altitude"]
 z_index = 1
 texture = SubResource("AtlasTexture_t8vyc")
+offset = Vector2(0, -1)
 
 [node name="right" type="Sprite2D" parent="altitude"]
 z_index = 1
 texture = SubResource("AtlasTexture_sx5rh")
+offset = Vector2(0, -1)
 
 [node name="down" type="Sprite2D" parent="altitude"]
 z_index = 2
 texture = SubResource("AtlasTexture_xkg3q")
+offset = Vector2(0, -1)

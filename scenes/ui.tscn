@@ -1,0 +1,81 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbtsa16q8xity"]
+
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.8.png" id="1_p7i7t"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_pbmwc"]
+[ext_resource type="PackedScene" uid="uid://d3keppgqfjpxv" path="res://scenes/resource.tscn" id="2_rp04g"]
+[ext_resource type="Texture2D" uid="uid://bbbymjm0qkofp" path="res://resources/uiBoxTexture.tres" id="3_uj2nt"]
+[ext_resource type="PackedScene" uid="uid://ddxwn18d7v2xv" path="res://scenes/option.tscn" id="3_yukjw"]
+
+[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pbmwc")
+sidebar = NodePath("sidebarBackdrop")
+resourcebar = NodePath("resourcesBackdrop")
+sidebarOptions = NodePath("sidebarBackdrop/options")
+resourcebarOptions = NodePath("resourcesBackdrop/resources")
+optionBlueprint = ExtResource("3_yukjw")
+
+[node name="resourcesBackdrop" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_right = -400.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_p7i7t")
+region_rect = Rect2(0, 0, 128, 128)
+patch_margin_left = 56
+patch_margin_top = 56
+patch_margin_right = 56
+patch_margin_bottom = 56
+
+[node name="resources" type="HBoxContainer" parent="resourcesBackdrop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="resource" parent="resourcesBackdrop/resources" instance=ExtResource("2_rp04g")]
+layout_mode = 2
+
+[node name="sidebarBackdrop" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -400.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("3_uj2nt")
+region_rect = Rect2(0, 0, 128, 128)
+patch_margin_left = 56
+patch_margin_top = 56
+patch_margin_right = 56
+patch_margin_bottom = 56
+
+[node name="options" type="VBoxContainer" parent="sidebarBackdrop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="option" parent="sidebarBackdrop/options" instance=ExtResource("3_yukjw")]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2

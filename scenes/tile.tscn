@@ -10,6 +10,9 @@ subtiles = [NodePath("display/up"), NodePath("display/left"), NodePath("display/
 display = NodePath("display")
 sea = NodePath("display/sea")
 
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+rect = Rect2(-64, -32, 128, 96)
+
 [node name="display" type="Node2D" parent="."]
 
 [node name="up" parent="display" instance=ExtResource("2_v1yvq")]
