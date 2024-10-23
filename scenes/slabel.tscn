@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://6rselnwmejvt"]
+
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_qotxc"]
+[ext_resource type="Script" path="res://scripts/sidebar_label.gd" id="2_6mjhh"]
+[ext_resource type="LabelSettings" uid="uid://dhg0jvasrq6o6" path="res://resources/fontSettings.tres" id="3_vhidq"]
+
+[node name="sidebarLabel" type="NinePatchRect" node_paths=PackedStringArray("label")]
+self_modulate = Color(0.866667, 0.866667, 0.866667, 1)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 64.0
+grow_horizontal = 2
+texture = ExtResource("1_qotxc")
+region_rect = Rect2(640, 0, 96, 96)
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource("2_6mjhh")
+label = NodePath("label")
+
+[node name="label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -226.0
+offset_bottom = 226.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!"
+label_settings = ExtResource("3_vhidq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+justification_flags = 162
+visible_ratio = -0.00105042

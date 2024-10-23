@@ -15,7 +15,7 @@ func _process(_delta):
 		tile = positionToTile(mousePosition)
 		Global.selectedTile = tile
 	else:
-		if Input.is_action_just_pressed("ui_select"): 
+		if Input.is_action_just_pressed("ui_tileselect"): 
 			deselect()
 			return
 	if not tile == Vector2i(-1, -1):
@@ -23,7 +23,7 @@ func _process(_delta):
 		position = map.tileMap[tile].position
 		display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
 		alignAltitude(tile)
-		if Input.is_action_just_pressed("ui_select"): 
+		if Input.is_action_just_pressed("ui_tileselect"): 
 			select()
 	else:
 		visible = false

@@ -15,6 +15,23 @@ enum TERRAIN {
 }
 
 enum BUILDING {
-	EMPTY,
-	CITY
+	CENTER,
+	CITY,
+	FACTORY,
+	EMPTY
+}
+
+var budget = {
+	
+}
+
+var cost = {
+	
+}
+
+var description = {
+	BUILDING.CENTER : "The administrative heart of the colony.",
+	BUILDING.CITY : "A sprawling district of high-rising residences.",
+	BUILDING.FACTORY : "A factory that mass produces valuable commodities.",
+	BUILDING.EMPTY : "There's no building here."
 }
