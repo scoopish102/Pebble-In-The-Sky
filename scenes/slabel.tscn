@@ -19,22 +19,17 @@ patch_margin_bottom = 32
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 script = ExtResource("2_6mjhh")
-label = NodePath("label")
+label = NodePath("Label")
 
-[node name="label" type="Label" parent="."]
+[node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -226.0
-offset_bottom = 226.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!words words words!!!"
+text = " mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard mustard"
 label_settings = ExtResource("3_vhidq")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-justification_flags = 162
-visible_ratio = -0.00105042

@@ -9,6 +9,9 @@ var tile : Vector2i
 @export var map : Map
 @export var display : Node2D
 
+func _ready():
+	Event.deselect_cursor.connect(deselect)
+
 func _process(_delta):
 	mousePosition = get_global_mouse_position()
 	if not Global.selected:

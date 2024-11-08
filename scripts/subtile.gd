@@ -15,5 +15,6 @@ func updateTerrain(_terrain):
 	terrain.set_frame(randi_range(0, terrain.sprite_frames.get_frame_count(terrain.animation)))
 
 func updateBuilding(_building):
+	#print(Global.BUILDING.keys()[_building])
 	building.set_animation(Global.BUILDING.keys()[_building])
 	building.set_frame(randi_range(0, building.sprite_frames.get_frame_count(building.animation)))

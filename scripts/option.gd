@@ -32,7 +32,19 @@ func init(_type : TYPE):
 	label.set_text(TYPE.keys()[type])
 
 func _process(_delta):
+	if disabled: 
+		return
 	if not hitbox.is_hovered() == hoverSprite.visible: hoverSprite.visible = hitbox.is_hovered()
+
+func disable():
+	disabledSprite.visible = true
+	hitbox.disabled = true
+	disabled = true
+
+func enable():
+	disabledSprite.visible = false
+	hitbox.disabled = false
+	disabled = false
 
 func _on_pressed():
 	if disabled: 

@@ -1,3 +1,54 @@
-[gd_scene format=3 uid="uid://d3keppgqfjpxv"]
+[gd_scene load_steps=5 format=3 uid="uid://d3keppgqfjpxv"]
 
-[node name="resource" type="VBoxContainer"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ufrmg"]
+[ext_resource type="LabelSettings" uid="uid://dhg0jvasrq6o6" path="res://resources/fontSettings.tres" id="2_6gpvp"]
+[ext_resource type="Script" path="res://scripts/resourceOption.gd" id="2_lrv5h"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8niu7"]
+texture = ExtResource("1_ufrmg")
+texture_margin_left = 24.0
+texture_margin_top = 24.0
+texture_margin_right = 24.0
+texture_margin_bottom = 24.0
+region_rect = Rect2(640, 0, 96, 96)
+
+[node name="resource" type="PanelContainer" node_paths=PackedStringArray("nameLabel", "budgetLabel", "reserveLabel")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = -76.0
+offset_right = 76.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_8niu7")
+script = ExtResource("2_lrv5h")
+nameLabel = NodePath("resource/name")
+budgetLabel = NodePath("resource/budget")
+reserveLabel = NodePath("resource/reserve")
+
+[node name="resource" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="name" type="Label" parent="resource"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Carbon"
+label_settings = ExtResource("2_6gpvp")
+horizontal_alignment = 1
+
+[node name="budget" type="Label" parent="resource"]
+layout_mode = 2
+text = "16"
+label_settings = ExtResource("2_6gpvp")
+horizontal_alignment = 1
+
+[node name="reserve" type="Label" parent="resource"]
+layout_mode = 2
+text = "64"
+label_settings = ExtResource("2_6gpvp")
+horizontal_alignment = 1

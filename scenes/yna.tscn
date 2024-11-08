@@ -24,6 +24,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 script = ExtResource("1_xfqdh")
+type = 6
 hitbox = NodePath("hitbox")
 defaultSprite = NodePath("default")
 hoverSprite = NodePath("default/hover")
@@ -110,6 +111,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 script = ExtResource("1_xfqdh")
+type = 7
 hitbox = NodePath("hitbox")
 defaultSprite = NodePath("default")
 hoverSprite = NodePath("default/hover")
@@ -191,7 +193,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[connection signal="pressed" from="yes/hitbox" to="yes" method="_on_pressed"]
 [connection signal="pressed" from="yes/hitbox" to="." method="_on_yes"]
+[connection signal="pressed" from="yes/hitbox" to="yes" method="_on_pressed"]
 [connection signal="pressed" from="no/hitbox" to="." method="_on_no"]
 [connection signal="pressed" from="no/hitbox" to="no" method="_on_pressed"]

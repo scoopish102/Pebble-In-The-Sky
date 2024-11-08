@@ -20,10 +20,6 @@ run/max_fps=30
 Global="*res://scripts/global.gd"
 Event="*res://scripts/event.gd"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
 window/size/viewport_width=1280

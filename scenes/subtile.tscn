@@ -5,10 +5,11 @@
 [ext_resource type="SpriteFrames" uid="uid://c4ogsdvua0wox" path="res://resources/terrainset.tres" id="2_fqo6r"]
 [ext_resource type="SpriteFrames" uid="uid://dp6gq6nks1u1j" path="res://resources/buildingset.tres" id="4_bbiyf"]
 
-[node name="subtile" type="Node2D" node_paths=PackedStringArray("tile", "terrain")]
+[node name="subtile" type="Node2D" node_paths=PackedStringArray("tile", "terrain", "building")]
 script = ExtResource("1_54wk8")
 tile = NodePath("subtile")
 terrain = NodePath("subterrain")
+building = NodePath("building")
 
 [node name="subtile" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 16)
@@ -18,11 +19,11 @@ offset = Vector2(0, -16)
 
 [node name="subterrain" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_fqo6r")
-animation = &"CRATER"
+animation = &"ICE"
 offset = Vector2(0, -16)
 
 [node name="building" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("4_bbiyf")
-animation = &"CITY"
+animation = &"EMPTY"
 autoplay = "EMPTY"
 offset = Vector2(0, -32)

@@ -12,7 +12,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_26nad")
 }],
-"loop": true,
+"loop": false,
 "name": &"pebble",
 "speed": 5.0
 }]
