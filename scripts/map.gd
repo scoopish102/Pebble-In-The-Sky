@@ -68,9 +68,11 @@ func generateFeatures():
 	for i in range(0, 2): generateBlot(randomPosition(), percentSizeOfMap(0.75), .05, Global.TERRAIN.COPPER)
 	for i in range(0, 4): generateBlot(randomPosition(), percentSizeOfMap(0.75), .05, Global.TERRAIN.CARBON)
 	for i in range(0, 4): generateBlot(randomPosition(), percentSizeOfMap(0.75), .05, Global.TERRAIN.IRON)
+	"""
 	for x in range(0, Global.mapSize.x):
 		for y in range(0, Global.mapSize.y):
-			if randi()%2==0: terrainMap[Vector2i(x, y)] = Global.TERRAIN.PLAIN
+			if randi()%2==0: terrainMap[Vector2i(x, y)] = Global.TERRAIN.PLAIN #half all ores
+	"""
 
 func percentSizeOfMap(percent):
 	return Vector2i(ceili(Global.mapSize.x * percent), ceili(Global.mapSize.y * percent))

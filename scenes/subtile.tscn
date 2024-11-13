@@ -19,7 +19,7 @@ offset = Vector2(0, -16)
 
 [node name="subterrain" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_fqo6r")
-animation = &"ICE"
+animation = &"ZINC"
 offset = Vector2(0, -16)
 
 [node name="building" type="AnimatedSprite2D" parent="."]
