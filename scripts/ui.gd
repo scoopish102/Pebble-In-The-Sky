@@ -89,7 +89,7 @@ func makeSidebar(option : SidebarOption.TYPE):
 			createBuildingOption(Global.BUILDING.CITY)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.PRODUCTION:
-			createBuildingOption(Global.BUILDING.FACTORY)
+			createBuildingOption(Global.BUILDING.STEEL_MILL)
 			backOption(SidebarOption.TYPE.BUILD)
 
 func askConfirmation(option : SidebarOption.TYPE, building):
