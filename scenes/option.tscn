@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddxwn18d7v2xv"]
+[gd_scene load_steps=5 format=3 uid="uid://ddxwn18d7v2xv"]
 
-[ext_resource type="Script" path="res://scripts/option.gd" id="1_d68u3"]
+[ext_resource type="Script" uid="uid://xdv74gbrqthk" path="res://scripts/option.gd" id="1_d68u3"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="2_s84fu"]
-[ext_resource type="LabelSettings" uid="uid://dhg0jvasrq6o6" path="res://resources/fontSettings.tres" id="3_2beh3"]
+[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="3_0chu7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_glgj2"]
+font = ExtResource("3_0chu7")
+font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 
 [node name="option" type="Control" node_paths=PackedStringArray("hitbox", "defaultSprite", "hoverSprite", "disabledSprite", "label")]
 custom_minimum_size = Vector2(0, 64)
@@ -87,7 +91,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "OPTIONAL OPTIONS!!!"
-label_settings = ExtResource("3_2beh3")
+label_settings = SubResource("LabelSettings_glgj2")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true

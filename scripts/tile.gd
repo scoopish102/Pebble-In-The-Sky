@@ -19,6 +19,7 @@ var building = false
 @export var subtiles : Array[Subtile]
 @export var display : Node2D
 @export var sea : Sprite2D
+@export var overall : AnimatedSprite2D
 
 func _ready():
 	pass
@@ -44,6 +45,13 @@ func updateTerrain():
 	for subtile in subtiles:
 		subtile.updateTerrain(terrain)
 	if int(raw*100)%2 == 0: subtiles[randi_range(0,3)].terrain.visible = false
+	if int(raw*100)%2 == 0: subtiles[randi_range(0,3)].terrain.visible = false
+
+func resetAltitudeDiversification():
+	subtiles[0].position.y = 0
+	subtiles[1].position.y = 16
+	subtiles[2].position.y = 16
+	subtiles[3].position.y = 32
 
 func diversifyAltitude(N, E, S, W):
 	if not waterlogged: 
@@ -88,7 +96,39 @@ func diversifyModulate():
 		modulateStrength = 1 + ((subtile.position.y - subtileOriginalPosition[subtiles.find(subtile)])/150)
 		subtile.modulate = Color(modulateStrength, modulateStrength, modulateStrength, 1)
 
-func updateBuilding():
-	if building == Global.BUILDING.EMPTY: return
+func updateBuilding(neighbors=[false, false, false, false]):
+	#if building == Global.BUILDING.EMPTY: return
+	overall.set_animation(&"EMPTY")
+	if not building is bool and building == Global.BUILDING.ROAD: 
+		var frame = roadFrames(neighbors)
+		overall.set_animation(&"ROAD")
+		overall.set_frame(frame)
 	for subtile in subtiles:
 		subtile.updateBuilding(building)
+
+func roadFrames(neighbors=[false,false,false,false]):
+	var frame = 0
+	if neighbors[0]:
+		if neighbors[1]:
+			if neighbors[2]:
+				if neighbors[3]: frame = 0 #nesw
+				else: frame = 1 #nes
+			elif neighbors[3]: frame = 4 #new
+			else: frame = 7 #ne
+		elif neighbors[2]:
+			if neighbors[3]: frame = 3 #nsw
+			else: frame = 5 #ns
+		elif neighbors[3]: frame = 10 #nw
+		else: frame = 11 #n
+	elif neighbors[1]:
+		if neighbors[2]: 
+			if neighbors[3]: frame = 2 #esw
+			else: frame = 8 #es
+		elif neighbors[3]: frame = 6 #ew
+		else: frame = 12 #e
+	elif neighbors[2]:
+		if neighbors[3]: frame = 9 #sw
+		else: frame = 13 #s
+	elif neighbors[3]: frame = 14 #w
+	else: frame = 15 #none
+	return frame

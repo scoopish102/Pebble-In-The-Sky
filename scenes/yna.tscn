@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqy1iihpw0cgm"]
+[gd_scene load_steps=6 format=3 uid="uid://dqy1iihpw0cgm"]
 
-[ext_resource type="Script" path="res://scripts/yna.gd" id="1_dknk8"]
-[ext_resource type="Script" path="res://scripts/option.gd" id="1_xfqdh"]
+[ext_resource type="Script" uid="uid://qbwms1yhjyw0" path="res://scripts/yna.gd" id="1_dknk8"]
+[ext_resource type="Script" uid="uid://xdv74gbrqthk" path="res://scripts/option.gd" id="1_xfqdh"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="2_p4kr8"]
-[ext_resource type="LabelSettings" uid="uid://dhg0jvasrq6o6" path="res://resources/fontSettings.tres" id="3_y0ste"]
+[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="4_1sgan"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_is8kj"]
+font = ExtResource("4_1sgan")
+font_size = 32
+font_color = Color(0.35, 0.35, 0.35, 1)
 
 [node name="yna" type="HBoxContainer" node_paths=PackedStringArray("yes", "no")]
 anchors_preset = 12
@@ -39,13 +44,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 0.4)
 shortcut_feedback = false
 shortcut_in_tooltip = false
 flat = true
 
 [node name="default" type="NinePatchRect" parent="yes"]
 modulate = Color(0.588235, 1, 0.588235, 1)
-self_modulate = Color(0.866667, 0.866667, 0.866667, 1)
+self_modulate = Color(0.9471993, 0.9471994, 0.9471993, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,7 +107,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "YES"
-label_settings = ExtResource("3_y0ste")
+label_settings = SubResource("LabelSettings_is8kj")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -132,7 +139,7 @@ flat = true
 
 [node name="default" type="NinePatchRect" parent="no"]
 modulate = Color(1, 0.588235, 0.588235, 1)
-self_modulate = Color(0.866667, 0.866667, 0.866667, 1)
+self_modulate = Color(0.9471993, 0.9471994, 0.9471993, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -186,9 +193,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "NO
-"
-label_settings = ExtResource("3_y0ste")
+text = "NO"
+label_settings = SubResource("LabelSettings_is8kj")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true

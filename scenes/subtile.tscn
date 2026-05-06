@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cgfnmgfilouu1"]
 
 [ext_resource type="SpriteFrames" uid="uid://dkdsu5qxri58a" path="res://resources/tileset.tres" id="1_38aud"]
-[ext_resource type="Script" path="res://scripts/subtile.gd" id="1_54wk8"]
+[ext_resource type="Script" uid="uid://ccc7kjbu7ca74" path="res://scripts/subtile.gd" id="1_54wk8"]
 [ext_resource type="SpriteFrames" uid="uid://c4ogsdvua0wox" path="res://resources/terrainset.tres" id="2_fqo6r"]
 [ext_resource type="SpriteFrames" uid="uid://dp6gq6nks1u1j" path="res://resources/buildingset.tres" id="4_bbiyf"]
 
@@ -19,7 +19,7 @@ offset = Vector2(0, -16)
 
 [node name="subterrain" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_fqo6r")
-animation = &"ZINC"
+animation = &"CARBON"
 offset = Vector2(0, -16)
 
 [node name="building" type="AnimatedSprite2D" parent="."]

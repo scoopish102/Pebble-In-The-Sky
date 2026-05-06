@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3 uid="uid://6fwdjhwe1s06"]
+
+[ext_resource type="Script" uid="uid://5el1ykfmg6ku" path="res://scripts/world.gd" id="1_wjt5s"]
+[ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="2_ea1j2"]
+[ext_resource type="Script" uid="uid://ba2diyby82fov" path="res://scripts/game.gd" id="2_gh404"]
+[ext_resource type="Script" uid="uid://djlynsxl2ljed" path="res://scripts/camera.gd" id="3_13y1w"]
+[ext_resource type="Script" uid="uid://ba7tn63bxb664" path="res://scripts/map.gd" id="4_4fw7i"]
+[ext_resource type="PackedScene" uid="uid://cp4vwm6sh6d5l" path="res://scenes/cursor.tscn" id="5_5xvi1"]
+[ext_resource type="PackedScene" uid="uid://dbtsa16q8xity" path="res://scenes/ui.tscn" id="6_d88ih"]
+
+[node name="world" type="Node2D"]
+script = ExtResource("1_wjt5s")
+
+[node name="game" type="Node" parent="." node_paths=PackedStringArray("map", "camera", "ui", "cursor")]
+script = ExtResource("2_gh404")
+map = NodePath("../map")
+camera = NodePath("../camera")
+ui = NodePath("../canvas/ui")
+cursor = NodePath("../cursor")
+
+[node name="camera" type="Camera2D" parent="."]
+script = ExtResource("3_13y1w")
+
+[node name="map" type="Node2D" parent="."]
+script = ExtResource("4_4fw7i")
+tileBlueprint = ExtResource("2_ea1j2")
+
+[node name="cursor" parent="." node_paths=PackedStringArray("map") instance=ExtResource("5_5xvi1")]
+map = NodePath("../map")
+
+[node name="canvas" type="CanvasLayer" parent="."]
+
+[node name="ui" parent="canvas" instance=ExtResource("6_d88ih")]
+
+[connection signal="mouse_entered" from="canvas/ui" to="cursor" method="_on_ui_mouse_entered"]
+[connection signal="mouse_exited" from="canvas/ui" to="cursor" method="_on_ui_mouse_exited"]

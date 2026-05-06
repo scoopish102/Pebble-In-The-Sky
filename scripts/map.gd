@@ -13,10 +13,17 @@ var noise = preload("res://resources/altitudeNoise.tres")
 func _ready():
 	Event.create_building.connect(createBuilding)
 
+func updateRoads():
+	for tile in buildingMap.keys():
+		if buildingMap[tile] == Global.BUILDING.ROAD:
+			tileMap[tile].updateBuilding(getSpecificNeighbors(tile))
+
 func createBuilding(tile : Vector2i, building : Global.BUILDING):
 	buildingMap[tile] = building
 	tileMap[tile].building = building
-	tileMap[tile].updateBuilding()
+	tileMap[tile].updateBuilding(getSpecificNeighbors(tile))
+	tileMap[tile].resetAltitudeDiversification()
+	updateRoads()
 	Event.update_resources.emit()
 
 func generateMap():
@@ -39,22 +46,22 @@ func generateMap():
 
 func generatePoles():
 	var poleSize = ceili(Global.mapSize.y * 0.05)
-	var seed
+	var mapseed
 	for height in range(0, poleSize):
 		for width in range(0, Global.mapSize.x):
-			seed = randi_range(0, 7)
-			if seed >= 2:
-				seed = randi_range(0, 6)
-				if seed == 0: terrainMap[Vector2i(width, height)] = Global.TERRAIN.NITROGEN
-				elif seed == 1: terrainMap[Vector2i(width, height)] = Global.TERRAIN.PHOSPHORUS
+			mapseed = randi_range(0, 7)
+			if mapseed >= 2:
+				mapseed = randi_range(0, 6)
+				if mapseed == 0: terrainMap[Vector2i(width, height)] = Global.TERRAIN.NITROGEN
+				elif mapseed == 1: terrainMap[Vector2i(width, height)] = Global.TERRAIN.PHOSPHORUS
 				else: terrainMap[Vector2i(width, height)] = Global.TERRAIN.ICE
 	for height in range(0, poleSize):
 		for width in range(0, Global.mapSize.x):
-			seed = randi_range(0, 7)
-			if seed >= 2:
-				seed = randi_range(0, 6)
-				if seed == 0: terrainMap[Vector2i(width, Global.mapSize.y - height - 1)] = Global.TERRAIN.NITROGEN
-				elif seed == 1: terrainMap[Vector2i(width, Global.mapSize.y - height - 1)] = Global.TERRAIN.PHOSPHORUS
+			mapseed = randi_range(0, 7)
+			if mapseed >= 2:
+				mapseed = randi_range(0, 6)
+				if mapseed == 0: terrainMap[Vector2i(width, Global.mapSize.y - height - 1)] = Global.TERRAIN.NITROGEN
+				elif mapseed == 1: terrainMap[Vector2i(width, Global.mapSize.y - height - 1)] = Global.TERRAIN.PHOSPHORUS
 				else: terrainMap[Vector2i(width, Global.mapSize.y - height - 1)] = Global.TERRAIN.ICE
 
 func generateFeatures():
@@ -83,10 +90,12 @@ func randomPosition():
 func generateBlot(location : Vector2i, size : Vector2i, density, terrain : Global.TERRAIN):
 	for x in range(0, size.x):
 		for y in range(0, size.y):
+			@warning_ignore("narrowing_conversion", "integer_division")
 			if checkEllipseBounds(x-size.x/2, y-size.y/2, size.x, size.y):
 				if randf_range(0, 1) <= density: terrainMap[Vector2i((x+location.x)%Global.mapSize.x, (y+location.y)%Global.mapSize.y)] = terrain
 
 func checkEllipseBounds(x : int, y : int, w : int, h : int):
+	@warning_ignore("integer_division")
 	if (pow(x, 2)/pow(w/2,2))+(pow(y, 2)/pow(h/2,2)) <= 1: return true
 	else: return false
 
@@ -107,15 +116,42 @@ func initMap():
 			neighborAltitudes = diversifyAltitude(tileInstance.tile)
 			tileInstance.diversifyAltitude(neighborAltitudes[0], neighborAltitudes[1], neighborAltitudes[2], neighborAltitudes[3])
 			tileInstance.diversifyModulate()
+			tileInstance.updateBuilding()
 			tileInstance.initialized = true
 			tileInstance.building = Global.BUILDING.EMPTY
-			tileInstance.updateBuilding()
 			tileMap[tileInstance.tile] = tileInstance
 			add_child(tileInstance)
-	starterColony(Vector2i(Global.mapSize.x/2, Global.mapSize.y/2))
+	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
+	starterColony(spawn)
+	return spawn
 
 func starterColony(location):
 	createBuilding(location, Global.BUILDING.CENTER)
+
+func getTrueNeighborCount(tile : Vector2i) -> int:
+	var count = 0
+	if buildingMap.has(tile + Vector2i(1, 0)) and not buildingMap[tile + Vector2i(1, 0)] == Global.BUILDING.EMPTY: count += 1
+	if buildingMap.has(tile + Vector2i(-1, 0)) and not buildingMap[tile + Vector2i(-1, 0)] == Global.BUILDING.EMPTY: count += 1
+	if buildingMap.has(tile + Vector2i(0, 1)) and not buildingMap[tile + Vector2i(0, 1)] == Global.BUILDING.EMPTY: count += 1
+	if buildingMap.has(tile + Vector2i(0, -1)) and not buildingMap[tile + Vector2i(0, -1)] == Global.BUILDING.EMPTY: count += 1
+	return count
+
+func getNeighborCount(tile : Vector2i) -> int:
+	var count = 0
+	if buildingMap.has(tile + Vector2i(0, 0)) and not buildingMap[tile + Vector2i(0, 0)] == Global.BUILDING.EMPTY: return -1
+	if buildingMap.has(tile + Vector2i(1, 0)) and not buildingMap[tile + Vector2i(1, 0)] == Global.BUILDING.EMPTY: count += 1
+	if buildingMap.has(tile + Vector2i(-1, 0)) and not buildingMap[tile + Vector2i(-1, 0)] == Global.BUILDING.EMPTY: count += 1
+	if buildingMap.has(tile + Vector2i(0, 1)) and not buildingMap[tile + Vector2i(0, 1)] == Global.BUILDING.EMPTY: count += 1
+	if buildingMap.has(tile + Vector2i(0, -1)) and not buildingMap[tile + Vector2i(0, -1)] == Global.BUILDING.EMPTY: count += 1
+	return count
+
+func getSpecificNeighbors(tile : Vector2i) -> Array[bool]:
+	var nesw : Array[bool] = [false, false, false, false]
+	if buildingMap.has(tile + Vector2i(-1, 0)) and not buildingMap[tile + Vector2i(-1, 0)] == Global.BUILDING.EMPTY: nesw[0] = true
+	if buildingMap.has(tile + Vector2i(0, -1)) and not buildingMap[tile + Vector2i(0, -1)] == Global.BUILDING.EMPTY: nesw[1] = true
+	if buildingMap.has(tile + Vector2i(1, 0)) and not buildingMap[tile + Vector2i(1, 0)] == Global.BUILDING.EMPTY: nesw[2] = true
+	if buildingMap.has(tile + Vector2i(0, 1)) and not buildingMap[tile + Vector2i(0, 1)] == Global.BUILDING.EMPTY: nesw[3] = true
+	return nesw
 
 func diversifyAltitude(tile: Vector2i):
 	var N = false

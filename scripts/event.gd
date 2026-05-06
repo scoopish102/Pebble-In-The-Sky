@@ -1,7 +1,18 @@
 extends Node
 
+@warning_ignore("unused_signal")
 signal option_pressed(type : SidebarOption.TYPE)
+@warning_ignore("unused_signal")
 signal confirmation_required(type : SidebarOption.TYPE)
+@warning_ignore("unused_signal")
 signal deselect_cursor()
+@warning_ignore("unused_signal")
 signal create_building(tile : Vector2i, building : Global.BUILDING)
+@warning_ignore("unused_signal")
 signal update_resources()
+@warning_ignore("unused_signal")
+signal update_confirmation()
+@warning_ignore("unused_signal")
+signal next_turn_confirmation()
+@warning_ignore("unused_signal")
+signal next_turn()

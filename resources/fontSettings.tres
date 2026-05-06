@@ -4,5 +4,4 @@
 
 [resource]
 font = ExtResource("1_pbeyy")
-font_size = 32
 font_color = Color(0.231373, 0.231373, 0.231373, 1)

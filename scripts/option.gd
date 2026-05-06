@@ -7,10 +7,14 @@ enum TYPE {
 		BUILD, #opens menu for building buildings
 		ACT,
 		MARKET, #opens menu for managing trades
+		NEXT_TURN, #next turn
 	
 	#BUILDINGS
 	COLONY, #opens menu for colony related buildings
-	PRODUCTION, #opens menu for factories
+	POWER, #opens menu for power buildings, like generators
+	HARVEST, #opens menu for resource harvest buildings, like mines and quarries, as well as farms
+	PRODUCTION, #opens menu for factories, mills, and refineries
+	MANUFACTORY, #opens menu for (manu)factories of products
 
 	YES, NO, #for YNA
 	BUILDING
@@ -23,13 +27,23 @@ enum TYPE {
 @export var disabledSprite : NinePatchRect
 @export var label : Label
 
-var disabled = false
+var disabled = true
 var yna : YNA
 var building = false
+var terrain = false
+var tile = false
 
 func init(_type : TYPE):
 	type = _type
-	label.set_text(TYPE.keys()[type])
+	#print("bro HOW")
+	if not type == TYPE.BUILDING: label.set_text(TYPE.keys()[type])
+	else: label.set_text(Global.buildingNames[building])
+	if type == TYPE.NEXT_TURN: label.set_text("NEXT TURN")
+	
+func _ready(): 
+	disable()
+	await get_tree().create_timer(0.05).timeout
+	if type != TYPE.YES: enable()
 
 func _process(_delta):
 	if disabled: 
@@ -47,11 +61,21 @@ func enable():
 	disabled = false
 
 func _on_pressed():
+	#print("press", type, get_parent())
 	if disabled: 
 		return
-	if type == TYPE.BUILDING:
-		Event.confirmation_required.emit(type, building)
+	elif type == TYPE.BUILDING:
+		Event.confirmation_required.emit(type, building, terrain)
 		return
-	if type == TYPE.YES or type == TYPE.NO:
+	elif type == TYPE.YES or type == TYPE.NO:
+		return
+	elif type == TYPE.NEXT_TURN:
+		Event.next_turn_confirmation.emit()
 		return
 	Event.option_pressed.emit(type)
+
+"""func updateInfo(building=false, terrain=false):
+	
+	if type == TYPE.BUILDING:
+		yna.priceWorks = yna.checkPrice(yna.building)
+		yna.terrainWorks = yna.checkTerrain(yna.building, terrain)"""

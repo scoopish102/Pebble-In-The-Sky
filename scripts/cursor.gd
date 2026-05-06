@@ -4,6 +4,7 @@ class_name Cursor
 
 var mousePosition : Vector2
 var tile : Vector2i
+var uiSelect : bool = false
 
 @export var subcursors : Array[Sprite2D]
 @export var map : Map
@@ -12,21 +13,22 @@ var tile : Vector2i
 func _ready():
 	Event.deselect_cursor.connect(deselect)
 
-func _process(_delta):
+func update(minimap):
 	mousePosition = get_global_mouse_position()
 	if not Global.selected:
 		tile = positionToTile(mousePosition)
 		Global.selectedTile = tile
 	else:
-		if Input.is_action_just_pressed("ui_tileselect"): 
+		if Input.is_action_just_pressed("ui_tileselect") and not uiSelect: 
 			deselect()
 			return
 	if not tile == Vector2i(-1, -1):
 		visible = true
 		position = map.tileMap[tile].position
 		display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
+		minimap.copyFrom(map.tileMap[tile])
 		alignAltitude(tile)
-		if Input.is_action_just_pressed("ui_tileselect"): 
+		if Input.is_action_just_pressed("ui_tileselect") and not uiSelect: 
 			select()
 	else:
 		visible = false
@@ -36,12 +38,15 @@ func select():
 	map.tileMap[tile].selected = true
 	Global.selected = true
 	modulate = Color(255, 0, 0)
+	Event.update_confirmation.emit()
+	#print(tile)
 
 func deselect():
 	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight
 	map.tileMap[tile].selected = false
 	Global.selected = false
 	modulate = Color(255, 250, 0)
+	Event.update_confirmation.emit()
 	
 func alignAltitude(_tile):
 	if map.tileMap[tile].waterlogged: 
@@ -69,3 +74,11 @@ func positionToTile(_position: Vector2):
 	_tile.y = int(floor(_tile.y))
 	if _tile.x < 0 or _tile.y < 0 or _tile.x >= Global.mapSize.x or _tile.y >= Global.mapSize.y: return Vector2i(-1, -1)
 	else: return _tile
+
+func _on_ui_mouse_entered():
+	uiSelect = false
+	#print(uiSelect)
+
+func _on_ui_mouse_exited():
+	uiSelect = true
+	#print(uiSelect)

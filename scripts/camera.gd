@@ -12,3 +12,7 @@ func _process(delta):
 	elif velocity.y > 0: velocity.y = min(velocity.y, maxSpeed * delta * 60)
 	global_position += velocity
 	velocity *= 0.9
+
+func goTo(coord: Vector2i):
+	global_position.x = coord.x*Global.tileSize.x/2 - coord.y*Global.tileSize.x/2
+	global_position.y = coord.x*Global.tileSize.y/2 + coord.y*Global.tileSize.y/2

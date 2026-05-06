@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=3 uid="uid://d4d5lohx4tmyt"]
+
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ehums"]
+[ext_resource type="Script" uid="uid://boc1l3cxug2tw" path="res://scripts/infobox.gd" id="2_1too7"]
+[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="4_hcbst"]
+[ext_resource type="FontFile" uid="uid://ma0f4j4gbbr3" path="res://assets/DigitalDisco-Thin.ttf" id="5_4dmxm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_h1n6h"]
+font = ExtResource("4_hcbst")
+font_size = 32
+font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+
+[node name="infobox" type="NinePatchRect" node_paths=PackedStringArray("label", "body")]
+self_modulate = Color(0.866667, 0.866667, 0.866667, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_ehums")
+region_rect = Rect2(640, 0, 96, 96)
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource("2_1too7")
+label = NodePath("MarginContainer/VBoxContainer/Label")
+body = NodePath("MarginContainer/VBoxContainer/Body")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_h1n6h")
+horizontal_alignment = 1
+
+[node name="Body" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_fonts/normal_font = ExtResource("4_hcbst")
+theme_override_fonts/italics_font = ExtResource("5_4dmxm")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+bbcode_enabled = true
+autowrap_mode = 2
