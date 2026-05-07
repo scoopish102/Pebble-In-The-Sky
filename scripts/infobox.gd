@@ -32,15 +32,12 @@ func compileBudget():
 	var i = 0
 	for res in Global.buildingBudgets[building].keys():
 		if res is StringName and res == &"DEPOSIT":
-			if Global.buildingBudgets[building][res] > 0:
-				text += "[color=#00ff00ff]" #green
-			else:
-				text += "[color=#ff0000ff]" #red
+			text += "[color=#3b3b3bff]" #gray
 			text += str(Global.buildingBudgets[building][res])
 			text += "[/color]"
 			text += " Tile Deposit"
 		else:
-			if Global.buildingBudgets[building][res] > 0:
+			if Global.budgets[res] + Global.buildingBudgets[building][res] >= 0:
 				text += "[color=#00ff00ff]" #green
 			else:
 				text += "[color=#ff0000ff]" #red

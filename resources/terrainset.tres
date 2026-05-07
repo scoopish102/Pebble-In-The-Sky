@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bocwcso5awb48" path="res://assets/tiles.9.27.png" id="1_7ft3c"]
 [ext_resource type="Texture2D" uid="uid://bgcrd0t2e0vmv" path="res://assets/ores.11.17.png" id="1_jot7e"]
-[ext_resource type="Texture2D" uid="uid://u2g4hdvcpo4f" path="res://assets/buildings.center.10.29.png" id="3_wyas2"]
+[ext_resource type="Texture2D" uid="uid://u2g4hdvcpo4f" path="res://assets/building/buildings.center.10.29.png" id="3_wyas2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0ql6n"]
 atlas = ExtResource("1_jot7e")

@@ -21,7 +21,9 @@ func _ready():
 	Event.option_pressed.connect(makeSidebar)
 	Event.confirmation_required.connect(askConfirmation)
 	Event.update_confirmation.connect(updateBuildingConfirmation)
+	Event.update_demolish_confirmation.connect(updateDemolishConfirmation)
 	Event.next_turn_confirmation.connect(askConfirmationNextTurn)
+	Event.demolish_confirmation.connect(askConfirmationDemolish)
 	makeSidebar(SidebarOption.TYPE.MAIN)
 	updateResourcebar()
 
@@ -68,11 +70,13 @@ func createOption(type : SidebarOption.TYPE):
 
 var selectedTerrain
 var selectedNeighbors
+var selectedBuilding
 signal fetchSelectedTile()
 
-func setSelectedTile(neighbors, terrain):
+func setSelectedTile(neighbors, terrain, building):
 	selectedNeighbors = neighbors
 	selectedTerrain = terrain
+	selectedBuilding = building
 
 func createBuildingOption(building : Global.BUILDING):
 	var option = optionBlueprint.instantiate()
@@ -82,6 +86,12 @@ func createBuildingOption(building : Global.BUILDING):
 	option.tile = selectedNeighbors
 	option.init(SidebarOption.TYPE.BUILDING)
 	sidebarOptions.add_child(option)
+
+func createMarket():
+	for resource in Global.trades:
+		createTradeOption(resource)
+
+func createTradeOption(resource : Global.RESOURCE): pass
 
 func clearSidebar():
 	for option in sidebarOptions.get_children():
@@ -103,23 +113,47 @@ func makeSidebar(option : SidebarOption.TYPE):
 			createOption(SidebarOption.TYPE.PRODUCTION)
 			backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.ACT:
+			createOption(SidebarOption.TYPE.DEMOLISH)
 			backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.MARKET:
+			createMarket()
 			backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.COLONY:
 			createBuildingOption(Global.BUILDING.CITY)
 			createBuildingOption(Global.BUILDING.ROAD)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.POWER:
+			createBuildingOption(Global.BUILDING.SOLAR_FARM)
 			createBuildingOption(Global.BUILDING.NUCLEAR_PLANT)
+			createBuildingOption(Global.BUILDING.FUSION_PLANT)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.HARVEST:
 			createBuildingOption(Global.BUILDING.MINE)
+			createBuildingOption(Global.BUILDING.QUARRY)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.PRODUCTION:
 			createBuildingOption(Global.BUILDING.STEEL_MILL)
+			createBuildingOption(Global.BUILDING.CONCRETE_PLANT)
+			createBuildingOption(Global.BUILDING.WATER_EXTRACTOR)
+			createBuildingOption(Global.BUILDING.REGOLITH_PROCESSOR)
+			createBuildingOption(Global.BUILDING.ELECTROLYZER)
 			backOption(SidebarOption.TYPE.BUILD)
 	sidebarMenu = option
+
+func askConfirmationDemolish(tile, building):
+	#print("doit")
+	clearSidebar()
+	var slabel : SidebarLabel = sLabelBlueprint.instantiate()
+	sidebarOptions.add_child(slabel)
+	if not building is bool and building != Global.BUILDING.EMPTY:
+		slabel.label.set_text("Demolish this " + Global.buildingNames[building] + " at " + str(tile) + "?")
+	else: slabel.label.set_text("There is nothing to demolish at " + str(tile))
+	slabel.updateSize()
+	var yna : YNA = ynaBlueprint.instantiate()
+	yna.option = SidebarOption.TYPE.DEMOLISH
+	yna.building = building
+	sidebarOptions.add_child(yna)
+	yna.confirm.connect(postConfirmation)
 
 func askConfirmationNextTurn():
 	clearSidebar()
@@ -155,6 +189,27 @@ func askConfirmation(option : SidebarOption.TYPE, building, terrain):
 	yna.confirm.connect(postConfirmation)
 	#print("confirm")
 
+func updateDemolishConfirmation(tile):
+	#print("blu")
+	var options = sidebarOptions.get_children()
+	var yna = false
+	var slabel = false
+	for option in options:
+		if option is YNA: 
+			yna = option
+			#print("facts")
+		if option is SidebarLabel: slabel = option
+	if not yna is bool and yna.option == SidebarOption.TYPE.DEMOLISH: 
+		fetchSelectedTile.emit()
+		#print("fool")
+		yna.building = selectedBuilding
+		if slabel is not bool:
+			if not selectedBuilding is bool and selectedBuilding != Global.BUILDING.EMPTY:
+				if selectedBuilding == Global.BUILDING.CENTER: slabel.label.set_text("Cannot destroy Colony Center")
+				else: slabel.label.set_text("Demolish this " + Global.buildingNames[selectedBuilding] + " at " + str(tile) + "?")
+			else: slabel.label.set_text("There is nothing to demolish at " + str(tile))
+			#slabel.updateSize()
+
 func updateBuildingConfirmation():
 	var options = sidebarOptions.get_children()
 	var yna = false
@@ -162,12 +217,12 @@ func updateBuildingConfirmation():
 	for option in options:
 		if option is YNA: yna = option
 		if option is Infobox: infobox = option
-	if yna is not bool and yna.option != SidebarOption.TYPE.NEXT_TURN:
+	if not yna is bool and yna.option == SidebarOption.TYPE.BUILDING:
 		fetchSelectedTile.emit()
 		yna.priceWorks = yna.checkPrice(yna.building)
 		yna.terrainWorks = yna.checkTerrain(yna.building, selectedTerrain)
 		yna.neighbors = selectedNeighbors
-	if infobox is not bool:
+	if not infobox is bool:
 		infobox.terrain = selectedTerrain
 		infobox.neighbors = selectedNeighbors
 		infobox.updateText()
@@ -183,6 +238,8 @@ func postConfirmation(confirm : bool, option : SidebarOption.TYPE, building):
 			SidebarOption.TYPE.NEXT_TURN:
 				Event.next_turn.emit()
 				updateResourcebar()
+			SidebarOption.TYPE.DEMOLISH:
+				Event.demolish_building.emit()
 	Event.deselect_cursor.emit()
 	#print(sidebarMenu)
 	makeSidebar(sidebarMenu)

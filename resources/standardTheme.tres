@@ -1,0 +1,31 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://tcq20j1ueh3t"]
+
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ddgra"]
+[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="1_r53ff"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8niu7"]
+texture = ExtResource("1_ddgra")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddgra"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0.78431374)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[resource]
+default_font = ExtResource("1_r53ff")
+default_font_size = 16
+Panel/styles/panel = SubResource("StyleBoxTexture_8niu7")
+TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ddgra")

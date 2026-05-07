@@ -24,6 +24,6 @@ offset = Vector2(0, -16)
 
 [node name="building" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("4_bbiyf")
-animation = &"EMPTY"
+animation = &"NUCLEAR_PLANT"
 autoplay = "EMPTY"
 offset = Vector2(0, -32)

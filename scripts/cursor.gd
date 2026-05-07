@@ -32,6 +32,7 @@ func update(minimap):
 			select()
 	else:
 		visible = false
+	Event.update_demolish_confirmation.emit(tile)
 
 func select():
 	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight - 20
@@ -39,14 +40,23 @@ func select():
 	Global.selected = true
 	modulate = Color(255, 0, 0)
 	Event.update_confirmation.emit()
+	Event.update_demolish_confirmation.emit(tile)
 	#print(tile)
+	#print(Global.budgets)
 
 func deselect():
+	if tile == Vector2i(-1, -1): 
+		Global.selected = false
+		modulate = Color(255, 250, 0)
+		Event.update_confirmation.emit()
+		Event.update_demolish_confirmation.emit(tile)
+		return
 	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight
 	map.tileMap[tile].selected = false
 	Global.selected = false
 	modulate = Color(255, 250, 0)
 	Event.update_confirmation.emit()
+	Event.update_demolish_confirmation.emit(tile)
 	
 func alignAltitude(_tile):
 	if map.tileMap[tile].waterlogged: 

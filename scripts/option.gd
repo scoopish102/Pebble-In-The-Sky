@@ -16,6 +16,9 @@ enum TYPE {
 	PRODUCTION, #opens menu for factories, mills, and refineries
 	MANUFACTORY, #opens menu for (manu)factories of products
 
+	#ACTIONS
+	DEMOLISH, #lets you demolish buildings
+
 	YES, NO, #for YNA
 	BUILDING
 }
@@ -63,6 +66,9 @@ func enable():
 func _on_pressed():
 	#print("press", type, get_parent())
 	if disabled: 
+		return
+	elif type == TYPE.DEMOLISH:
+		Event.demolish_confirmation.emit(tile, building)
 		return
 	elif type == TYPE.BUILDING:
 		Event.confirmation_required.emit(type, building, terrain)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dg4q3jh138nup" path="res://scripts/tile.gd" id="1_kfh2d"]
 [ext_resource type="PackedScene" uid="uid://cgfnmgfilouu1" path="res://scenes/subtile.tscn" id="2_v1yvq"]
-[ext_resource type="Texture2D" uid="uid://cpdhj7fioh77j" path="res://assets/buildings.road.5.6.png" id="3_q7utx"]
+[ext_resource type="Texture2D" uid="uid://cpdhj7fioh77j" path="res://assets/building/buildings.road.5.6.png" id="3_q7utx"]
 [ext_resource type="Texture2D" uid="uid://bbtlwcij8txl3" path="res://assets/seatile.png" id="4_a46sr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q7utx"]

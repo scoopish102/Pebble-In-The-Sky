@@ -23,12 +23,18 @@ func _ready():
 
 func _process(_delta):
 	if not startedProcess: return
+	if option == SidebarOption.TYPE.DEMOLISH:
+		if (not Global.selected or (building is bool or
+				building == Global.BUILDING.EMPTY or building == Global.BUILDING.CENTER)):
+			if not yes.disabled: yes.disable()
+		else: if yes.disabled: yes.enable()
+		return
 	if option == SidebarOption.TYPE.NEXT_TURN: 
 		if yes.disabled: yes.enable()
 		return
-	if not building is bool and not Global.selected:
+	if not (building is bool or building == Global.BUILDING.EMPTY) and not Global.selected:
 		if not yes.disabled: yes.disable()
-	elif building is bool or (not priceWorks) or (not terrainWorks) or (neighbors < 1): #cost isn't aligned, add code later
+	elif (building is bool or building == Global.BUILDING.EMPTY) or (not priceWorks) or (not terrainWorks) or (neighbors < 1):
 		if not yes.disabled: yes.disable()
 	else:
 		if yes.disabled: yes.enable()

@@ -13,6 +13,13 @@ var noise = preload("res://resources/altitudeNoise.tres")
 func _ready():
 	Event.create_building.connect(createBuilding)
 
+func demolish(tile):
+	buildingMap.erase(tile)
+	tileMap[tile].building = false
+	tileMap[tile].updateBuilding(getSpecificNeighbors(tile))
+	updateRoads()
+	Event.update_resources.emit()
+
 func updateRoads():
 	for tile in buildingMap.keys():
 		if buildingMap[tile] == Global.BUILDING.ROAD:

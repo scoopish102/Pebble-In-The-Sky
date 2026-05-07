@@ -9,3 +9,4 @@ func _ready():
 	map.generateMap()
 	var spawn = map.initMap()
 	game.camera.goTo(spawn)
+	game.updateBudgets()

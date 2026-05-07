@@ -1,0 +1,154 @@
+[gd_scene load_steps=18 format=3 uid="uid://dsbhelme1ryqv"]
+
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_bdeus"]
+[ext_resource type="Script" uid="uid://bo4ib1e4tedcu" path="res://scripts/tradeoption.gd" id="1_cn65w"]
+[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="3_4yji4"]
+[ext_resource type="Texture2D" uid="uid://cqwfdm42llqd2" path="res://assets/arrows.4.27.png" id="4_ahuc3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4yji4"]
+texture = ExtResource("1_bdeus")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+
+[sub_resource type="InputEventKey" id="InputEventKey_cgfq5"]
+device = -1
+keycode = 81
+unicode = 113
+
+[sub_resource type="Shortcut" id="Shortcut_1bdw7"]
+events = [SubResource("InputEventKey_cgfq5")]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km1fa"]
+atlas = ExtResource("4_ahuc3")
+region = Rect2(76, 12, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1et65"]
+atlas = ExtResource("4_ahuc3")
+region = Rect2(12, 12, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_anc7l"]
+atlas = ExtResource("4_ahuc3")
+region = Rect2(140, 12, 40, 40)
+
+[sub_resource type="InputEventKey" id="InputEventKey_ktti3"]
+device = -1
+keycode = 69
+unicode = 101
+
+[sub_resource type="Shortcut" id="Shortcut_d8wnq"]
+events = [SubResource("InputEventKey_ktti3")]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_66cow"]
+texture = ExtResource("1_bdeus")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+modulate_color = Color(0.95, 0.95, 0.95, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_snsu6"]
+load_path = "res://.godot/imported/ui.10.18.png-108c8a68b44c009566bd7c4c508677f0.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jn5ls"]
+texture = SubResource("CompressedTexture2D_snsu6")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jh68v"]
+load_path = "res://.godot/imported/ui.10.18.png-108c8a68b44c009566bd7c4c508677f0.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_slseq"]
+texture = SubResource("CompressedTexture2D_jh68v")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="TradeOption" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -976.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cn65w")
+
+[node name="TradeInfo" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_4yji4")
+
+[node name="Label" type="RichTextLabel" parent="TradeInfo"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_fonts/normal_font = ExtResource("3_4yji4")
+theme_override_font_sizes/normal_font_size = 32
+text = "Trading: Gold 
+Market Price: 2"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TradeBar" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_4yji4")
+
+[node name="less" type="TextureButton" parent="TradeBar"]
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+shortcut = SubResource("Shortcut_1bdw7")
+texture_normal = SubResource("AtlasTexture_km1fa")
+texture_pressed = SubResource("AtlasTexture_1et65")
+texture_hover = SubResource("AtlasTexture_anc7l")
+ignore_texture_size = true
+stretch_mode = 3
+flip_h = true
+
+[node name="amount" type="RichTextLabel" parent="TradeBar"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_fonts/normal_font = ExtResource("3_4yji4")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Sell 2
+[color=ff0000ff]2[/color] [img]res://resources/resIcons/trade.tres[/img]"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="more" type="TextureButton" parent="TradeBar"]
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+shortcut = SubResource("Shortcut_d8wnq")
+texture_normal = SubResource("AtlasTexture_km1fa")
+texture_pressed = SubResource("AtlasTexture_1et65")
+texture_hover = SubResource("AtlasTexture_anc7l")
+ignore_texture_size = true
+stretch_mode = 3
+
+[node name="deployTrade" type="Button" parent="."]
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_fonts/font = ExtResource("3_4yji4")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_66cow")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_jn5ls")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slseq")
+shortcut = SubResource("Shortcut_1bdw7")
+text = "Establish Trade"

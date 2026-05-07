@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3keppgqfjpxv"]
+[gd_scene load_steps=8 format=3 uid="uid://d3keppgqfjpxv"]
 
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="1_trlj2"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ufrmg"]
 [ext_resource type="Script" uid="uid://bm6l4enuhnqlt" path="res://scripts/resourceOption.gd" id="2_lrv5h"]
 [ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="3_trlj2"]
@@ -31,6 +32,7 @@ offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
+theme = ExtResource("1_trlj2")
 theme_override_styles/panel = SubResource("StyleBoxTexture_8niu7")
 script = ExtResource("2_lrv5h")
 nameLabel = NodePath("resource/name")
