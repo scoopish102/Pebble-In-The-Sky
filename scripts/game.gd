@@ -14,9 +14,12 @@ func _ready():
 	Event.update_resources.connect(updateBudgets)
 	Event.next_turn.connect(nextTurn)
 	Event.demolish_building.connect(demolishAtCursor)
+	Event.trade_order.connect(tradeOrder)
 	ui.fetchSelectedTile.connect(sendSelectedTile)
-	initResources()
-	startingResources()
+
+func tradeOrder(resource, quantity):
+	Global.trades[resource] += quantity
+	Event.update_resources.emit()
 
 func demolishAtCursor():
 	map.demolish(cursor.tile)
@@ -25,11 +28,14 @@ func _process(_delta):
 	cursor.update(ui.minimap)
 
 func sendSelectedTile():
+	if cursor.tile == Vector2i(-1, -1): return
 	var terrain = map.terrainMap[cursor.tile]
 	var neighbors = map.getNeighborCount(cursor.tile)
 	var building = false
 	if cursor.tile in map.buildingMap: building = map.buildingMap[cursor.tile]
-	ui.setSelectedTile(neighbors, terrain, building)
+	var activated = false
+	if cursor.tile in map.activationMap: activated = map.activationMap[cursor.tile]
+	ui.setSelectedTile(neighbors, terrain, building, activated)
 
 func startingResources():
 	Global.reserves[Global.RESOURCE.CONCRETE] = 64
@@ -38,6 +44,7 @@ func startingResources():
 	Global.reserves[Global.RESOURCE.OXYGEN] = 4
 	Global.reserves[Global.RESOURCE.WATER] = 4
 	Global.reserves[Global.RESOURCE.MONEY] = 64
+	Global.reserves[Global.RESOURCE.TRADE] = 3
 
 func initResources():
 	for resource in Global.RESOURCE.values():
@@ -60,6 +67,19 @@ func updateBudgets():
 	var budgetChange = Global.budgets.duplicate()
 	for building in map.buildingMap:
 		#print(building)
+		if not map.activationMap[building]: continue
+		if map.buildingMap[building] in Global.buildingIndustry:
+			budgetChange[Global.RESOURCE.INDUSTRY] += Global.buildingIndustry[map.buildingMap[building]]
+			for adj in map.getNeighborTypes(building):
+				if adj in Global.buildingIndustry: 
+					budgetChange[Global.RESOURCE.INDUSTRY] += Global.buildingIndustry[map.buildingMap[building]]/2
+		if map.buildingMap[building] in Global.buildingInfluence:
+			budgetChange[Global.RESOURCE.INFLUENCE] += Global.buildingInfluence[map.buildingMap[building]]
+		if map.buildingMap[building] in Global.specialAdjacency:
+			var spec = Global.specialAdjacency[map.buildingMap[building]]
+			for b in spec.keys():
+				for n in map.getNeighborsOfType(building, b):
+					for sr in spec[b]: budgetChange[sr] += spec[b][sr]
 		if not map.buildingMap[building] in Global.buildingBudgets: continue
 		var buildingBudget = Global.buildingBudgets[map.buildingMap[building]]
 		for resource in buildingBudget:
@@ -67,15 +87,25 @@ func updateBudgets():
 				if map.terrainMap[building] in Global.depositToResource:
 					budgetChange[Global.depositToResource[map.terrainMap[building]]] += buildingBudget[resource]
 			else: budgetChange[resource] += buildingBudget[resource]
-	for resource in Global.budgets:
-		Global.budgets[resource] += budgetChange[resource]
+	Global.reserves[Global.RESOURCE.TRADE] = Global.budgets[Global.RESOURCE.TRADE]
 	for resource in Global.trades:
-		Global.budgets[resource] += Global.trades[resource]
-		Global.budgets[Global.RESOURCE.MONEY] -= Global.trades[resource]*Global.resourcePrices[resource]
+		budgetChange[resource] += Global.trades[resource]
+		budgetChange[Global.RESOURCE.MONEY] -= Global.trades[resource]*Global.resourcePrices[resource]
+		budgetChange[Global.RESOURCE.TRADE] -= abs(Global.trades[resource])
+		budgetChange[Global.RESOURCE.WEALTH] += abs(Global.trades[resource]) * 200
+		#if resource == Global.RESOURCE.GOLD: print(budgetChange[Global.RESOURCE.MONEY])
+	budgetChange[Global.RESOURCE.WEALTH] += int(budgetChange[Global.RESOURCE.MONEY] * 10) + Global.reserves[Global.RESOURCE.MONEY] * 10
+	for resource in Global.budgets:
+		#if resource == Global.RESOURCE.TRADE: print(Global.budgets[Global.RESOURCE.TRADE])
+		Global.budgets[resource] += budgetChange[resource]
 	if fmod(Global.budgets[Global.RESOURCE.MONEY], 1) < 0.1: Global.budgets[Global.RESOURCE.MONEY] = int(Global.budgets[Global.RESOURCE.MONEY])
 	Event.update_confirmation.emit()
 
 func updateReserves():
 	for resource in Global.RESOURCE.values():
+		if resource in [Global.RESOURCE.TRADE]: continue
 		Global.reserves[resource] += Global.budgets[resource]
+	Global.score += Global.budgets[Global.RESOURCE.WEALTH] / 10
+	Global.score += Global.budgets[Global.RESOURCE.INDUSTRY] / 10
+	Global.score += Global.budgets[Global.RESOURCE.INFLUENCE] / 10
 	Event.update_confirmation.emit()

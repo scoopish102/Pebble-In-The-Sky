@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cgfnmgfilouu1"]
+[gd_scene load_steps=7 format=3 uid="uid://cgfnmgfilouu1"]
 
 [ext_resource type="SpriteFrames" uid="uid://dkdsu5qxri58a" path="res://resources/tileset.tres" id="1_38aud"]
 [ext_resource type="Script" uid="uid://ccc7kjbu7ca74" path="res://scripts/subtile.gd" id="1_54wk8"]
 [ext_resource type="SpriteFrames" uid="uid://c4ogsdvua0wox" path="res://resources/terrainset.tres" id="2_fqo6r"]
+[ext_resource type="Shader" uid="uid://chnwbd61fnkke" path="res://scripts/saturationLeak.gdshader" id="4_1cyf3"]
 [ext_resource type="SpriteFrames" uid="uid://dp6gq6nks1u1j" path="res://resources/buildingset.tres" id="4_bbiyf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4cyv5"]
+shader = ExtResource("4_1cyf3")
+shader_parameter/saturation = 0.2000000095
+shader_parameter/brightness = 0.750000035625
 
 [node name="subtile" type="Node2D" node_paths=PackedStringArray("tile", "terrain", "building")]
 script = ExtResource("1_54wk8")
@@ -23,7 +29,8 @@ animation = &"CARBON"
 offset = Vector2(0, -16)
 
 [node name="building" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_4cyv5")
 sprite_frames = ExtResource("4_bbiyf")
-animation = &"NUCLEAR_PLANT"
+animation = &"CIVILIAN_FACTORY"
 autoplay = "EMPTY"
 offset = Vector2(0, -32)

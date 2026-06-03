@@ -1,0 +1,111 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1dr6gig1yn6c"]
+
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="1_qkhwq"]
+[ext_resource type="Script" uid="uid://b8bov8n4trx84" path="res://scripts/mainMenu.gd" id="2_3d1i7"]
+[ext_resource type="PackedScene" uid="uid://dubkr27umy28b" path="res://scenes/notification.tscn" id="3_7nrmo"]
+[ext_resource type="PackedScene" uid="uid://b3llbgjlgvsqp" path="res://scenes/choiceNotification.tscn" id="4_clbkb"]
+[ext_resource type="PackedScene" uid="uid://dh5syg6bedl81" path="res://scenes/singleOptionNotification.tscn" id="5_ldpc3"]
+
+[node name="Main Menu" type="Control" node_paths=PackedStringArray("mainMenu", "saveSlots", "newGame", "loadGame", "credits", "quitGame", "slot1", "slot2", "slot3", "saveBack")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_qkhwq")
+script = ExtResource("2_3d1i7")
+notificationBlueprint = ExtResource("3_7nrmo")
+choiceNotificationBlueprint = ExtResource("4_clbkb")
+singleOptionNotificationBlueprint = ExtResource("5_ldpc3")
+mainMenu = NodePath("MainMenu")
+saveSlots = NodePath("SaveSlots")
+newGame = NodePath("MainMenu/VBoxContainer/New Game")
+loadGame = NodePath("MainMenu/VBoxContainer/Load Game")
+credits = NodePath("MainMenu/VBoxContainer/Credits")
+quitGame = NodePath("MainMenu/VBoxContainer/Quit Game")
+slot1 = NodePath("SaveSlots/VBoxContainer/Slot 1")
+slot2 = NodePath("SaveSlots/VBoxContainer/Slot 2")
+slot3 = NodePath("SaveSlots/VBoxContainer/Slot 3")
+saveBack = NodePath("SaveSlots/VBoxContainer/Back")
+
+[node name="MainMenu" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="New Game" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "New Game"
+
+[node name="Load Game" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Load Game From Save"
+
+[node name="Credits" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Credits"
+
+[node name="Quit Game" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Quit"
+
+[node name="SaveSlots" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveSlots"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Slot 1" type="Button" parent="SaveSlots/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Slot 1"
+
+[node name="Slot 2" type="Button" parent="SaveSlots/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Slot 2"
+
+[node name="Slot 3" type="Button" parent="SaveSlots/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Slot 3"
+
+[node name="Back" type="Button" parent="SaveSlots/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Back"
+
+[connection signal="pressed" from="MainMenu/VBoxContainer/New Game" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MainMenu/VBoxContainer/Load Game" to="." method="_on_load_game_pressed"]
+[connection signal="pressed" from="MainMenu/VBoxContainer/Quit Game" to="." method="_on_quit_game_pressed"]
+[connection signal="pressed" from="SaveSlots/VBoxContainer/Slot 1" to="." method="_on_slot_1_pressed"]
+[connection signal="pressed" from="SaveSlots/VBoxContainer/Slot 2" to="." method="_on_slot_2_pressed"]
+[connection signal="pressed" from="SaveSlots/VBoxContainer/Slot 3" to="." method="_on_slot_3_pressed"]
+[connection signal="pressed" from="SaveSlots/VBoxContainer/Back" to="." method="_on_back_pressed"]

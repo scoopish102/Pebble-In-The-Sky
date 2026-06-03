@@ -96,7 +96,7 @@ func diversifyModulate():
 		modulateStrength = 1 + ((subtile.position.y - subtileOriginalPosition[subtiles.find(subtile)])/150)
 		subtile.modulate = Color(modulateStrength, modulateStrength, modulateStrength, 1)
 
-func updateBuilding(neighbors=[false, false, false, false]):
+func updateBuilding(neighbors=[false, false, false, false], activated=true):
 	#if building == Global.BUILDING.EMPTY: return
 	overall.set_animation(&"EMPTY")
 	if not building is bool and building == Global.BUILDING.ROAD: 
@@ -104,7 +104,8 @@ func updateBuilding(neighbors=[false, false, false, false]):
 		overall.set_animation(&"ROAD")
 		overall.set_frame(frame)
 	for subtile in subtiles:
-		subtile.updateBuilding(building)
+		subtile.updateBuilding(building, activated)
+		#print(activated)
 
 func roadFrames(neighbors=[false,false,false,false]):
 	var frame = 0

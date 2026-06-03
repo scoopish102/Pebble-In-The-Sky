@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://dh5syg6bedl81"]
+
+[ext_resource type="PackedScene" uid="uid://dubkr27umy28b" path="res://scenes/notification.tscn" id="1_vlrdg"]
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="2_5xwm0"]
+[ext_resource type="Script" uid="uid://dacxhhu4yfc51" path="res://scripts/singleOptionNotification.gd" id="2_mtdwv"]
+[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="4_mtdwv"]
+
+[node name="SingleOptionNotification" node_paths=PackedStringArray("optionButton") instance=ExtResource("1_vlrdg")]
+offset_right = 544.0
+offset_bottom = 288.0
+script = ExtResource("2_mtdwv")
+optionButton = NodePath("Backdrop_MarginContainer_VBoxContainer#Choices/Confirm")
+
+[node name="Backdrop_MarginContainer_VBoxContainer#Buffer" type="Control" parent="." index="1"]
+custom_minimum_size = Vector2(8, 4)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Backdrop_MarginContainer_VBoxContainer#Choices" type="HBoxContainer" parent="." index="2"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Confirm" type="Button" parent="Backdrop_MarginContainer_VBoxContainer#Choices" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("2_5xwm0")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(0.47, 0.47, 0.47, 1)
+theme_override_fonts/font = ExtResource("4_mtdwv")
+text = "Begin game"
+
+[connection signal="pressed" from="Backdrop_MarginContainer_VBoxContainer#Choices/Confirm" to="." method="confirmButtonPressed"]

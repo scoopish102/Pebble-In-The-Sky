@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dbtsa16q8xity"]
+[gd_scene load_steps=26 format=3 uid="uid://dbtsa16q8xity"]
 
 [ext_resource type="Script" uid="uid://6rn12kqhycn2" path="res://scripts/ui.gd" id="1_pbmwc"]
 [ext_resource type="PackedScene" uid="uid://d3keppgqfjpxv" path="res://scenes/resource.tscn" id="2_rp04g"]
@@ -8,7 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://6rselnwmejvt" path="res://scenes/slabel.tscn" id="4_q7naw"]
 [ext_resource type="Texture2D" uid="uid://cqwfdm42llqd2" path="res://assets/arrows.4.27.png" id="6_04crm"]
 [ext_resource type="PackedScene" uid="uid://d4d5lohx4tmyt" path="res://scenes/infobox.tscn" id="6_cgfq5"]
+[ext_resource type="PackedScene" uid="uid://dsbhelme1ryqv" path="res://scenes/tradeoption.tscn" id="7_6rmj2"]
+[ext_resource type="PackedScene" uid="uid://dubkr27umy28b" path="res://scenes/notification.tscn" id="8_qsv74"]
 [ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="9_cgfq5"]
+[ext_resource type="PackedScene" uid="uid://b3llbgjlgvsqp" path="res://scenes/choiceNotification.tscn" id="9_cof4p"]
+[ext_resource type="PackedScene" uid="uid://dh5syg6bedl81" path="res://scenes/singleOptionNotification.tscn" id="9_h1mc3"]
 [ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="10_7dvkv"]
 [ext_resource type="Script" uid="uid://bct3e1pla1lec" path="res://scripts/minimap.gd" id="10_vdcm2"]
 
@@ -78,7 +82,7 @@ grow_vertical = 2
 script = ExtResource("1_pbmwc")
 sidebar = NodePath("sidebarBackdrop")
 resourcebar = NodePath("resourceBackdrop")
-sidebarOptions = NodePath("sidebarBackdrop/options")
+sidebarOptions = NodePath("sidebarBackdrop/ScrollContainer/options")
 resourcebarOptions = NodePath("resourceBackdrop/spacerSorter/resources")
 resourceCategory = NodePath("resourceCategory")
 categoryName = NodePath("resourceCategory/categorySelector/categoryName")
@@ -88,6 +92,10 @@ optionBlueprint = ExtResource("3_yukjw")
 ynaBlueprint = ExtResource("3_074kx")
 sLabelBlueprint = ExtResource("4_q7naw")
 infoBoxBlueprint = ExtResource("6_cgfq5")
+tradeOptionBlueprint = ExtResource("7_6rmj2")
+notificationBlueprint = ExtResource("8_qsv74")
+choiceNotificationBlueprint = ExtResource("9_cof4p")
+singleOptionNotificationBlueprint = ExtResource("9_h1mc3")
 
 [node name="resourceCategory" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -166,12 +174,14 @@ theme_override_constants/separation = -2
 
 [node name="resource" parent="resourceBackdrop/spacerSorter/resources" instance=ExtResource("2_rp04g")]
 layout_mode = 2
+resource = 30
 
 [node name="spacer" type="Control" parent="resourceBackdrop/spacerSorter"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
 [node name="sidebarBackdrop" type="PanelContainer" parent="."]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -183,10 +193,16 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_lvkan")
 
-[node name="options" type="VBoxContainer" parent="sidebarBackdrop"]
+[node name="ScrollContainer" type="ScrollContainer" parent="sidebarBackdrop"]
 layout_mode = 2
 
-[node name="option" parent="sidebarBackdrop/options" instance=ExtResource("3_yukjw")]
+[node name="options" type="VBoxContainer" parent="sidebarBackdrop/ScrollContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="option" parent="sidebarBackdrop/ScrollContainer/options" instance=ExtResource("3_yukjw")]
 layout_mode = 2
 
 [node name="minimapBox" type="PanelContainer" parent="." node_paths=PackedStringArray("label", "minimapTile")]

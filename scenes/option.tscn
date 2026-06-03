@@ -1,12 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddxwn18d7v2xv"]
+[gd_scene load_steps=4 format=3 uid="uid://ddxwn18d7v2xv"]
 
 [ext_resource type="Script" uid="uid://xdv74gbrqthk" path="res://scripts/option.gd" id="1_d68u3"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="2_s84fu"]
-[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="3_0chu7"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_glgj2"]
-font = ExtResource("3_0chu7")
-font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="3_0chu7"]
 
 [node name="option" type="Control" node_paths=PackedStringArray("hitbox", "defaultSprite", "hoverSprite", "disabledSprite", "label")]
 custom_minimum_size = Vector2(0, 64)
@@ -83,17 +79,18 @@ patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="label" type="Label" parent="default"]
+[node name="label" type="RichTextLabel" parent="default"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("3_0chu7")
+bbcode_enabled = true
 text = "OPTIONAL OPTIONS!!!"
-label_settings = SubResource("LabelSettings_glgj2")
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
 [connection signal="pressed" from="hitbox" to="." method="_on_pressed"]

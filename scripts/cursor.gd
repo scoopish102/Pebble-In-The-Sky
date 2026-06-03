@@ -33,8 +33,12 @@ func update(minimap):
 	else:
 		visible = false
 	Event.update_demolish_confirmation.emit(tile)
+	Event.update_activate_confirmation.emit(tile)
 
 func select():
+	#Event.trade_order.emit(Global.RESOURCE.STEEL, 0)
+	#print(Global.trades[Global.RESOURCE.STEEL])
+	Event.update_resources.emit()
 	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight - 20
 	map.tileMap[tile].selected = true
 	Global.selected = true

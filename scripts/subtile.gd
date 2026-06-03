@@ -14,8 +14,11 @@ func updateTerrain(_terrain):
 	terrain.set_animation(Global.TERRAIN.keys()[_terrain])
 	terrain.set_frame(randi_range(0, terrain.sprite_frames.get_frame_count(terrain.animation)))
 
-func updateBuilding(_building):
-	if _building is bool: return
+func updateBuilding(_building, activated):
+	if _building is bool: 
+		building.set_animation(&"EMPTY")
+		return
+	building.use_parent_material = activated
 	if not Global.BUILDING.keys()[_building] in building.sprite_frames.get_animation_names():
 		building.set_animation(&"EMPTY")
 		return
@@ -24,7 +27,7 @@ func updateBuilding(_building):
 	building.set_frame(randi_range(0, building.sprite_frames.get_frame_count(building.animation)))
 
 func getCopyInfo():
-	return [terrain.animation, terrain.frame, building.animation, building.frame, position.y, scale.x, modulate, terrain.visible]
+	return [terrain.animation, terrain.frame, building.animation, building.frame, position.y, scale.x, modulate, terrain.visible, building.use_parent_material]
 
 func copyFrom(info):
 	terrain.set_animation(info[0])
@@ -35,3 +38,4 @@ func copyFrom(info):
 	scale.x = info[5]
 	modulate = info[6]
 	terrain.visible = info[7]
+	building.use_parent_material = info[8]
