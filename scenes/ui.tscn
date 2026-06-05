@@ -10,11 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://d4d5lohx4tmyt" path="res://scenes/infobox.tscn" id="6_cgfq5"]
 [ext_resource type="PackedScene" uid="uid://dsbhelme1ryqv" path="res://scenes/tradeoption.tscn" id="7_6rmj2"]
 [ext_resource type="PackedScene" uid="uid://dubkr27umy28b" path="res://scenes/notification.tscn" id="8_qsv74"]
-[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="9_cgfq5"]
 [ext_resource type="PackedScene" uid="uid://b3llbgjlgvsqp" path="res://scenes/choiceNotification.tscn" id="9_cof4p"]
 [ext_resource type="PackedScene" uid="uid://dh5syg6bedl81" path="res://scenes/singleOptionNotification.tscn" id="9_h1mc3"]
 [ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="10_7dvkv"]
 [ext_resource type="Script" uid="uid://bct3e1pla1lec" path="res://scripts/minimap.gd" id="10_vdcm2"]
+[ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="13_h1mc3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wxiw1"]
 content_margin_left = 20.0
@@ -57,7 +57,7 @@ unicode = 101
 events = [SubResource("InputEventKey_ktti3")]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7dvkv"]
-font = ExtResource("9_cgfq5")
+font = ExtResource("13_h1mc3")
 font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lvkan"]
@@ -72,7 +72,7 @@ texture_margin_right = 56.0
 texture_margin_bottom = 56.0
 region_rect = Rect2(0, 0, 128, 128)
 
-[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions", "resourceCategory", "categoryName", "minimap")]
+[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions", "resourceCategory", "categoryName", "minimap", "notifications", "sidebarCover")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,6 +87,8 @@ resourcebarOptions = NodePath("resourceBackdrop/spacerSorter/resources")
 resourceCategory = NodePath("resourceCategory")
 categoryName = NodePath("resourceCategory/categorySelector/categoryName")
 minimap = NodePath("minimapBox")
+notifications = NodePath("notificationContainer")
+sidebarCover = NodePath("sidebarBackdrop/sidebarCover")
 resourceBlueprint = ExtResource("2_rp04g")
 optionBlueprint = ExtResource("3_yukjw")
 ynaBlueprint = ExtResource("3_074kx")
@@ -188,7 +190,7 @@ anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -288.0
-offset_bottom = -166.0
+offset_bottom = -184.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_lvkan")
@@ -205,30 +207,55 @@ size_flags_vertical = 3
 [node name="option" parent="sidebarBackdrop/ScrollContainer/options" instance=ExtResource("3_yukjw")]
 layout_mode = 2
 
-[node name="minimapBox" type="PanelContainer" parent="." node_paths=PackedStringArray("label", "minimapTile")]
+[node name="sidebarCover" type="Panel" parent="sidebarBackdrop"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="minimapBox" type="PanelContainer" parent="." node_paths=PackedStringArray("label", "turnLabel", "minimapTile")]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -288.0
-offset_top = -162.0
+offset_left = -359.0
+offset_top = -186.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_lvkan")
 script = ExtResource("10_vdcm2")
-label = NodePath("HBoxContainer/RichTextLabel")
-minimapTile = NodePath("HBoxContainer/SubViewportContainer/SubViewport/tile")
+label = NodePath("VBoxContainer/HBoxContainer/RichTextLabel")
+turnLabel = NodePath("VBoxContainer/RichTextLabel")
+minimapTile = NodePath("VBoxContainer/HBoxContainer/SubViewportContainer/SubViewport/tile")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="minimapBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="minimapBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="minimapBox/HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="minimapBox/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/normal_font = ExtResource("9_cgfq5")
+theme_override_fonts/normal_font = ExtResource("13_h1mc3")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Turn 10/10"
+fit_content = true
+scroll_following = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="minimapBox/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="RichTextLabel" type="RichTextLabel" parent="minimapBox/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/normal_font = ExtResource("13_h1mc3")
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "Turn 1
@@ -239,18 +266,29 @@ scroll_following = true
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="minimapBox/HBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="minimapBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="SubViewport" type="SubViewport" parent="minimapBox/HBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="minimapBox/VBoxContainer/HBoxContainer/SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(128, 128)
+size = Vector2i(128, 146)
 render_target_update_mode = 4
 
-[node name="tile" parent="minimapBox/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("10_7dvkv")]
-position = Vector2(64, 72)
+[node name="tile" parent="minimapBox/VBoxContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("10_7dvkv")]
+position = Vector2(64, 80)
+
+[node name="notificationContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="pressed" from="resourceCategory/categorySelector/back" to="." method="resourceMenuBackward"]
 [connection signal="pressed" from="resourceCategory/categorySelector/forward" to="." method="resourceMenuForward"]
+[connection signal="child_entered_tree" from="notificationContainer" to="." method="_on_notification_container_child_entered_tree"]
+[connection signal="child_exiting_tree" from="notificationContainer" to="." method="_on_notification_container_child_exiting_tree"]

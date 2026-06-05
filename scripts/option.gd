@@ -22,6 +22,9 @@ enum TYPE {
 	ACTIVATE, #lets you activate or de-activate buildings
 	DEMOLISH, #lets you demolish buildings
 	
+	#MARKET
+	CURRENT_TRADES,
+	
 	#SAVE
 	SLOT_1, #save on slot 1
 	SLOT_2, #save on slot 2
@@ -29,6 +32,7 @@ enum TYPE {
 
 	YES, NO, #for YNA
 	BUILDING,
+	QUICKTRADE, #for viewing and cancelling current trades
 	TRADE #for initiating the trade screen
 }
 
@@ -52,14 +56,35 @@ func init(_type : TYPE):
 	#print("bro HOW")
 	if not type == TYPE.BUILDING: label.set_text(TYPE.keys()[type])
 	else: label.set_text(Global.buildingNames[building])
-	if type == TYPE.NEXT_TURN: label.set_text("NEXT TURN")
+	match type:
+		TYPE.BUILD: label.text = "[img]res://resources/uiTrimIcons/build.tres[/img] " + label.text
+		TYPE.ACT: label.text = "[img]res://resources/uiTrimIcons/act.tres[/img] " + label.text
+		TYPE.MARKET: label.text = "[img]res://resources/uiTrimIcons/market.tres[/img] " + label.text
+		TYPE.SAVE: label.text = "[img]res://resources/uiTrimIcons/save.tres[/img] " + label.text
+		TYPE.EXIT: label.text = "[img]res://resources/uiTrimIcons/exit.tres[/img] " + label.text
+	if type == TYPE.CURRENT_TRADES: label.set_text("Current Trades")
+	if type == TYPE.NEXT_TURN: label.set_text("[img]res://resources/uiTrimIcons/nextturn.tres[/img] "+"NEXT TURN")
 	if type == TYPE.SLOT_1: label.set_text("Save Slot 1")
 	elif type == TYPE.SLOT_2: label.set_text("Save Slot 2")
 	elif type == TYPE.SLOT_3: label.set_text("Save Slot 3")
+	if type == TYPE.ACTIVATE: label.set_text("TOGGLE ACTIVATION")
 	if type == TYPE.TRADE and not resource is bool:
+		label.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		label.add_theme_color_override("default_color", Color("3b3b3bff"))
 		if resource == Global.RESOURCE.CIVGOODS:
 			label.text = "[img]" + Global.resIcons[resource] + "[/img] Civilian Goods"
 		else: label.text = "[img]" + Global.resIcons[resource] + "[/img] " + str(Global.RESOURCE.keys()[resource]).replace(" ", "_").capitalize()
+
+func quickTradeLabel(res: Global.RESOURCE):
+	label.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+	label.add_theme_color_override("default_color", Color("3b3b3bff"))
+	#print(resource)
+	if Global.trades[res] > 0: label.text = "Buying "
+	else: label.text = "Selling "
+	label.text += str(Global.trades[res])
+	if res == Global.RESOURCE.CIVGOODS:
+		label.text += " [img]" + Global.resIcons[res] + "[/img] Civilian Goods"
+	else: label.text += " [img]" + Global.resIcons[res] + "[/img] " + str(Global.RESOURCE.keys()[res]).replace(" ", "_").capitalize()
 
 func _ready(): 
 	disable()
@@ -84,6 +109,9 @@ func enable():
 func _on_pressed():
 	#print("press", type, get_parent())
 	if disabled: 
+		return
+	elif type == TYPE.QUICKTRADE:
+		Event.cancel_trade_confirmation.emit(resource)
 		return
 	elif type in [TYPE.SLOT_1,TYPE.SLOT_2,TYPE.SLOT_3,TYPE.EXIT]:
 		Event.direct_confirmation.emit(type)

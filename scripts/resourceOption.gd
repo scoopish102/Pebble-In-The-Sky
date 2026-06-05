@@ -13,6 +13,8 @@ func _ready():
 func update():
 	#print("lol")
 	tooltip_text = Global.resourceDescriptions[resource]
+	for child in get_children():
+		child.tooltip_text = Global.resourceDescriptions[resource]
 	if resource in [Global.RESOURCE.TRADE,Global.RESOURCE.ENERGY,Global.RESOURCE.LABOR,Global.RESOURCE.WEALTH,Global.RESOURCE.INDUSTRY,Global.RESOURCE.INFLUENCE,Global.RESOURCE.SCORE]:
 		reserveLabel.visible = false
 	if resource == Global.RESOURCE.CIVGOODS:

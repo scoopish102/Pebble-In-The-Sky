@@ -36,9 +36,9 @@ func loadScene(nextScene):
 func _on_slot_1_pressed():
 	var choice := choiceNotificationBlueprint.instantiate()
 	add_child(choice)
-	choice.size = Vector2(256, 180)
+	choice.size = Vector2(256, 216)
 	choice.centerOnScreen()
-	choice.setContent("Load Slot 1", "This will load your game saved on Save Slot 1.")
+	choice.setContent("[img]res://resources/uiTrimIcons/load.tres[/img] Load Slot 1", "This will load your game saved on Save Slot 1.")
 	choice.setChoices("Proceed?")
 	var result = await choice.getChoice()
 	if result: 
@@ -49,9 +49,9 @@ func _on_slot_1_pressed():
 func _on_slot_2_pressed():
 	var choice := choiceNotificationBlueprint.instantiate()
 	add_child(choice)
-	choice.size = Vector2(256, 180)
+	choice.size = Vector2(256, 216)
 	choice.centerOnScreen()
-	choice.setContent("Load Slot 2", "This will load your game saved on Save Slot 1.")
+	choice.setContent("[img]res://resources/uiTrimIcons/load.tres[/img] Load Slot 2", "This will load your game saved on Save Slot 2.")
 	choice.setChoices("Proceed?")
 	var result = await choice.getChoice()
 	if result: 
@@ -62,9 +62,9 @@ func _on_slot_2_pressed():
 func _on_slot_3_pressed():
 	var choice := choiceNotificationBlueprint.instantiate()
 	add_child(choice)
-	choice.size = Vector2(256, 180)
+	choice.size = Vector2(256, 216)
 	choice.centerOnScreen()
-	choice.setContent("Load Slot 3", "This will load your game saved on Save Slot 1.")
+	choice.setContent("[img]res://resources/uiTrimIcons/load.tres[/img] Load Slot 3", "This will load your game saved on Save Slot 3.")
 	choice.setChoices("Proceed?")
 	var result = await choice.getChoice()
 	if result: 

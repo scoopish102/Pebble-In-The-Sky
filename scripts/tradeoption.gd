@@ -19,7 +19,10 @@ func _process(_delta):
 	var old = Global.trades[resource]
 	var new = Global.trades[resource] + quantity
 	var change = abs(old) - abs(new)
-	if Global.budgets[Global.RESOURCE.TRADE] + change < 0: deploy.disabled = true
+	if (Global.budgets[Global.RESOURCE.TRADE] + change < 0
+			or Global.reserves[resource] + Global.budgets[resource] + quantity < 0
+			or Global.reserves[Global.RESOURCE.MONEY] + Global.budgets[Global.RESOURCE.MONEY]
+			 + quantity*Global.resourcePrices[resource] < 0): deploy.disabled = true
 	else: deploy.disabled = false
 
 func updateLabels():
@@ -31,18 +34,31 @@ func updateLabels():
 	elif Global.trades[resource] < 0: infoLabel.text += "Exporting [color=ff0000ff]" + str(abs(Global.trades[resource])) + "[/color]"
 	else: infoLabel.text += "Not Trading"
 	infoLabel.text += "[/font_size]"
-	if quantity > 0: amountLabel.text = "Buy " + str(abs(quantity))
-	elif quantity < 0: amountLabel.text = "Sell " + str(abs(quantity))
+	if quantity > 0: amountLabel.text = "Buy "
+	elif quantity < 0: amountLabel.text = "Sell "
 	else: 
 		amountLabel.text = "Maintain Status Quo"
 		return
-	amountLabel.text += "\n"
+	if Global.reserves[resource] + Global.budgets[resource] + quantity < 0: amountLabel.text += "[color=ff0000ff]"
+	elif Global.budgets[resource] + quantity < 0: amountLabel.text += "[color=ffff00ff]"
+	else: amountLabel.text += "[color=00ff00ff]"
+	amountLabel.text += str(abs(quantity))
+	amountLabel.text += "[/color][img]" + Global.resIcons[resource] + "[/img]" + "\n"
 	var old = Global.trades[resource]
 	var new = Global.trades[resource] + quantity
 	var change = abs(old) - abs(new)
 	if Global.budgets[Global.RESOURCE.TRADE] + change < 0:
-		amountLabel.text += "[color=ff0000ff]" + str(change) + "[/color] [img]res://resources/resIcons/trade.tres[/img]"
-	else: amountLabel.text += "[color=00ff00ff]" + str(change) + "[/color] [img]res://resources/resIcons/trade.tres[/img]"
+		amountLabel.text += "[color=ff0000ff]" + str(change) + "[/color][img]res://resources/resIcons/trade.tres[/img] "
+	else: amountLabel.text += "[color=00ff00ff]" + str(change) + "[/color][img]res://resources/resIcons/trade.tres[/img] "
+	if Global.reserves[Global.RESOURCE.MONEY] + Global.budgets[Global.RESOURCE.MONEY] - quantity*Global.resourcePrices[resource] < 0:
+		amountLabel.text += ("[color=ff0000ff]" + str(-1*quantity*Global.resourcePrices[resource]) + 
+				"[/color][img]res://resources/resIcons/money.tres[/img]")
+	elif Global.budgets[Global.RESOURCE.MONEY] - quantity*Global.resourcePrices[resource] < 0: 
+		amountLabel.text += ("[color=ffff00ff]" + str(-1*quantity*Global.resourcePrices[resource]) + 
+				"[/color][img]res://resources/resIcons/money.tres[/img]")
+	else:
+		amountLabel.text += ("[color=00ff00ff]" + str(-1*quantity*Global.resourcePrices[resource]) + 
+				"[/color][img]res://resources/resIcons/money.tres[/img]")
 	
 func _on_less_pressed():
 	#print("less")

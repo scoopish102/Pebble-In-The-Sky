@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_bdeus"]
 [ext_resource type="Script" uid="uid://bo4ib1e4tedcu" path="res://scripts/tradeoption.gd" id="1_cn65w"]
-[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="3_4yji4"]
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="3_1bdw7"]
 [ext_resource type="Texture2D" uid="uid://cqwfdm42llqd2" path="res://assets/arrows.4.27.png" id="4_ahuc3"]
 [ext_resource type="StyleBox" uid="uid://d1xe4gvcw48jq" path="res://resources/optionStyleBox.tres" id="5_1bdw7"]
 
@@ -82,8 +82,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_4yji4")
 [node name="Label" type="RichTextLabel" parent="TradeInfo"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+theme = ExtResource("3_1bdw7")
 theme_override_colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
-theme_override_fonts/normal_font = ExtResource("3_4yji4")
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "Gold [img]res://resources/resIcons/gold.tres[/img]
@@ -104,6 +104,7 @@ custom_minimum_size = Vector2(24, 40)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
+theme = ExtResource("3_1bdw7")
 texture_normal = SubResource("AtlasTexture_km1fa")
 texture_pressed = SubResource("AtlasTexture_1et65")
 texture_hover = SubResource("AtlasTexture_anc7l")
@@ -114,8 +115,8 @@ flip_h = true
 [node name="amount" type="RichTextLabel" parent="TradeBar"]
 layout_mode = 2
 mouse_filter = 2
+theme = ExtResource("3_1bdw7")
 theme_override_colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
-theme_override_fonts/normal_font = ExtResource("3_4yji4")
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "Sell 2 [img]res://resources/resIcons/gold.tres[/img]
@@ -129,6 +130,7 @@ custom_minimum_size = Vector2(24, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
+theme = ExtResource("3_1bdw7")
 texture_normal = SubResource("AtlasTexture_km1fa")
 texture_pressed = SubResource("AtlasTexture_1et65")
 texture_hover = SubResource("AtlasTexture_anc7l")
@@ -139,15 +141,15 @@ stretch_mode = 3
 custom_minimum_size = Vector2(24, 40)
 layout_mode = 2
 focus_mode = 0
+theme = ExtResource("3_1bdw7")
 theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-theme_override_fonts/font = ExtResource("3_4yji4")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = ExtResource("5_1bdw7")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_jn5ls")
 theme_override_styles/hover = SubResource("StyleBoxTexture_slseq")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_1bdw7")
-text = "Confirm Trade"
+text = "Confirm"
 
 [connection signal="pressed" from="TradeBar/less" to="." method="_on_less_pressed"]
 [connection signal="pressed" from="TradeBar/more" to="." method="_on_more_pressed"]

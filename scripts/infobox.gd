@@ -15,20 +15,20 @@ func updateText():
 	var cost = compileCost()
 	var budget = compileBudget()
 	body.set_text(cost + budget)
-	body.text += "\n"
+	body.text += "[font_size=16]\n"
 	if building in Global.buildingIndustry:
-		body.text += ("[color=000099ff]" + str(Global.buildingIndustry[building]) + "[/color][img]" +
-				Global.resIcons[Global.RESOURCE.INDUSTRY] + "[/img] Industry\n")
-		body.text += ("[color=000099ff]" + str(Global.buildingIndustry[building]/2) + "[/color][img]" +
-				Global.resIcons[Global.RESOURCE.INDUSTRY] + "[/img] per adjacent building with this same bonus.\n")
+		body.text += ("[font_size=32][color=000099ff]" + str(Global.buildingIndustry[building]) + "[/color][/font_size][img]" +
+				Global.resIcons[Global.RESOURCE.INDUSTRY] + "[/img]\nupon construction.\n")
+		body.text += ("[font_size=32][color=000099ff]" + str(Global.buildingIndustry[building]/2) + "[/color][/font_size][img]" +
+				Global.resIcons[Global.RESOURCE.INDUSTRY] + "[/img]\nper adjacent building with this same bonus.\n")
 	if building in Global.buildingInfluence:
-		body.text += ("[color=000099ff]" + str(Global.buildingInfluence[building]) + "[/color][img]" +
-				Global.resIcons[Global.RESOURCE.INFLUENCE] + "[/img] Influence\n")
+		body.text += ("[font_size=32][color=000099ff]" + str(Global.buildingInfluence[building]) + "[/color][/font_size][img]" +
+				Global.resIcons[Global.RESOURCE.INFLUENCE] + "[/img]\nupon construction.\n")
 	if building in Global.specialAdjacencyText:
 		body.text += Global.specialAdjacencyText[building] + "\n"
-	body.text += ("[color=000099ff]" + str(Global.buildingScores[building]) + "[/color][img]" +
-			Global.resIcons[Global.RESOURCE.SCORE] + "[/img] Score\n")
-	body.text += "\n[font_size=16]"
+	body.text += ("[font_size=32][color=000099ff]" + str(Global.buildingScores[building]) + "[/color][/font_size][img]" +
+			Global.resIcons[Global.RESOURCE.SCORE] + "[/img]\nupon construction.\n")
+	body.text += "\n"
 	body.text += Global.description[building] + "\n"
 	if not Global.selected: body.text += "\n[color=990000ff]Select a tile to construct.[/color]"
 	else:
@@ -39,17 +39,36 @@ func updateText():
 		if not checkPrice(): body.text += "\n[color=990000ff]Insufficient reserves to construct this building.[/color]"
 		if not checkEnergy(): body.text += "\n[color=ffff00ff]Warning: Insufficient Energy. Will start disabled.[/color]"
 		if not checkLabor(): body.text += "\n[color=ffff00ff]Warning: Insufficient Labor. Will start disabled.[/color]"
-		if not checkOtherBudgets(): body.text += "\n[color=ffff00ff]Warning: Cannot meet budget. Will start disabled.[/color]"
+		var cob = checkOtherBudgets()
+		if len(cob) > 0: 
+			body.text += "\n[color=ffff00ff]Warning: Insufficient" 
+			var cobcount = 0
+			for res in cob:
+				body.text += " " + camelConversion(str(Global.RESOURCE.keys()[res]))
+				cobcount += 1
+				if cobcount == len(cob): continue
+				elif cobcount == len(cob)-1: body.text += " and"
+				else: body.text += ","
+			body.text += ". Will start disabled.[/color]"
 	body.text += "[/font_size]"
 
+func camelConversion(input: String) -> String:
+	var words: PackedStringArray = input.to_lower().split("_")
+	var camel_case: String = ""
+	for i in range(0, words.size()):
+		camel_case += words[i].capitalize()
+	return camel_case
+
 func checkOtherBudgets():
-	if not building in Global.buildingBudgets: return true
+	var missingResources = []
+	if not building in Global.buildingBudgets: return missingResources
 	var budget = Global.buildingBudgets[building]
 	for resource in budget:
 		if not resource is Global.RESOURCE: continue
 		if resource == Global.RESOURCE.ENERGY or resource == Global.RESOURCE.LABOR: continue
-		if Global.reserves[resource] + (budget[resource]) < 0: return false
-	return true
+		if Global.reserves[resource] + (Global.budgets[resource] + budget[resource]) < 0: 
+			missingResources.append(resource)
+	return missingResources
 
 func checkEnergy():
 	if not building in Global.buildingBudgets: return true
@@ -78,17 +97,19 @@ func compileBudget():
 			text += "[/color]"
 			text += " Tile Deposit"
 		else:
-			if Global.budgets[res] + Global.buildingBudgets[building][res] >= 0:
-				text += "[color=#00ff00ff]" #green
-			else:
+			if (Global.reserves[res] + Global.budgets[res] + Global.buildingBudgets[building][res] < 0):
 				text += "[color=#ff0000ff]" #red
+			elif Global.budgets[res] + Global.buildingBudgets[building][res] < 0:
+				text += "[color=#ffff00ff]" #yeller
+			else:
+				text += "[color=#00ff00ff]" #green
 			text += str(Global.buildingBudgets[building][res])
 			text += "[/color]"
-			text += " [img]" + Global.resIcons[res] + "[/img]"
+			text += "[img]" + Global.resIcons[res] + "[/img]"
 			#print(Global.buildingCosts[building][res])
 		if i >= len(Global.buildingBudgets[building])-1: text += "\n"
 		elif i % 2 == 1: text += "\n"
-		else: text += " , "
+		else: text += ", "
 		i += 1
 	return text
 
@@ -103,10 +124,10 @@ func compileCost():
 			text += "[color=#ff0000ff]"
 		text += str(Global.buildingCosts[building][res])
 		text += "[/color]"
-		text += " [img]" + Global.resIcons[res] + "[/img]"
+		text += "[img]" + Global.resIcons[res] + "[/img]"
 		if i >= len(Global.buildingCosts[building])-1: text += "\n"
 		elif i % 2 == 1: text += "\n"
-		else: text += " , "
+		else: text += ", "
 		i += 1
 		#print(Global.buildingCosts[building][res])
 	return text

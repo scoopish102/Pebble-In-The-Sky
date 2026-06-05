@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://d1xe4gvcw48jq" path="res://resources/optionStyleBox.tres" id="1_6xlmj"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ddgra"]
-[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="1_r53ff"]
+[ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="3_6xlmj"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_y084k"]
 load_path = "res://.godot/imported/ui.10.18.png-108c8a68b44c009566bd7c4c508677f0.ctex"
@@ -60,7 +60,7 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [resource]
-default_font = ExtResource("1_r53ff")
+default_font = ExtResource("3_6xlmj")
 default_font_size = 16
 Button/styles/disabled = SubResource("StyleBoxTexture_v5tn0")
 Button/styles/hover = SubResource("StyleBoxTexture_y084k")

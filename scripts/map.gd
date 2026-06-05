@@ -16,15 +16,16 @@ func _ready():
 	Event.create_building.connect(createBuilding)
 	Event.toggle_activation.connect(toggleActivation)
 
-func getMapCode(map, debug=false) -> String:
+func getMapCode(map, _debug=false) -> String:
 	var code: String = ""
 	for index in map.keys():
 		code += str(index.x) + "," + str(index.y) + ":" + str(map[index]) + ";"
 	code = code.erase(code.length() - 1, 1)
-	if debug: print(code)
+	#if debug: print(code)
 	return code
 
-func convertMapCode(code: String, debug=false):
+func convertMapCode(code: String, _debug=false):
+	#print("yolo")
 	var map = {}
 	for index in (code.get_slice_count(";")):
 		var slice = code.get_slice(";", index)
@@ -32,21 +33,47 @@ func convertMapCode(code: String, debug=false):
 		var coord = Vector2i(int(cSlice.get_slice(",", 0)), int(cSlice.get_slice(",", 1)))
 		var value = int(slice.get_slice(":", 1))
 		map[coord] = value
-		if debug:
-			print(coord)
-			print(value)
-	updateRoads()
-	if debug: 
-		print(code)
-		print(map)
+	#updateRoads()
+	return map
+
+func convertMapCodeFloat(code: String, _debug=false):
+	#print("yolo")
+	var map = {}
+	for index in (code.get_slice_count(";")):
+		var slice = code.get_slice(";", index)
+		var cSlice = slice.get_slice(":", 0)
+		var coord = Vector2i(int(cSlice.get_slice(",", 0)), int(cSlice.get_slice(",", 1)))
+		var value = float(slice.get_slice(":", 1))
+		map[coord] = value
+	#updateRoads()
+	return map
+
+func convertMapCodeBool(code: String, _debug=false):
+	#print("yolo")
+	var map = {}
+	for index in (code.get_slice_count(";")):
+		var slice = code.get_slice(";", index)
+		var cSlice = slice.get_slice(":", 0)
+		var coord = Vector2i(int(cSlice.get_slice(",", 0)), int(cSlice.get_slice(",", 1)))
+		var value = slice.get_slice(":", 1)
+		match value:
+			"true": value = true
+			"false": value = false
+		map[coord] = value
+	#updateRoads()
 	return map
 
 func toggleActivation(tile):
-	print("yea")
+	#print("yea")
 	if tile in activationMap:
 		activationMap[tile] = not activationMap[tile]
 		tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
 		Event.update_resources.emit()
+
+func updateAllBuildings():
+	for tile in buildingMap:
+		tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
+	Event.update_resources.emit()
 
 func demolish(tile):
 	buildingMap.erase(tile)
@@ -218,7 +245,7 @@ func getTrueNeighborCount(tile : Vector2i) -> int:
 	return count
 
 func getNeighborTypes(tile : Vector2i) -> Array:
-	var nesw : Array[bool] = [false, false, false, false]
+	var nesw : Array = [Global.BUILDING.EMPTY, Global.BUILDING.EMPTY, Global.BUILDING.EMPTY, Global.BUILDING.EMPTY]
 	if buildingMap.has(tile + Vector2i(-1, 0)): nesw[0] = buildingMap[tile + Vector2i(-1, 0)]
 	if buildingMap.has(tile + Vector2i(0, -1)): nesw[1] = buildingMap[tile + Vector2i(0, -1)]
 	if buildingMap.has(tile + Vector2i(1, 0)): nesw[2] = buildingMap[tile + Vector2i(1, 0)]

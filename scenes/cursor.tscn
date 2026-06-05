@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cp4vwm6sh6d5l"]
 
-[ext_resource type="Script" path="res://scripts/cursor.gd" id="1_jemva"]
+[ext_resource type="Script" uid="uid://e5xakwcjhoip" path="res://scripts/cursor.gd" id="1_jemva"]
 [ext_resource type="Texture2D" uid="uid://dpk7o7wmr8dbo" path="res://assets/cursor.10.1.png" id="2_di6wh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_if8wr"]

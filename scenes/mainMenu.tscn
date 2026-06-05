@@ -1,10 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1dr6gig1yn6c"]
+[gd_scene load_steps=11 format=3 uid="uid://b1dr6gig1yn6c"]
 
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="1_qkhwq"]
 [ext_resource type="Script" uid="uid://b8bov8n4trx84" path="res://scripts/mainMenu.gd" id="2_3d1i7"]
 [ext_resource type="PackedScene" uid="uid://dubkr27umy28b" path="res://scenes/notification.tscn" id="3_7nrmo"]
 [ext_resource type="PackedScene" uid="uid://b3llbgjlgvsqp" path="res://scenes/choiceNotification.tscn" id="4_clbkb"]
 [ext_resource type="PackedScene" uid="uid://dh5syg6bedl81" path="res://scenes/singleOptionNotification.tscn" id="5_ldpc3"]
+[ext_resource type="Texture2D" uid="uid://du65fex3k0rvf" path="res://resources/uiTrimIcons/play.tres" id="6_y35fp"]
+[ext_resource type="Texture2D" uid="uid://dvw7jaucol7nf" path="res://resources/uiTrimIcons/load.tres" id="7_dj72i"]
+[ext_resource type="Texture2D" uid="uid://cdi0ex5hryhqh" path="res://resources/uiTrimIcons/exit.tres" id="8_6b2wv"]
+[ext_resource type="Texture2D" uid="uid://b52xytrfxct8r" path="res://resources/uiTrimIcons/credits.tres" id="8_tov5d"]
+[ext_resource type="Texture2D" uid="uid://cy0thl1iac3tu" path="res://resources/uiTrimIcons/save.tres" id="10_epn8x"]
 
 [node name="Main Menu" type="Control" node_paths=PackedStringArray("mainMenu", "saveSlots", "newGame", "loadGame", "credits", "quitGame", "slot1", "slot2", "slot3", "saveBack")]
 layout_mode = 3
@@ -30,41 +35,61 @@ slot3 = NodePath("SaveSlots/VBoxContainer/Slot 3")
 saveBack = NodePath("SaveSlots/VBoxContainer/Back")
 
 [node name="MainMenu" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 64
+theme_override_constants/margin_left = 120
 theme_override_constants/margin_top = 64
-theme_override_constants/margin_right = 64
+theme_override_constants/margin_right = 880
 theme_override_constants/margin_bottom = 64
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
 layout_mode = 2
 theme_override_constants/separation = 16
+alignment = 2
 
 [node name="New Game" type="Button" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "New Game"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " New Game"
+icon = ExtResource("6_y35fp")
+alignment = 0
 
 [node name="Load Game" type="Button" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Load Game From Save"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Load Game"
+icon = ExtResource("7_dj72i")
+alignment = 0
 
 [node name="Credits" type="Button" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Credits"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Credits"
+icon = ExtResource("8_tov5d")
+alignment = 0
 
 [node name="Quit Game" type="Button" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Quit"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Quit Game"
+icon = ExtResource("8_6b2wv")
+alignment = 0
 
 [node name="SaveSlots" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -73,9 +98,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 64
+theme_override_constants/margin_left = 800
 theme_override_constants/margin_top = 64
-theme_override_constants/margin_right = 64
+theme_override_constants/margin_right = 180
 theme_override_constants/margin_bottom = 64
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SaveSlots"]
@@ -85,22 +110,43 @@ theme_override_constants/separation = 16
 [node name="Slot 1" type="Button" parent="SaveSlots/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Slot 1"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Slot 1"
+icon = ExtResource("10_epn8x")
+alignment = 0
 
 [node name="Slot 2" type="Button" parent="SaveSlots/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Slot 2"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Slot 2"
+icon = ExtResource("10_epn8x")
+alignment = 0
 
 [node name="Slot 3" type="Button" parent="SaveSlots/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Slot 3"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Slot 3"
+icon = ExtResource("10_epn8x")
+alignment = 0
 
 [node name="Back" type="Button" parent="SaveSlots/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 10
 focus_mode = 0
-text = "Back"
+theme_override_colors/font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_font_sizes/font_size = 32
+text = " Back"
+icon = ExtResource("8_6b2wv")
+alignment = 0
 
 [connection signal="pressed" from="MainMenu/VBoxContainer/New Game" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Load Game" to="." method="_on_load_game_pressed"]

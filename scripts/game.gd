@@ -15,10 +15,15 @@ func _ready():
 	Event.next_turn.connect(nextTurn)
 	Event.demolish_building.connect(demolishAtCursor)
 	Event.trade_order.connect(tradeOrder)
+	Event.cancel_trade.connect(cancelTrade)
 	ui.fetchSelectedTile.connect(sendSelectedTile)
 
 func tradeOrder(resource, quantity):
 	Global.trades[resource] += quantity
+	Event.update_resources.emit()
+
+func cancelTrade(resource):
+	Global.trades[resource] = 0
 	Event.update_resources.emit()
 
 func demolishAtCursor():

@@ -364,15 +364,15 @@ var buildingInfluence = {
 }
 
 var specialAdjacencyText = {
-	BUILDING.SOLAR_FARM : ("[color=#000099ff]50[/color][img]"+resIcons[RESOURCE.INDUSTRY]+"[/img] 
-			per adjacent [img]"+resIcons[RESOURCE.ENERGY]+"[/img] producing building"),
-	BUILDING.NUCLEAR_PLANT : ("[color=#000099ff]100[/color][img]"+resIcons[RESOURCE.INDUSTRY]+"[/img] 
-			per adjacent [img]"+resIcons[RESOURCE.ENERGY]+"[/img] producing building"),
-	BUILDING.FUSION_PLANT : ("[color=#000099ff]250[/color][img]"+resIcons[RESOURCE.INDUSTRY]+"[/img] 
-			per adjacent [img]"+resIcons[RESOURCE.ENERGY]+"[/img] producing building"),
-	BUILDING.SPACEPORT : ("[color=#000099ff]100[/color][img]"+resIcons[RESOURCE.WEALTH]+
-	"[/img] and [img]"+resIcons[RESOURCE.INFLUENCE]+"[/img] per adjacent Spaceport"),
-	BUILDING.CITY : ("[color=#000099ff]100[/color][img]"+resIcons[RESOURCE.INFLUENCE]+"[/img] per adjacent City")
+	BUILDING.SOLAR_FARM : ("[font_size=32][color=#000099ff]50[/color][/font_size][img]"+resIcons[RESOURCE.INDUSTRY]+
+	"[/img]\nper adjacent [color=#ffff00ff]Energy[/color] producing building."),
+	BUILDING.NUCLEAR_PLANT : ("[font_size=32][color=#000099ff]100[/color][/font_size][img]"+resIcons[RESOURCE.INDUSTRY]+
+	"[/img]\nper adjacent [color=#ffff00ff]Energy[/color] producing building."),
+	BUILDING.FUSION_PLANT : ("[font_size=32][color=#000099ff]250[/color][/font_size][img]"+resIcons[RESOURCE.INDUSTRY]+
+	"[/img]\nper adjacent [color=#ffff00ff]Energy[/color] producing building."),
+	BUILDING.SPACEPORT : ("[font_size=32][color=#000099ff]100[/color][img]"+resIcons[RESOURCE.WEALTH]+
+			"[/img], 100[img]"+resIcons[RESOURCE.INFLUENCE]+"[/img][/font_size]\nper adjacent Spaceport"),
+	BUILDING.CITY : ("[font_size=32][color=#000099ff]100[/color][/font_size][img]"+resIcons[RESOURCE.INFLUENCE]+"[/img]\nper adjacent City")
 }
 
 var specialAdjacency = {

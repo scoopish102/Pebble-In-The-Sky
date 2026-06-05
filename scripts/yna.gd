@@ -54,14 +54,18 @@ func checkTerrain(_building : Global.BUILDING, _terrain : Global.TERRAIN):
 		return true
 	else: return false
 
-func checkOtherBudgets(_building : Global.BUILDING, reverse=false):
+func checkOtherBudgets(_building : Global.BUILDING, reverse=false, depositType=false):
 	if not _building in Global.buildingBudgets: return true
 	var budget = Global.buildingBudgets[_building]
 	var rev = (int(reverse) * 2 - 1) * -1
 	for resource in budget:
-		if not resource is Global.RESOURCE: continue
+		if not resource is Global.RESOURCE: 
+			if depositType is bool: continue
+			if Global.reserves[depositType] + Global.budgets[depositType] + budget[&"DEPOSIT"]*rev < 0: 
+				return false
+			else: continue
 		if resource == Global.RESOURCE.ENERGY or resource == Global.RESOURCE.LABOR: continue
-		if Global.reserves[resource] + (budget[resource]*rev) < 0: return false
+		if Global.reserves[resource] + Global.budgets[resource] + budget[resource]*rev < 0: return false
 	return true
 
 func checkEnergy(_building : Global.BUILDING, reverse=false):
@@ -91,7 +95,7 @@ func checkPrice(_building : Global.BUILDING):
 
 func _on_yes():
 	#print("yes")
-	var startActivation = laborWorks and energyWorks
+	var startActivation = checkLabor(building) and checkEnergy(building) and checkOtherBudgets(building)
 	confirm.emit(true, option, building, startActivation)
 	queue_free()
 

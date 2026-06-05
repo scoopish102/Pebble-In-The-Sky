@@ -1,6 +1,7 @@
 class_name Minimap extends PanelContainer
 
 @export var label : RichTextLabel
+@export var turnLabel : RichTextLabel
 @export var minimapTile : Tile
 
 func _ready():
@@ -27,6 +28,6 @@ func updateText(tile, terrain, building, active):
 		if not active: btext = "[color=ffff00ff]Disabled[/color] "
 		btext += (Global.buildingNames[building])
 	#btext = btext.replace(" ", "_").capitalize() 
-	if Global.turn < 50:
+	if Global.turn <= Global.gameLength - 10:
 		label.set_text("[center]Turn " + str(Global.turn) + "/" + str(Global.gameLength) + "[/center]\n[font_size=16]" + str(tile) + "\n" + ttext + "\n" + btext + "[/font_size]")
 	else: label.set_text("[center]Turn [color=#ff0000ff]" + str(Global.turn) + "[/color]/" + str(Global.gameLength) + "[/center]\n[font_size=16]" + str(tile) + "\n" + ttext + "\n" + btext + "[/font_size]")

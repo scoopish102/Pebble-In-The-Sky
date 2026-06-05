@@ -2,11 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ehums"]
 [ext_resource type="Script" uid="uid://boc1l3cxug2tw" path="res://scripts/infobox.gd" id="2_1too7"]
-[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="4_hcbst"]
-[ext_resource type="FontFile" uid="uid://ma0f4j4gbbr3" path="res://assets/DigitalDisco-Thin.ttf" id="5_4dmxm"]
+[ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="3_hcbst"]
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="4_h1n6h"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_h1n6h"]
-font = ExtResource("4_hcbst")
+font = ExtResource("3_hcbst")
 font_size = 32
 font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 
@@ -55,9 +55,8 @@ autowrap_mode = 2
 [node name="Body" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("4_h1n6h")
 theme_override_colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
-theme_override_fonts/normal_font = ExtResource("4_hcbst")
-theme_override_fonts/italics_font = ExtResource("5_4dmxm")
 theme_override_font_sizes/normal_font_size = 32
 theme_override_font_sizes/italics_font_size = 32
 bbcode_enabled = true

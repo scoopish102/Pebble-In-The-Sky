@@ -7,6 +7,8 @@ extends Control
 @export var resourceCategory : PanelContainer
 @export var categoryName : Label
 @export var minimap : Minimap
+@export var notifications : Control
+@export var sidebarCover : Panel
 
 @export var resourceBlueprint : PackedScene
 @export var optionBlueprint : PackedScene
@@ -33,6 +35,7 @@ func _ready():
 	Event.trade_confirmation.connect(askConfirmationTrade)
 	Event.trade_order.connect(tradeConfirmed)
 	Event.direct_confirmation.connect(directToPostConfirmation)
+	Event.cancel_trade_confirmation.connect(cancelTradeConfirmation)
 	makeSidebar(SidebarOption.TYPE.MAIN)
 	#updateResourcebar()
 
@@ -105,6 +108,28 @@ func createBuildingOption(building : Global.BUILDING):
 	option.init(SidebarOption.TYPE.BUILDING)
 	sidebarOptions.add_child(option)
 
+func displayCurrentTrades():
+	var currentTrades = 0
+	for resource in Global.trades.keys(): 
+		if Global.trades[resource] != 0:
+			#print(resource)
+			quickTradeInterface(resource)
+			currentTrades += 1
+	if currentTrades == 0:
+		var info = sLabelBlueprint.instantiate()
+		info.label.text = ("Right now, your colony has no active trade routes." + 
+				"\nTrade routes are created when you buy or sell resources on the market." + 
+				"\nIncrease your maximum trade capacity by building Spaceports.")
+		sidebarOptions.add_child(info)
+
+func quickTradeInterface(resource : Global.RESOURCE):
+	var option = createOption(SidebarOption.TYPE.QUICKTRADE)
+	option.resource = resource
+	option.init(SidebarOption.TYPE.QUICKTRADE)
+	option.quickTradeLabel(resource)
+	#print(option.resource)
+	#sidebarOptions.add_child(option)
+
 func createMarket():
 	for resource in Global.trades:
 		createTradeOption(resource)
@@ -113,6 +138,7 @@ func createTradeOption(resource : Global.RESOURCE):
 	var option = createOption(SidebarOption.TYPE.TRADE)
 	option.resource = resource
 	option.init(SidebarOption.TYPE.TRADE)
+	#sidebarOptions.add_child(option)
 
 func clearSidebar():
 	#print("cho")
@@ -142,8 +168,12 @@ func makeSidebar(option : SidebarOption.TYPE):
 			createActivateOption()
 			backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.MARKET:
+			createOption(SidebarOption.TYPE.CURRENT_TRADES)
 			createMarket()
 			backOption(SidebarOption.TYPE.MAIN)
+		SidebarOption.TYPE.CURRENT_TRADES:
+			displayCurrentTrades()
+			backOption(SidebarOption.TYPE.MARKET)
 		SidebarOption.TYPE.SAVE:
 			createOption(SidebarOption.TYPE.SLOT_1)
 			createOption(SidebarOption.TYPE.SLOT_2)
@@ -228,11 +258,45 @@ func askConfirmationDemolish(tile, building):
 	sidebarOptions.add_child(yna)
 	yna.confirm.connect(postConfirmation)
 
+func camelConversion(input: String) -> String:
+	var words: PackedStringArray = input.to_lower().split("_")
+	var camel_case: String = ""
+	for i in range(0, words.size()):
+		camel_case += words[i].capitalize()
+	return camel_case
+
 func askConfirmationNextTurn():
 	clearSidebar()
 	var slabel : SidebarLabel = sLabelBlueprint.instantiate()
 	sidebarOptions.add_child(slabel)
 	slabel.label.set_text("Advance to Next Turn?")
+	var cob = []
+	var supercob = []
+	for res in Global.budgets.keys():
+		if Global.budgets[res] < 0:
+			cob.append(res)
+		if Global.reserves[res] + Global.budgets[res] < 0:
+			supercob.append(res)
+	if len(cob) > 0: 
+		slabel.label.text += "\n[color=ffff00ff]Warning: You currently have a deficit of"
+		var cobcount = 0
+		for res in cob:
+			slabel.label.text += " " + camelConversion(str(Global.RESOURCE.keys()[res]))
+			cobcount += 1
+			if cobcount == len(cob): continue
+			elif cobcount == len(cob)-1: slabel.label.text += " and"
+			else: slabel.label.text += ","
+		slabel.label.text += ".[/color]"
+	if len(supercob) > 0: 
+		slabel.label.text += "\n[color=990000ff]Warning: You will have a debt of"
+		var cobcount = 0
+		for res in supercob:
+			slabel.label.text += " " + camelConversion(str(Global.RESOURCE.keys()[res]))
+			cobcount += 1
+			if cobcount == len(supercob): continue
+			elif cobcount == len(supercob)-1: slabel.label.text += " and"
+			else: slabel.label.text += ","
+		slabel.label.text += " if you continue to the next turn now.[/color]"
 	slabel.updateSize()
 	var yna : YNA = ynaBlueprint.instantiate()
 	yna.option = SidebarOption.TYPE.NEXT_TURN
@@ -282,7 +346,12 @@ func updateActivateConfirmation(tile):
 		yna.building = selectedBuilding
 		yna.energyWorks = yna.checkEnergy(yna.building, selectedActivated)
 		yna.laborWorks = yna.checkLabor(yna.building, selectedActivated)
-		yna.budgetWorks = yna.checkOtherBudgets(yna.building, selectedActivated)
+		if not Global.buildingBudgets[yna.building] is bool:
+			if &"DEPOSIT" in Global.buildingBudgets[yna.building].keys(): 
+				var depositType = Global.depositToResource[selectedTerrain]
+				yna.budgetWorks = yna.checkOtherBudgets(yna.building, selectedActivated, depositType)
+			else: yna.budgetWorks = yna.checkOtherBudgets(yna.building, selectedActivated)
+		else: yna.budgetWorks = true
 		if slabel is not bool:
 			if not selectedBuilding is bool and selectedBuilding != Global.BUILDING.EMPTY:
 				if selectedBuilding == Global.BUILDING.CENTER: 
@@ -306,7 +375,7 @@ func updateActivateConfirmation(tile):
 						if not yna.laborWorks: 
 							slabel.label.text += "[color=990000ff]There is insufficient Labor to power this building.[/color]\n"
 						if not yna.budgetWorks: 
-							slabel.label.text += ("[color=990000ff]This building consumes resources that the colony does not havev."+
+							slabel.label.text += ("[color=990000ff]This building consumes resources that the colony does not have."+
 									" You cannot activate it without falling into debt.[/color]\n") 
 						slabel.label.text += "Activate"
 					slabel.label.text += (" this " + Global.buildingNames[selectedBuilding] + " at " + str(tile) + "?")
@@ -354,12 +423,60 @@ func updateBuildingConfirmation():
 		infobox.neighbors = selectedNeighbors
 		infobox.updateText()
 
+func cancelTradeConfirmation(resource):
+	var tradeCannotCancel = ((Global.reserves[Global.RESOURCE.MONEY] + Global.budgets[Global.RESOURCE.MONEY] - 
+			Global.trades[resource] * Global.resourcePrices[resource]) < 0 or 
+			(Global.reserves[resource] + Global.budgets[resource] - 
+			Global.trades[resource] * Global.resourcePrices[resource]) < 0)
+	if tradeCannotCancel: 
+		var notif := singleOptionNotificationBlueprint.instantiate()
+		notifications.add_child(notif)
+		notif.size = Vector2(380, 300)
+		notif.centerOnScreen()
+		var ttext = "Currently "
+		if Global.trades[resource] > 0: ttext += "buying "
+		else: ttext += "selling "
+		ttext += str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[resource] + "[/img] per turn."
+		#ttext += "\nThis consumes " + str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.TRADE] + "[/img] Trade Capacity."
+		ttext += "\nThis trade "
+		if Global.trades[resource] > 0: ttext += "costs "
+		else: ttext += "sells for "
+		ttext += str(abs(Global.trades[resource]*Global.resourcePrices[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.MONEY] + "[/img] per turn."
+		if (Global.reserves[resource] + Global.budgets[resource] - 
+			Global.trades[resource] * Global.resourcePrices[resource]) < 0:
+			ttext += "\nYou cannot cancel this trade, as your colony relies on the resources gained from this trade."
+		if (Global.reserves[Global.RESOURCE.MONEY] + Global.budgets[Global.RESOURCE.MONEY] - 
+			Global.trades[resource] * Global.resourcePrices[resource]) < 0:
+			ttext += "\nYour colony relies on the profit gained from this trade."
+		notif.setContent("[color=990000ff]Cannot Cancel Trade Route.[/color]", ttext)
+		notif.setOption("Okay.")
+		return
+	else:
+		var choice := choiceNotificationBlueprint.instantiate()
+		notifications.add_child(choice)
+		choice.size = Vector2(380, 256)
+		choice.centerOnScreen()
+		var ttext = "Currently "
+		if Global.trades[resource] > 0: ttext += "buying "
+		else: ttext += "selling "
+		ttext += str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[resource] + "[/img] per turn."
+		ttext += "\nCancelling this trade route will free up " + str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.TRADE] + "[/img] Trade Capacity."
+		choice.setContent("[img]"+Global.resIcons[resource]+"[/img]"+" Trade Route Cancellation", ttext)
+		choice.setChoices("Cancel This Trade Route?")
+		var result = await choice.getChoice()
+		if result:
+			Global.trades[resource] = 0
+			Event.update_resources.emit()
+			makeSidebar(SidebarOption.TYPE.CURRENT_TRADES)
+			return
+		else: return
+
 func confirmSave(slot):
 	var choice := choiceNotificationBlueprint.instantiate()
-	add_child(choice)
-	choice.size = Vector2(256, 180)
+	notifications.add_child(choice)
+	choice.size = Vector2(256, 216)
 	choice.centerOnScreen()
-	choice.setContent("Save Game", "This will save your game on Slot " + str(slot))
+	choice.setContent("[img]res://resources/uiTrimIcons/save.tres[/img] Save Game", "This will save your game on Slot " + str(slot) + ".")
 	choice.setChoices("Proceed?")
 	#print(choice)
 	var result = await choice.getChoice()
@@ -370,10 +487,10 @@ func confirmSave(slot):
 
 func confirmExit():
 	var choice := choiceNotificationBlueprint.instantiate()
-	add_child(choice)
-	choice.size = Vector2(256, 200)
+	notifications.add_child(choice)
+	choice.size = Vector2(256, 256)
 	choice.centerOnScreen()
-	choice.setContent("Exit Game", "This will send you to the main menu. Make sure to save your game first.")
+	choice.setContent("[img]res://resources/uiTrimIcons/exit.tres[/img] Exit Game", "This will send you to the main menu. Make sure to save your game first.")
 	choice.setChoices("Exit without saving?")
 	var result = await choice.getChoice()
 	if result: get_tree().change_scene_to_file("res://scenes/mainMenu.tscn")
@@ -382,7 +499,7 @@ func confirmExit():
 func directToPostConfirmation(option : SidebarOption.TYPE):
 	match option:
 		SidebarOption.TYPE.SLOT_1:
-			print("lols")
+			#print("lols")
 			await confirmSave(1)
 		SidebarOption.TYPE.SLOT_2:
 			await confirmSave(2)
@@ -419,3 +536,14 @@ func tradeConfirmed(_resource, _quantity):
 func subtractCost(building : Global.BUILDING):
 	for resource in Global.buildingCosts[building]:
 		Global.reserves[resource] -= Global.buildingCosts[building][resource]
+
+func _on_notification_container_child_entered_tree(_node):
+	#print(notifications.get_child_count())
+	if not notifications.get_child_count() <= 0: 
+		#print("yo")
+		sidebarCover.mouse_filter = Control.MOUSE_FILTER_STOP
+
+func _on_notification_container_child_exiting_tree(_node):
+	if notifications.get_child_count() - 1 == 0:
+		#print("oy") 
+		sidebarCover.mouse_filter = Control.MOUSE_FILTER_IGNORE

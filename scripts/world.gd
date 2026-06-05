@@ -8,20 +8,26 @@ class_name World
 
 func _ready():
 	Event.saveGame.connect(saveGame)
-	map.generateMap()
 	if Global.loadSlot == 0: 
+		map.generateMap()
 		game.initResources()
 		game.startingResources()
+	else:
+		loadGame(Global.loadSlot)
+		#print(map.buildingMap)
 	#game.initResources()
 	var spawn = map.initMap()
-	if Global.loadSlot == 0: map.starterColony(spawn)
-	else: 
-		loadGame(Global.loadSlot)
-		print(map.buildingMap)
+	if Global.loadSlot == 0: 
+		map.starterColony(spawn)
 	game.camera.goTo(spawn)
 	game.updateBudgets()
 	ui.updateResourcebar()
-	print(map.buildingMap)
+	map.updateAllBuildings()
+	#print(map.activationMap)
+
+func _process(_delta):
+	#if Input.is_action_just_pressed("debug"): Global.reserves[Global.RESOURCE.MONEY] = 0
+	pass
 
 func saveGame(slot):
 	var saveData = {
@@ -79,11 +85,11 @@ func loadGame(slot) -> bool:
 		Global.trades[int(res)] = int(saveData["trades"][res])
 	Global.mapSize = Vector2i(saveData["gameSize.x"], saveData["gameSize.y"])
 	map.clearMaps()
-	map.buildingMap = map.convertMapCode(saveData["buildings"], true)
-	print(map.buildingMap)
+	map.buildingMap = map.convertMapCode(saveData["buildings"], false)
+	#print(map.buildingMap)
 	map.terrainMap = map.convertMapCode(saveData["terrains"])
 	map.altitudeMap = map.convertMapCode(saveData["altitudes"], false)
 	#print(map.altitudeMap)
-	map.rawMap = map.convertMapCode(saveData["raws"])
-	map.activationMap = map.convertMapCode(saveData["activations"])
+	map.rawMap = map.convertMapCodeFloat(saveData["raws"])
+	map.activationMap = map.convertMapCodeBool(saveData["activations"], false)
 	return true

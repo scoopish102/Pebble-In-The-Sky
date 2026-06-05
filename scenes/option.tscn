@@ -80,6 +80,7 @@ patch_margin_right = 32
 patch_margin_bottom = 32
 
 [node name="label" type="RichTextLabel" parent="default"]
+self_modulate = Color(0.23137255, 0.23137255, 0.23137255, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,6 +89,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3_0chu7")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 bbcode_enabled = true
 text = "OPTIONAL OPTIONS!!!"
 horizontal_alignment = 1

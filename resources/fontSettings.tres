@@ -1,7 +1,7 @@
 [gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://dhg0jvasrq6o6"]
 
-[ext_resource type="FontFile" uid="uid://c0luxgh1umj2h" path="res://assets/DigitalDisco.ttf" id="1_pbeyy"]
+[ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="1_gdpia"]
 
 [resource]
-font = ExtResource("1_pbeyy")
+font = ExtResource("1_gdpia")
 font_color = Color(0.231373, 0.231373, 0.231373, 1)
