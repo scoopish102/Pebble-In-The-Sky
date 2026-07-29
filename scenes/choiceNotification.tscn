@@ -8,8 +8,8 @@
 offset_bottom = 256.0
 script = ExtResource("2_b8564")
 choiceTitle = NodePath("Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#ChoiceTitle")
-confirmButton = NodePath("Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#Yes")
-cancelButton = NodePath("Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#No")
+confirmButton = NodePath("Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#Yes")
+cancelButton = NodePath("Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#No")
 
 [node name="MarginContainer" parent="Backdrop/VBoxContainer" index="2"]
 size_flags_vertical = 3
@@ -32,6 +32,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 8
 mouse_filter = 1
 theme = ExtResource("3_i13ru")
+bbcode_enabled = true
 text = "Proceed Anyway?"
 fit_content = true
 
@@ -41,13 +42,13 @@ layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 1
 
-[node name="Backdrop_MarginContainer_VBoxContainer#Choices" type="HBoxContainer" parent="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer" index="3"]
+[node name="Backdrop_MarginContainer_VBoxContainer#Choices" type="HBoxContainer" parent="." index="1"]
 layout_mode = 2
 size_flags_vertical = 8
 theme = ExtResource("3_i13ru")
 theme_override_constants/separation = 0
 
-[node name="Backdrop_MarginContainer_VBoxContainer_Choices#Yes" type="Button" parent="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices" index="0"]
+[node name="Backdrop_MarginContainer_VBoxContainer_Choices#Yes" type="Button" parent="Backdrop_MarginContainer_VBoxContainer#Choices" index="0"]
 self_modulate = Color(0, 1, 0, 1)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -61,13 +62,7 @@ theme_override_colors/icon_disabled_color = Color(0.47, 0.47, 0.47, 1)
 text = "YES
 "
 
-[node name="Backdrop_MarginContainer_VBoxContainer_Choices#Buffer" type="Control" parent="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices" index="1"]
-custom_minimum_size = Vector2(8, 0)
-layout_mode = 2
-mouse_filter = 1
-theme = ExtResource("3_i13ru")
-
-[node name="Backdrop_MarginContainer_VBoxContainer_Choices#No" type="Button" parent="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices" index="2"]
+[node name="Backdrop_MarginContainer_VBoxContainer_Choices#No" type="Button" parent="Backdrop_MarginContainer_VBoxContainer#Choices" index="1"]
 self_modulate = Color(1, 0, 0, 1)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -80,5 +75,5 @@ theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/icon_disabled_color = Color(0.47, 0.47, 0.47, 1)
 text = "NO"
 
-[connection signal="pressed" from="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#Yes" to="." method="yesPressed"]
-[connection signal="pressed" from="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#No" to="." method="noPressed"]
+[connection signal="pressed" from="Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#Yes" to="." method="yesPressed"]
+[connection signal="pressed" from="Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#No" to="." method="noPressed"]

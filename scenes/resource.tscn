@@ -35,15 +35,15 @@ size_flags_horizontal = 0
 theme = ExtResource("1_trlj2")
 theme_override_styles/panel = SubResource("StyleBoxTexture_8niu7")
 script = ExtResource("2_lrv5h")
-nameLabel = NodePath("resource/name")
-budgetLabel = NodePath("resource/budget")
-reserveLabel = NodePath("resource/reserve")
+nameLabel = NodePath("VBoxContainer/name")
+budgetLabel = NodePath("VBoxContainer/resource/budget")
+reserveLabel = NodePath("VBoxContainer/resource/reserve")
 
-[node name="resource" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 8
+alignment = 1
 
-[node name="name" type="RichTextLabel" parent="resource"]
+[node name="name" type="RichTextLabel" parent="VBoxContainer"]
 clip_contents = false
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
@@ -58,14 +58,22 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 
-[node name="budget" type="Label" parent="resource"]
+[node name="resource" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="budget" type="Label" parent="VBoxContainer/resource"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "16"
 label_settings = SubResource("LabelSettings_trlj2")
 horizontal_alignment = 1
 
-[node name="reserve" type="Label" parent="resource"]
+[node name="reserve" type="Label" parent="VBoxContainer/resource"]
 layout_mode = 2
-text = "64"
+size_flags_horizontal = 4
+text = "/ 64"
 label_settings = SubResource("LabelSettings_wl5q8")
 horizontal_alignment = 1

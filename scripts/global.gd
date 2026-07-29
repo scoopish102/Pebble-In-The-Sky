@@ -1,5 +1,11 @@
 extends Node
 
+var colonyName = "Pebble"
+var otherNames = {}
+var buildingCount = 0
+var cityCount = 0
+var mineCount = 0
+
 var loadSlot = 0
 
 var screenSize = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"),
@@ -19,9 +25,80 @@ var budgets = {} #amount of a resource produced/spent each turn
 var trades = {} #each trade order
 
 var turn = 0
-var gameLength = 10 #normally 60 is best
+var gameLength = 60 #normally 60 is best
 
 var score = 0
+
+enum ACHIEVEMENTS {
+	build10,build20,build30,build40,build50,build60,build70,build80,build90,build100,
+	ecumenopolis, #build ~450 buildings, covering around 80% of Pebble's surface
+	pop5,pop10,pop15,pop20,pop25,pop30,pop35,pop40,pop45,pop50,
+	wealth1k,wealth2k,wealth3k,wealth4k,wealth5k,wealth6k,wealth7k,wealth8k,wealth9k,wealth10k,wealth15k,wealth20k,
+	ind1k,ind2k,ind3k,ind4k,ind5k,ind6k,ind7k,ind8k,ind9k,ind10k,ind15k,ind20k,
+	inf1k,inf2k,inf3k,inf4k,inf5k,inf6k,inf7k,inf8k,inf9k,inf10k,inf15k,inf20k,
+	firststeel,firstconcrete,firstelectronics,firstcivilian,
+	firstspaceport,firstfusion,firstfarm,
+	mine5,mine10,mine20,mine50,
+	score10k,score20k,score30k,score40k,score50k,score60k,score70k,score80k,score90k,score100k
+}
+
+var achievementNames = {
+	ACHIEVEMENTS.build10:"Built its 10th building",ACHIEVEMENTS.build20:"Built its 20th building",
+	ACHIEVEMENTS.build30:"Built its 30th building",ACHIEVEMENTS.build40:"Built its 40th building",
+	ACHIEVEMENTS.build50:"Built its 50th building",ACHIEVEMENTS.build60:"Built its 60th building",
+	ACHIEVEMENTS.build70:"Built its 70th building",ACHIEVEMENTS.build80:"Built its 80th building",
+	ACHIEVEMENTS.build90:"Built its 90th building",ACHIEVEMENTS.build100:"Built its 100th building",
+	ACHIEVEMENTS.ecumenopolis:"Built enough buildings to cover 80% of the planet's surface, turning the colony into an ecumenopolis.",
+	ACHIEVEMENTS.pop5:"Built its 5th City",ACHIEVEMENTS.pop10:"Built its 10th City",ACHIEVEMENTS.pop15:"Built its 15th City",
+	ACHIEVEMENTS.pop20:"Built its 20th City",ACHIEVEMENTS.pop25:"Built its 25th City",ACHIEVEMENTS.pop30:"Built its 30th City",
+	ACHIEVEMENTS.pop35:"Built its 35th City",ACHIEVEMENTS.pop40:"Built its 40th City",ACHIEVEMENTS.pop45:"Built its 45th City",
+	ACHIEVEMENTS.pop50:"Built its 50th City",
+	ACHIEVEMENTS.wealth1k:"Reached [color=000099ff]1000 Wealth[/color]",ACHIEVEMENTS.wealth6k:"Reached [color=000099ff]6000 Wealth[/color]",
+	ACHIEVEMENTS.wealth2k:"Reached [color=000099ff]2000 Wealth[/color]",ACHIEVEMENTS.wealth7k:"Reached [color=000099ff]7000 Wealth[/color]",
+	ACHIEVEMENTS.wealth3k:"Reached [color=000099ff]3000 Wealth[/color]",ACHIEVEMENTS.wealth8k:"Reached [color=000099ff]8000 Wealth[/color]",
+	ACHIEVEMENTS.wealth4k:"Reached [color=000099ff]4000 Wealth[/color]",ACHIEVEMENTS.wealth9k:"Reached [color=000099ff]9000 Wealth[/color]",
+	ACHIEVEMENTS.wealth5k:"Reached [color=000099ff]5000 Wealth[/color]",ACHIEVEMENTS.wealth10k:"Reached [color=000099ff]10000 Wealth[/color]",
+	ACHIEVEMENTS.wealth15k:"Reached [color=000099ff]15000 Wealth[/color]",ACHIEVEMENTS.wealth20k:"Reached [color=000099ff]20000 Wealth[/color]",
+	ACHIEVEMENTS.ind1k:"Reached [color=000099ff]1000 Industry[/color]",ACHIEVEMENTS.ind7k:"Reached [color=000099ff]7000 Industry[/color]",
+	ACHIEVEMENTS.ind2k:"Reached [color=000099ff]2000 Industry[/color]",ACHIEVEMENTS.ind8k:"Reached [color=000099ff]8000 Industry[/color]",
+	ACHIEVEMENTS.ind3k:"Reached [color=000099ff]3000 Industry[/color]",ACHIEVEMENTS.ind9k:"Reached [color=000099ff]9000 Industry[/color]",
+	ACHIEVEMENTS.ind4k:"Reached [color=000099ff]4000 Industry[/color]",ACHIEVEMENTS.ind10k:"Reached [color=000099ff]10000 Industry[/color]",
+	ACHIEVEMENTS.ind5k:"Reached [color=000099ff]5000 Industry[/color]",ACHIEVEMENTS.ind15k:"Reached [color=000099ff]15000 Industry[/color]",
+	ACHIEVEMENTS.ind6k:"Reached [color=000099ff]6000 Industry[/color]",ACHIEVEMENTS.ind20k:"Reached [color=000099ff]20000 Industry[/color]",
+	ACHIEVEMENTS.inf1k:"Reached [color=000099ff]1000 Influence[/color]",ACHIEVEMENTS.inf7k:"Reached [color=000099ff]7000 Influence[/color]",
+	ACHIEVEMENTS.inf2k:"Reached [color=000099ff]2000 Influence[/color]",ACHIEVEMENTS.inf8k:"Reached [color=000099ff]8000 Influence[/color]",
+	ACHIEVEMENTS.inf3k:"Reached [color=000099ff]3000 Influence[/color]",ACHIEVEMENTS.inf9k:"Reached [color=000099ff]9000 Influence[/color]",
+	ACHIEVEMENTS.inf4k:"Reached [color=000099ff]4000 Influence[/color]",ACHIEVEMENTS.inf10k:"Reached [color=000099ff]10000 Influence[/color]",
+	ACHIEVEMENTS.inf5k:"Reached [color=000099ff]5000 Influence[/color]",ACHIEVEMENTS.inf15k:"Reached [color=000099ff]15000 Influence[/color]",
+	ACHIEVEMENTS.inf6k:"Reached [color=000099ff]6000 Influence[/color]",ACHIEVEMENTS.inf20k:"Reached [color=000099ff]20000 Influence[/color]",
+	ACHIEVEMENTS.mine5:"Built its 5th Mine",ACHIEVEMENTS.mine10:"Built its 10th Mine",
+	ACHIEVEMENTS.mine20:"Built its 20th Mine",ACHIEVEMENTS.mine50:"Built its 50th Mine",
+	ACHIEVEMENTS.firststeel:"Built its first Steel Factory",ACHIEVEMENTS.firstconcrete:"Built its first Concrete Factory",
+	ACHIEVEMENTS.firstelectronics:"Built its first Electronics Factory",ACHIEVEMENTS.firstcivilian:"Built its first Civilian Factory",
+	ACHIEVEMENTS.firstspaceport:"Built its first Spaceport",ACHIEVEMENTS.firstfusion:"Built its first Fusion Plant",
+	ACHIEVEMENTS.firstfarm:"Built its first Farm",
+	ACHIEVEMENTS.score10k:"Reached [color=000099ff]10000 Score[/color]",ACHIEVEMENTS.score60k:"Reached [color=000099ff]60000 Score[/color]",
+	ACHIEVEMENTS.score20k:"Reached [color=000099ff]20000 Score[/color]",ACHIEVEMENTS.score70k:"Reached [color=000099ff]70000 Score[/color]",
+	ACHIEVEMENTS.score30k:"Reached [color=000099ff]30000 Score[/color]",ACHIEVEMENTS.score80k:"Reached [color=000099ff]80000 Score[/color]",
+	ACHIEVEMENTS.score40k:"Reached [color=000099ff]40000 Score[/color]",ACHIEVEMENTS.score90k:"Reached [color=000099ff]90000 Score[/color]",
+	ACHIEVEMENTS.score50k:"Reached [color=000099ff]50000 Score[/color]",ACHIEVEMENTS.score100k:"Reached [color=000099ff]100000 Score[/color]",
+}
+
+var achievementsRecord = {}
+
+func achievementsToCode():
+	var code = ""
+	if not achievementsRecord.is_empty():
+		for achievement in achievementsRecord.keys():
+			code += str(achievement) + "," + str(achievementsRecord[achievement]) + "|"
+	return code
+
+func loadAchievements(code: String):
+	for index in (code.get_slice_count("|")):
+		var slice = code.get_slice("|", index)
+		var achievement = slice.get_slice(",", 0).to_int()
+		var turnslice = slice.get_slice(",", 1)
+		achievementsRecord[achievement] = turnslice
 
 var resourcePrices = {
 	RESOURCE.IRON: 1,
@@ -143,14 +220,14 @@ var resourceCategoriesLR = [
 ]
 
 var resourceCategories = {
-	"Basic" : [RESOURCE.MONEY, RESOURCE.ENERGY, RESOURCE.LABOR],
+	"Basic" : [RESOURCE.MONEY, RESOURCE.ENERGY, RESOURCE.LABOR, RESOURCE.TRADE],
 	"Common Metals" : [RESOURCE.IRON, RESOURCE.COPPER, RESOURCE.ZINC, RESOURCE.ALUMINUM], 
 	"Rare Metals" : [RESOURCE.GOLD, RESOURCE.URANIUM, RESOURCE.LITHIUM],
 	"Minerals" : [RESOURCE.ICE, RESOURCE.SILICATE, RESOURCE.CARBON, RESOURCE.PHOSPHORUS],
 	"Materials" : [RESOURCE.STEEL, RESOURCE.BRASS, RESOURCE.CONCRETE, RESOURCE.PLASTIC],
 	"Liquids and Gasses" : [RESOURCE.WATER, RESOURCE.OXYGEN, RESOURCE.HYDROGEN, RESOURCE.NITROGEN],
 	"Products" : [RESOURCE.FERTILIZER, RESOURCE.FOOD, RESOURCE.ELECTRONICS, RESOURCE.CIVGOODS],
-	"Statistics" : [RESOURCE.TRADE, RESOURCE.WEALTH, RESOURCE.INDUSTRY, RESOURCE.INFLUENCE, RESOURCE.SCORE]
+	"Statistics" : [RESOURCE.WEALTH, RESOURCE.INDUSTRY, RESOURCE.INFLUENCE, RESOURCE.SCORE]
 }
 
 var depositToResource = {
@@ -232,7 +309,7 @@ var buildingNames = {
 	BUILDING.FARM : &"Farm",
 	BUILDING.WATER_EXTRACTOR : &"Water Extractors",
 	BUILDING.ELECTROLYZER : &"Electrolyzer Plant",
-	BUILDING.ELECTRONICS_FACTORY : &"Electornics Factory",
+	BUILDING.ELECTRONICS_FACTORY : &"Electronics Factory",
 	BUILDING.CIVILIAN_FACTORY : &"Civilian Factory",
 	BUILDING.EMPTY : &"No Building"
 }
@@ -263,12 +340,12 @@ var buildingScores = {
 
 var buildingBudgets = {
 	BUILDING.CENTER : {RESOURCE.LABOR : 4, RESOURCE.MONEY : 4, RESOURCE.ENERGY : 4, RESOURCE.FOOD : 2, RESOURCE.CONCRETE : 4, 
-			RESOURCE.STEEL : 2, RESOURCE.WATER : 2, &"DEPOSIT" : 2, RESOURCE.TRADE : 5},
+			RESOURCE.STEEL : 2, RESOURCE.WATER : 2, &"DEPOSIT" : 1, RESOURCE.TRADE : 5},
 	BUILDING.CITY : {RESOURCE.LABOR : 3, RESOURCE.ENERGY : -1, RESOURCE.FOOD : -1, RESOURCE.WATER : -1},
 	BUILDING.SOLAR_FARM : {RESOURCE.MONEY : -1, RESOURCE.ENERGY : 2},
 	BUILDING.SPACEPORT : {RESOURCE.ENERGY : -1, RESOURCE.LABOR : -1, RESOURCE.OXYGEN : -1, RESOURCE.HYDROGEN : -1, RESOURCE.TRADE : 4},
 	BUILDING.NUCLEAR_PLANT : {RESOURCE.LABOR : -1, RESOURCE.ENERGY : 5, RESOURCE.URANIUM : -1},
-	BUILDING.FUSION_PLANT : {RESOURCE.LABOR : -1, RESOURCE.ENERGY : 8, RESOURCE.HYDROGEN : -2},
+	BUILDING.FUSION_PLANT : {RESOURCE.LABOR : -1, RESOURCE.ENERGY : 10, RESOURCE.HYDROGEN : -2},
 	BUILDING.MINE : {RESOURCE.MONEY : -1, RESOURCE.LABOR : -1, RESOURCE.ENERGY : -1, &"DEPOSIT" : 2},
 	BUILDING.ICE_MINE : {RESOURCE.MONEY : -1, RESOURCE.LABOR : -1, RESOURCE.ENERGY : -1, RESOURCE.ICE : 2},
 	BUILDING.QUARRY : {RESOURCE.MONEY : -1, RESOURCE.LABOR : -1, RESOURCE.ENERGY : -1, RESOURCE.SILICATE : 4},
@@ -371,7 +448,7 @@ var specialAdjacencyText = {
 	BUILDING.FUSION_PLANT : ("[font_size=32][color=#000099ff]250[/color][/font_size][img]"+resIcons[RESOURCE.INDUSTRY]+
 	"[/img]\nper adjacent [color=#ffff00ff]Energy[/color] producing building."),
 	BUILDING.SPACEPORT : ("[font_size=32][color=#000099ff]100[/color][img]"+resIcons[RESOURCE.WEALTH]+
-			"[/img], 100[img]"+resIcons[RESOURCE.INFLUENCE]+"[/img][/font_size]\nper adjacent Spaceport"),
+			"[/img], [color=#000099ff]100[/color][img]"+resIcons[RESOURCE.INFLUENCE]+"[/img][/font_size]\nper adjacent Spaceport"),
 	BUILDING.CITY : ("[font_size=32][color=#000099ff]100[/color][/font_size][img]"+resIcons[RESOURCE.INFLUENCE]+"[/img]\nper adjacent City")
 }
 

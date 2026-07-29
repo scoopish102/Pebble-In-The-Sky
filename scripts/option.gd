@@ -33,7 +33,8 @@ enum TYPE {
 	YES, NO, #for YNA
 	BUILDING,
 	QUICKTRADE, #for viewing and cancelling current trades
-	TRADE #for initiating the trade screen
+	TRADE, #for initiating the trade screen
+	SCORE #End-of-game scoreboard
 }
 
 @export var type : TYPE
@@ -63,10 +64,12 @@ func init(_type : TYPE):
 		TYPE.SAVE: label.text = "[img]res://resources/uiTrimIcons/save.tres[/img] " + label.text
 		TYPE.EXIT: label.text = "[img]res://resources/uiTrimIcons/exit.tres[/img] " + label.text
 	if type == TYPE.CURRENT_TRADES: label.set_text("Current Trades")
-	if type == TYPE.NEXT_TURN: label.set_text("[img]res://resources/uiTrimIcons/nextturn.tres[/img] "+"NEXT TURN")
-	if type == TYPE.SLOT_1: label.set_text("Save Slot 1")
-	elif type == TYPE.SLOT_2: label.set_text("Save Slot 2")
-	elif type == TYPE.SLOT_3: label.set_text("Save Slot 3")
+	if type == TYPE.NEXT_TURN:  
+		if Global.turn >= Global.gameLength: label.set_text("[img]res://resources/uiTrimIcons/nextturn.tres[/img] "+"FINISH GAME")
+		else: label.set_text("[img]res://resources/uiTrimIcons/nextturn.tres[/img] "+"NEXT TURN")
+	if type == TYPE.SLOT_1: label.set_text(Global.otherNames[1])
+	elif type == TYPE.SLOT_2: label.set_text(Global.otherNames[2])
+	elif type == TYPE.SLOT_3: label.set_text(Global.otherNames[3])
 	if type == TYPE.ACTIVATE: label.set_text("TOGGLE ACTIVATION")
 	if type == TYPE.TRADE and not resource is bool:
 		label.self_modulate = Color(1.0, 1.0, 1.0, 1.0)

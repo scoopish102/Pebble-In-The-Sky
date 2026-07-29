@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://tcq20j1ueh3t"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://tcq20j1ueh3t"]
 
 [ext_resource type="StyleBox" uid="uid://d1xe4gvcw48jq" path="res://resources/optionStyleBox.tres" id="1_6xlmj"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ddgra"]
@@ -47,6 +47,30 @@ texture_margin_right = 21.0
 texture_margin_bottom = 21.0
 region_rect = Rect2(640, 0, 96, 96)
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ynmoi"]
+load_path = "res://.godot/imported/ui.10.18.png-108c8a68b44c009566bd7c4c508677f0.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ht7ku"]
+texture = SubResource("CompressedTexture2D_ynmoi")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+modulate_color = Color(0.75, 0.8125, 1, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dn6i7"]
+load_path = "res://.godot/imported/ui.10.18.png-108c8a68b44c009566bd7c4c508677f0.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hnnik"]
+texture = SubResource("CompressedTexture2D_dn6i7")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 96, 96)
+modulate_color = Color(0.82916665, 1, 0.75, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddgra"]
 content_margin_left = 8.0
 content_margin_top = 2.0
@@ -67,6 +91,11 @@ Button/styles/hover = SubResource("StyleBoxTexture_y084k")
 Button/styles/normal = ExtResource("1_6xlmj")
 Button/styles/pressed = SubResource("StyleBoxTexture_ynmoi")
 Panel/styles/panel = SubResource("StyleBoxTexture_8niu7")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_8niu7")
+ProgressBar/colors/font_color = Color(1, 1, 1, 1)
+ProgressBar/font_sizes/font_size = 16
+ProgressBar/styles/background = SubResource("StyleBoxTexture_ht7ku")
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_hnnik")
 RichTextLabel/colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ddgra")

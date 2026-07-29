@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhqwyky2hd850"
-path="res://.godot/imported/pitslogo.5.10.png-c0b51ddf9b8df85c824bee2aec2f90d5.ctex"
+uid="uid://bpv03c1m58022"
+path="res://.godot/imported/pitsLogoLetters.6.9.png-92b3014698e92199d640286ff1aa9af6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pitslogo.5.10.png"
-dest_files=["res://.godot/imported/pitslogo.5.10.png-c0b51ddf9b8df85c824bee2aec2f90d5.ctex"]
+source_file="res://assets/pitsLogoLetters.6.9.png"
+dest_files=["res://.godot/imported/pitsLogoLetters.6.9.png-92b3014698e92199d640286ff1aa9af6.ctex"]
 
 [params]
 

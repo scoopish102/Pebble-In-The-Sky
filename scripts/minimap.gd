@@ -29,5 +29,5 @@ func updateText(tile, terrain, building, active):
 		btext += (Global.buildingNames[building])
 	#btext = btext.replace(" ", "_").capitalize() 
 	if Global.turn <= Global.gameLength - 10:
-		label.set_text("[center]Turn " + str(Global.turn) + "/" + str(Global.gameLength) + "[/center]\n[font_size=16]" + str(tile) + "\n" + ttext + "\n" + btext + "[/font_size]")
-	else: label.set_text("[center]Turn [color=#ff0000ff]" + str(Global.turn) + "[/color]/" + str(Global.gameLength) + "[/center]\n[font_size=16]" + str(tile) + "\n" + ttext + "\n" + btext + "[/font_size]")
+		label.set_text("[center][font_size=16]"+Global.colonyName+"\n"+"[/font_size]Turn " + str(Global.turn) + "/" + str(Global.gameLength) + "[/center]\n[font_size=16]" + str(tile) + "\n" + ttext + "\n" + btext + "[/font_size]")
+	else: label.set_text("[center][font_size=16]"+Global.colonyName+"\n"+"[/font_size]Turn [color=#ff0000ff]" + str(Global.turn) + "[/color]/" + str(Global.gameLength) + "[/center]\n[font_size=16]" + str(tile) + "\n" + ttext + "\n" + btext + "[/font_size]")

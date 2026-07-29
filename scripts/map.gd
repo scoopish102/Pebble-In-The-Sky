@@ -94,6 +94,16 @@ func createBuilding(tile : Vector2i, building : Global.BUILDING, startActivated=
 	tileMap[tile].updateBuilding(getSpecificNeighbors(tile), startActivated)
 	tileMap[tile].resetAltitudeDiversification()
 	Global.score += Global.buildingScores[building]
+	Global.buildingCount += 1
+	if building == Global.BUILDING.MINE or building == Global.BUILDING.ICE_MINE: Global.mineCount += 1
+	if building == Global.BUILDING.CITY: Global.cityCount += 1
+	if building == Global.BUILDING.STEEL_MILL: Event.achieve.emit(Global.ACHIEVEMENTS.firststeel)
+	if building == Global.BUILDING.CONCRETE_PLANT: Event.achieve.emit(Global.ACHIEVEMENTS.firstconcrete)
+	if building == Global.BUILDING.ELECTRONICS_FACTORY: Event.achieve.emit(Global.ACHIEVEMENTS.firstelectronics)
+	if building == Global.BUILDING.CIVILIAN_FACTORY: Event.achieve.emit(Global.ACHIEVEMENTS.firstcivilian)
+	if building == Global.BUILDING.FUSION_PLANT: Event.achieve.emit(Global.ACHIEVEMENTS.firstfusion)
+	if building == Global.BUILDING.SPACEPORT: Event.achieve.emit(Global.ACHIEVEMENTS.firstspaceport)
+	if building == Global.BUILDING.FARM: Event.achieve.emit(Global.ACHIEVEMENTS.firstfarm)
 	updateRoads()
 	Event.update_resources.emit()
 
@@ -115,6 +125,11 @@ func generateMap():
 	generateFeatures()
 	guaranteedOres()
 	generatePoles()
+	generateColonyName()
+
+func generateColonyName() -> String:
+	var colonyName = "Pebble"
+	return colonyName
 
 func clearMaps():
 	buildingMap.clear()
@@ -207,10 +222,13 @@ func checkEllipseBounds(x : int, y : int, w : int, h : int):
 	if (pow(x, 2)/pow(w/2,2))+(pow(y, 2)/pow(h/2,2)) <= 1: return true
 	else: return false
 
-func initMap():
+func initMapWithCallback(callback: Callable):
 	tileMap.clear()
 	var tileInstance : Tile
 	var neighborAltitudes = []
+	var count = 0
+	var totalCount = 0
+	var nodes_per_frame = 100
 	for width in range(0, Global.mapSize.x):
 		for height in range(0, Global.mapSize.y):
 			tileInstance = tileBlueprint.instantiate()
@@ -224,12 +242,51 @@ func initMap():
 			neighborAltitudes = diversifyAltitude(tileInstance.tile)
 			tileInstance.diversifyAltitude(neighborAltitudes[0], neighborAltitudes[1], neighborAltitudes[2], neighborAltitudes[3])
 			tileInstance.diversifyModulate()
-			tileInstance.updateBuilding()
+			tileInstance.updateBuilding(getSpecificNeighbors(tileInstance.tile))
 			tileInstance.initialized = true
 			if tileInstance.tile in buildingMap: tileInstance.building = buildingMap[tileInstance.tile]
 			else: tileInstance.building = Global.BUILDING.EMPTY
 			tileMap[tileInstance.tile] = tileInstance
 			add_child(tileInstance)
+			count += 1
+			totalCount += 1
+			if count >= nodes_per_frame:
+				count = 0
+				await get_tree().process_frame  # Yields to let the engine render the menu
+				#print(float(totalCount) / (Global.mapSize.x * Global.mapSize.y))
+				callback.call(float(totalCount) / (Global.mapSize.x * Global.mapSize.y))
+	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
+	return spawn
+
+func initMap():
+	tileMap.clear()
+	var tileInstance : Tile
+	var neighborAltitudes = []
+	var count = 0
+	var nodes_per_frame = 100
+	for width in range(0, Global.mapSize.x):
+		for height in range(0, Global.mapSize.y):
+			tileInstance = tileBlueprint.instantiate()
+			tileInstance.tile = Vector2i(width, height)
+			tileInstance.altitude = altitudeMap[tileInstance.tile]
+			tileInstance.raw = rawMap[tileInstance.tile]
+			if tileInstance.altitude < Global.seaLevel: tileInstance.waterlogged = true
+			tileInstance.terrain = terrainMap[tileInstance.tile]
+			tileInstance.updatePosition()
+			tileInstance.updateTerrain()
+			neighborAltitudes = diversifyAltitude(tileInstance.tile)
+			tileInstance.diversifyAltitude(neighborAltitudes[0], neighborAltitudes[1], neighborAltitudes[2], neighborAltitudes[3])
+			tileInstance.diversifyModulate()
+			tileInstance.updateBuilding(getSpecificNeighbors(tileInstance.tile))
+			tileInstance.initialized = true
+			if tileInstance.tile in buildingMap: tileInstance.building = buildingMap[tileInstance.tile]
+			else: tileInstance.building = Global.BUILDING.EMPTY
+			tileMap[tileInstance.tile] = tileInstance
+			add_child(tileInstance)
+			count += 1
+			if count >= nodes_per_frame:
+				count = 0
+				await get_tree().process_frame  # Yields to let the engine render the menu
 	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
 	return spawn
 

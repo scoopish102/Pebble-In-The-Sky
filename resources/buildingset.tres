@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=83 format=3 uid="uid://dp6gq6nks1u1j"]
+[gd_resource type="SpriteFrames" load_steps=88 format=3 uid="uid://dp6gq6nks1u1j"]
 
 [ext_resource type="Texture2D" uid="uid://u2g4hdvcpo4f" path="res://assets/building/buildings.center.10.29.png" id="1_03wtm"]
 [ext_resource type="Texture2D" uid="uid://tg3kroi73lna" path="res://assets/building/buildings.brassmill.5.7.png" id="1_jr5s1"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://cnchtncyorbjp" path="res://assets/building/building.farm.5.7.png" id="9_p4h13"]
 [ext_resource type="Texture2D" uid="uid://iuw45ybcjhba" path="res://assets/building/building.quarry.5.6.png" id="9_vueut"]
 [ext_resource type="Texture2D" uid="uid://yeo1s4p4n150" path="res://assets/building/building.regolithprocessor.5.6.png" id="10_jr5s1"]
+[ext_resource type="Texture2D" uid="uid://dc5gq71w3j1m7" path="res://assets/building/building.fertilizerfactory.5.7.png" id="10_kumsc"]
 [ext_resource type="Texture2D" uid="uid://sikkkmkpxadn" path="res://assets/building/building.solarfarm.5.6.png" id="11_kumsc"]
 [ext_resource type="Texture2D" uid="uid://bnu3wum6idv0w" path="res://assets/building/buildings.factory.10.29.png" id="12_jon3q"]
 [ext_resource type="Texture2D" uid="uid://d17cq1f3wr273" path="res://assets/building/buildings.spaceport.5.7.png" id="13_4wq8i"]
@@ -125,6 +126,22 @@ region = Rect2(0, 128, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_roepp"]
 atlas = ExtResource("9_p4h13")
 region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0wue"]
+atlas = ExtResource("10_kumsc")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdd8u"]
+atlas = ExtResource("10_kumsc")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tf6ih"]
+atlas = ExtResource("10_kumsc")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d4uuc"]
+atlas = ExtResource("10_kumsc")
+region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h3mvr"]
 atlas = ExtResource("6_uio8n")
@@ -389,6 +406,23 @@ animations = [{
 }],
 "loop": false,
 "name": &"FARM",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0wue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fdd8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tf6ih")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d4uuc")
+}],
+"loop": false,
+"name": &"FERTILIZER_FACTORY",
 "speed": 0.0
 }, {
 "frames": [{

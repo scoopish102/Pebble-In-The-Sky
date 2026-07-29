@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://baynsjf2giebl" path="res://scripts/notification.gd" id="1_8xvt8"]
 [ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_et4bn"]
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="2_8xvt8"]
-[ext_resource type="Texture2D" uid="uid://c71lng06jkjo8" path="res://assets/uiTrims.6.3.png" id="5_8ldpm"]
+[ext_resource type="Texture2D" uid="uid://c71lng06jkjo8" path="res://assets/uiTrims.6.9.png" id="5_8ldpm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0yy87"]
 atlas = ExtResource("1_et4bn")
@@ -33,7 +33,7 @@ offset_bottom = 238.0
 theme_override_constants/separation = 0
 script = ExtResource("1_8xvt8")
 title = NodePath("Backdrop/VBoxContainer/HBoxContainer/Title")
-exitButton = NodePath("")
+exitButton = NodePath("Backdrop/VBoxContainer/HBoxContainer/ExitButton")
 content = NodePath("Backdrop/VBoxContainer/MarginContainer/VBoxContainer/Text")
 
 [node name="Backdrop" type="NinePatchRect" parent="."]
@@ -117,7 +117,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 2
 mouse_filter = 1
 theme = ExtResource("2_8xvt8")
-theme_override_colors/default_color = Color(1, 1, 1, 1)
 bbcode_enabled = true
 text = "\"Come, let us build ourselves a city, with a tower that reaches to the heavens, so that we may make a name for ourselves.\""
 fit_content = true

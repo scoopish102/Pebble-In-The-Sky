@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dbtsa16q8xity"]
+[gd_scene load_steps=29 format=3 uid="uid://dbtsa16q8xity"]
 
 [ext_resource type="Script" uid="uid://6rn12kqhycn2" path="res://scripts/ui.gd" id="1_pbmwc"]
 [ext_resource type="PackedScene" uid="uid://d3keppgqfjpxv" path="res://scenes/resource.tscn" id="2_rp04g"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="10_7dvkv"]
 [ext_resource type="Script" uid="uid://bct3e1pla1lec" path="res://scripts/minimap.gd" id="10_vdcm2"]
 [ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="13_h1mc3"]
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="16_cof4p"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wxiw1"]
 content_margin_left = 20.0
@@ -72,7 +73,18 @@ texture_margin_right = 56.0
 texture_margin_bottom = 56.0
 region_rect = Rect2(0, 0, 128, 128)
 
-[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions", "resourceCategory", "categoryName", "minimap", "notifications", "sidebarCover")]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_f7tlh"]
+load_path = "res://.godot/imported/ui.10.18.png-108c8a68b44c009566bd7c4c508677f0.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8k7j3"]
+texture = SubResource("CompressedTexture2D_f7tlh")
+texture_margin_left = 54.0
+texture_margin_top = 54.0
+texture_margin_right = 54.0
+texture_margin_bottom = 54.0
+region_rect = Rect2(128, 0, 128, 128)
+
+[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions", "resourceCategory", "categoryName", "minimap", "notifications", "sidebarCover", "scoringPanel", "scoringPanelTitle", "scoringPanelContent", "leaderboard")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,6 +101,7 @@ categoryName = NodePath("resourceCategory/categorySelector/categoryName")
 minimap = NodePath("minimapBox")
 notifications = NodePath("notificationContainer")
 sidebarCover = NodePath("sidebarBackdrop/sidebarCover")
+scoringPanel = NodePath("Scoring Panel")
 resourceBlueprint = ExtResource("2_rp04g")
 optionBlueprint = ExtResource("3_yukjw")
 ynaBlueprint = ExtResource("3_074kx")
@@ -98,15 +111,18 @@ tradeOptionBlueprint = ExtResource("7_6rmj2")
 notificationBlueprint = ExtResource("8_qsv74")
 choiceNotificationBlueprint = ExtResource("9_cof4p")
 singleOptionNotificationBlueprint = ExtResource("9_h1mc3")
+scoringPanelTitle = NodePath("Scoring Panel/MarginContainer/VBoxContainer/Title")
+scoringPanelContent = NodePath("Scoring Panel/MarginContainer/VBoxContainer/HBoxContainer/Content")
+leaderboard = NodePath("Scoring Panel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/Rankings")
 
 [node name="resourceCategory" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -142.0
+offset_top = -158.0
 offset_right = 258.0
-offset_bottom = -78.0
+offset_bottom = -94.0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_wxiw1")
 
@@ -155,7 +171,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -80.0
+offset_top = -96.0
 offset_right = -286.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -170,6 +186,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="resources" type="HBoxContainer" parent="resourceBackdrop/spacerSorter"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
@@ -220,7 +237,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -359.0
+offset_left = -380.0
 offset_top = -186.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -258,10 +275,11 @@ size_flags_horizontal = 3
 theme_override_fonts/normal_font = ExtResource("13_h1mc3")
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
-text = "Turn 1
-(6, 7)
-Sea
-Civilian Goods Factory"
+text = "Turn 1/67
+[font_size=16](6, 7)
+Phosphorus
+Deactivated
+Electrolyzer Plant[/font_size]"
 scroll_following = true
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -279,7 +297,99 @@ render_target_update_mode = 4
 [node name="tile" parent="minimapBox/VBoxContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("10_7dvkv")]
 position = Vector2(64, 80)
 
+[node name="Scoring Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -286.0
+offset_bottom = -184.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("16_cof4p")
+theme_override_styles/panel = SubResource("StyleBoxTexture_8k7j3")
+
+[node name="MarginContainer" type="MarginContainer" parent="Scoring Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Scoring Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="Scoring Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Colony of Pebble - [color=000099ff]465900 [img]res://resources/resIcons/score.tres[/img] Score[/color]"
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Scoring Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Content" type="RichTextLabel" parent="Scoring Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+bbcode_enabled = true
+text = "Constructed its first Spaceport on turn 8.
+Constructed its first Concrete Plant on turn 12.
+Built 10 Mines by turn 18.
+Built 5 Cities by turn 24.
+Built 20 Mines by turn 35.
+Built 10 Cities by turn 40.
+Constructed its first Fusion Plant on turn 45.
+Constructed its first Civilian Factory on turn 51.
+Reached 25000 Industry on turn 51.
+Constructed a Campus on turn 53.
+Reached 25000 Influence on turn 53.
+Constructed a Monument on turn 55.
+Reached the peak of its growth on turn 55.
+Constructed its first Farm on turn 59.
+
+"
+
+[node name="PanelContainer" type="PanelContainer" parent="Scoring Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_cof4p")
+
+[node name="Rankings" type="RichTextLabel" parent="Scoring Panel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+bbcode_enabled = true
+text = "1. Cyrus the Great
+2. Augustus Caesar
+3. Qin Shihuang
+4. FDR
+5. Mansa Musa
+6. Ashoka
+7. Seretse Khama
+8. Ramesses II
+9. Justinian
+10. Emperor Meiji
+11. Wu Zetian
+12. Charles V
+13. Josip Broz Tito
+14. Alexander the Great
+15. Simon Bolivar
+16. Louis XIV, The Sun King
+17. Kaiser Wilhelm II
+18. Herbert Hoover
+19. Leopold II
+20. Pol Pot"
+
 [node name="notificationContainer" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -3,10 +3,10 @@ extends Node2D
 class_name Tile
 
 #generated data in relation to the map
-var tile : Vector2i
-var altitude : int
-var terrain : Global.TERRAIN
-var waterlogged = false
+@export var tile : Vector2i
+@export var altitude : int
+@export var terrain : Global.TERRAIN
+@export var waterlogged = false
 var raw : float
 #internal variables related to selection
 var initialized = false
@@ -14,7 +14,7 @@ var selected = false
 var hover = false
 var normalHeight : float
 
-var building = false
+@export var building : Global.BUILDING = Global.BUILDING.EMPTY
 
 @export var subtiles : Array[Subtile]
 @export var display : Node2D
@@ -99,7 +99,7 @@ func diversifyModulate():
 func updateBuilding(neighbors=[false, false, false, false], activated=true):
 	#if building == Global.BUILDING.EMPTY: return
 	overall.set_animation(&"EMPTY")
-	if not building is bool and building == Global.BUILDING.ROAD: 
+	if building is Global.BUILDING and building == Global.BUILDING.ROAD: 
 		var frame = roadFrames(neighbors)
 		overall.set_animation(&"ROAD")
 		overall.set_frame(frame)

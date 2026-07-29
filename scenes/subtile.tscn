@@ -31,6 +31,6 @@ offset = Vector2(0, -16)
 [node name="building" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_4cyv5")
 sprite_frames = ExtResource("4_bbiyf")
-animation = &"CIVILIAN_FACTORY"
+animation = &"FERTILIZER_FACTORY"
 autoplay = "EMPTY"
 offset = Vector2(0, -32)

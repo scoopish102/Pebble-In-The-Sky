@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmy67ylw4r8ip"]
+
+[ext_resource type="PackedScene" uid="uid://dubkr27umy28b" path="res://scenes/notification.tscn" id="1_uam5a"]
+[ext_resource type="Script" uid="uid://duwwcmoyhxjs2" path="res://scripts/loadingNotification.gd" id="2_uam5a"]
+[ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="3_hjo75"]
+
+[node name="LoadingNotification" node_paths=PackedStringArray("progressBar", "optionButton") instance=ExtResource("1_uam5a")]
+offset_right = 480.0
+offset_bottom = 216.0
+theme_override_constants/separation = -2
+script = ExtResource("2_uam5a")
+progressBar = NodePath("Backdrop/VBoxContainer/MarginContainer/VBoxContainer/ProgressBar")
+optionButton = NodePath("Backdrop_MarginContainer_VBoxContainer#Choices/Confirm")
+
+[node name="Title" parent="Backdrop/VBoxContainer/HBoxContainer" index="1"]
+text = "Loading..."
+
+[node name="ExitButton" parent="Backdrop/VBoxContainer/HBoxContainer" index="2"]
+visible = false
+
+[node name="VBoxContainer" parent="Backdrop/VBoxContainer/MarginContainer" index="0"]
+theme_override_constants/separation = 16
+
+[node name="Text" parent="Backdrop/VBoxContainer/MarginContainer/VBoxContainer" index="0"]
+text = "Currently initializing tile map."
+
+[node name="ProgressBar" type="ProgressBar" parent="Backdrop/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+theme = ExtResource("3_hjo75")
+value = 46.03
+
+[node name="Backdrop_MarginContainer_VBoxContainer#Choices" type="HBoxContainer" parent="." index="1"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Confirm" type="Button" parent="Backdrop_MarginContainer_VBoxContainer#Choices" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("3_hjo75")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(0.47, 0.47, 0.47, 1)
+text = "Begin game"
+
+[connection signal="value_changed" from="Backdrop/VBoxContainer/MarginContainer/VBoxContainer/ProgressBar" to="." method="_on_progress_bar_value_changed"]
+[connection signal="pressed" from="Backdrop_MarginContainer_VBoxContainer#Choices/Confirm" to="." method="confirmButtonPressed"]

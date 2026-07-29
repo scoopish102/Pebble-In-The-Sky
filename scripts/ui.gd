@@ -9,6 +9,7 @@ extends Control
 @export var minimap : Minimap
 @export var notifications : Control
 @export var sidebarCover : Panel
+@export var scoringPanel : Panel
 
 @export var resourceBlueprint : PackedScene
 @export var optionBlueprint : PackedScene
@@ -19,6 +20,64 @@ extends Control
 @export var notificationBlueprint: PackedScene
 @export var choiceNotificationBlueprint: PackedScene
 @export var singleOptionNotificationBlueprint: PackedScene
+
+@export var scoringPanelTitle : RichTextLabel
+@export var scoringPanelContent : RichTextLabel
+@export var leaderboard : RichTextLabel
+
+var leaders = [
+	"1. Leto II",
+	"2. Luo Ji",
+	"3. Salvor Hardin",
+	"4. Yang Wen-Li",
+	"5. Chrisjen Avasarala",
+	"6. Locke (Peter Wiggin)",
+	"7. Jonathan Archer",
+	"8. Bernardo de la Paz",
+	"9. Mustapha Mond",
+	"10. Hannegan II",
+	"11. Cleon II",
+	"12. Palpatine",
+	"13. Shaddam Corrino IV",
+	"14. Achilles de Flandres",
+	"15. Manuel Rey Diaz"
+]
+
+var leaderScores = [
+	150000, #Leto
+	100000, #Luo
+	90000, #Hardin
+	80000, #Yang
+	70000, #Avasarala
+	60000, #Locke
+	50000, #Archer
+	40000, #Bernardo
+	30000, #Mond
+	20000, #Hannegan
+	10000, #Cleon
+	7500, #Palpatine
+	5000, #Shaddam
+	2500, #Achilles
+	1000, #Rey Diaz
+]
+
+var leaderQuotes = [
+	"The only rule governing creativity is the act of creation itself.",
+	"Staying alive is not enough to guarantee survival. Development is the best way to ensure survival.",
+	"Violence is the last refuge of the incompetent.",
+	"People tend to make the common mistake of believing that a situation will last forever.",
+	"A whisper will do, if it's all that you can manage.",
+	"The power to cause pain is the only power that matters, the power to kill and destroy.",
+	"A few courageous people began to realize they could make a difference.",
+	"I am free, no matter what rules surround me.",
+	"Civilization has no need of nobility or heroism.",
+	"To minimize suffering and to maximize security were natural and proper ends of society and Caesar.",
+	"What kept Cleon strong? It's obvious. He is strong, because he permits no strong subjects.",
+	"I am the Senate.",
+	"Now we see true motives.",
+	"Stay right with God. I'll stay right with Achilles.",
+	"My people... I did it all for you!"
+]
 
 var sidebarMenu : SidebarOption.TYPE
 var categoryIndex = 0
@@ -37,7 +96,22 @@ func _ready():
 	Event.direct_confirmation.connect(directToPostConfirmation)
 	Event.cancel_trade_confirmation.connect(cancelTradeConfirmation)
 	makeSidebar(SidebarOption.TYPE.MAIN)
+	scoringPanel.visible = false
 	#updateResourcebar()
+
+func _process(_delta):
+	if Input.is_action_just_pressed("1"): changeResourceMenu(0)
+	if Input.is_action_just_pressed("2"): changeResourceMenu(1)
+	if Input.is_action_just_pressed("3"): changeResourceMenu(2)
+	if Input.is_action_just_pressed("4"): changeResourceMenu(3)
+	if Input.is_action_just_pressed("5"): changeResourceMenu(4)
+	if Input.is_action_just_pressed("6"): changeResourceMenu(5)
+	if Input.is_action_just_pressed("7"): changeResourceMenu(6)
+	if Input.is_action_just_pressed("8"): changeResourceMenu(7)
+
+func changeResourceMenu(index: int):
+	categoryIndex = index
+	updateResourcebar()
 
 func resourceMenuForward():
 	if categoryIndex >= len(Global.resourceCategoriesLR)-1:
@@ -74,6 +148,7 @@ func backOption(option : SidebarOption.TYPE):
 	back.init(option)
 	back.label.set_text("BACK")
 	sidebarOptions.add_child(back)
+	return back
 
 func createOption(type : SidebarOption.TYPE):
 	var option = optionBlueprint.instantiate()
@@ -150,6 +225,7 @@ func makeSidebar(option : SidebarOption.TYPE):
 	#print(option)
 	match option:
 		SidebarOption.TYPE.MAIN:
+			#generateAchievementLog()
 			createOption(SidebarOption.TYPE.BUILD)
 			createOption(SidebarOption.TYPE.ACT)
 			createOption(SidebarOption.TYPE.MARKET)
@@ -209,7 +285,36 @@ func makeSidebar(option : SidebarOption.TYPE):
 			createBuildingOption(Global.BUILDING.ELECTRONICS_FACTORY)
 			createBuildingOption(Global.BUILDING.CIVILIAN_FACTORY)
 			backOption(SidebarOption.TYPE.BUILD)
+		SidebarOption.TYPE.SCORE:
+			scoringPanel.visible = true
+			scoringPanelTitle.text = "Colony of" + Global.colonyName + "- [color=000099ff]" + str(Global.score) + "[img]res://resources/resIcons/score.tres[/img] Score[/color]"
+			leaderboard.text = generateLeaderboard()
+			scoringPanelContent.text = generateAchievementLog()
+			createOption(SidebarOption.TYPE.EXIT)
+			backOption(SidebarOption.TYPE.MAIN).label.set_text("CONTINUE GAME")
 	sidebarMenu = option
+
+func generateLeaderboard():
+	var text = ""
+	var scored = false
+	for leader in range(len(leaders)):
+		text += leaders[leader] + " - "
+		if Global.score > leaderScores[leader] and not scored: text += "[color=000099ff]"
+		text += str(leaderScores[leader]) + " Score"
+		if Global.score > leaderScores[leader] and not scored: 
+			text += "\n" + leaderQuotes[leader] + "[/color]"
+			scored = true
+		text += "\n"
+	return text
+
+func generateAchievementLog():
+	var text = ""
+	var sorted = Global.achievementsRecord.keys()
+	sorted.sort_custom(func(a, b): return Global.achievementsRecord[a].to_int() < Global.achievementsRecord[b].to_int())
+	for achievement in sorted:
+		text += Global.achievementNames[achievement] + " on turn " + Global.achievementsRecord[achievement] + ".\n"
+		#print(Global.achievementNames[achievement], ": ", Global.achievementsRecord[achievement])
+	return text
 
 func askConfirmationTrade(resource): 
 	clearSidebar()
@@ -269,7 +374,8 @@ func askConfirmationNextTurn():
 	clearSidebar()
 	var slabel : SidebarLabel = sLabelBlueprint.instantiate()
 	sidebarOptions.add_child(slabel)
-	slabel.label.set_text("Advance to Next Turn?")
+	if Global.turn >= Global.gameLength: slabel.label.text = "Finish Game?"
+	else: slabel.label.set_text("Advance to Next Turn?")
 	var cob = []
 	var supercob = []
 	for res in Global.budgets.keys():
@@ -287,6 +393,8 @@ func askConfirmationNextTurn():
 			elif cobcount == len(cob)-1: slabel.label.text += " and"
 			else: slabel.label.text += ","
 		slabel.label.text += ".[/color]"
+		if Global.turn >= Global.gameLength: slabel.label.text += ("\n[color=ffff00ff]FINISHING THE GAME"
+				+ " WITH A DEFICIT IN ANY RESOURCE WILL REDUCE YOUR SCORE BY 10% AND SUBTRACT IT BY 2500 PER RESOURCE.[/color]")
 	if len(supercob) > 0: 
 		slabel.label.text += "\n[color=990000ff]Warning: You will have a debt of"
 		var cobcount = 0
@@ -297,6 +405,9 @@ func askConfirmationNextTurn():
 			elif cobcount == len(supercob)-1: slabel.label.text += " and"
 			else: slabel.label.text += ","
 		slabel.label.text += " if you continue to the next turn now.[/color]"
+		if Global.turn >= Global.gameLength: slabel.label.text += ("\n[color=990000ff]FINISHING THE GAME"
+				+ " WITH A DEBT IN ANY RESOURCE WILL HALVE YOUR SCORE AND SUBTRACT IT BY 5000 PER RESOURCE.[/color]")
+	if Global.turn >= Global.gameLength: slabel.label.text += ("\n[color=000099ff]Are you SURE you want to finish this game now?[/color]")
 	slabel.updateSize()
 	var yna : YNA = ynaBlueprint.instantiate()
 	yna.option = SidebarOption.TYPE.NEXT_TURN
@@ -344,9 +455,12 @@ func updateActivateConfirmation(tile):
 		fetchSelectedTile.emit()
 		#print("fool")
 		yna.building = selectedBuilding
+		if not yna.building: 
+			slabel.label.set_text("[color=990000ff]There is no building at " + str(tile)+"[/color]")
+			return
 		yna.energyWorks = yna.checkEnergy(yna.building, selectedActivated)
 		yna.laborWorks = yna.checkLabor(yna.building, selectedActivated)
-		if not Global.buildingBudgets[yna.building] is bool:
+		if yna.building != Global.BUILDING.ROAD and not Global.buildingBudgets[yna.building] is bool:
 			if &"DEPOSIT" in Global.buildingBudgets[yna.building].keys(): 
 				var depositType = Global.depositToResource[selectedTerrain]
 				yna.budgetWorks = yna.checkOtherBudgets(yna.building, selectedActivated, depositType)
@@ -475,9 +589,9 @@ func confirmSave(slot):
 	var choice := choiceNotificationBlueprint.instantiate()
 	notifications.add_child(choice)
 	choice.size = Vector2(256, 216)
-	choice.centerOnScreen()
 	choice.setContent("[img]res://resources/uiTrimIcons/save.tres[/img] Save Game", "This will save your game on Slot " + str(slot) + ".")
 	choice.setChoices("Proceed?")
+	choice.centerOnScreen()
 	#print(choice)
 	var result = await choice.getChoice()
 	if result: 
@@ -485,16 +599,37 @@ func confirmSave(slot):
 		return
 	else: return
 
+func deleteSlot(slot: int):
+	var file_path: String = "user://save"+str(slot)+".json"
+	# Check if the file actually exists first
+	if FileAccess.file_exists(file_path):
+		# Attempt to remove the file
+		var error = DirAccess.remove_absolute(file_path)
+		if error == OK: 
+			#print("JSON file deleted successfully!")
+			pass
+		else: print("Failed to delete file. Error code: ", error)
+	else: print("File does not exist.")
+
 func confirmExit():
 	var choice := choiceNotificationBlueprint.instantiate()
 	notifications.add_child(choice)
-	choice.size = Vector2(256, 256)
+	choice.size = Vector2(300, 256)
 	choice.centerOnScreen()
-	choice.setContent("[img]res://resources/uiTrimIcons/exit.tres[/img] Exit Game", "This will send you to the main menu. Make sure to save your game first.")
-	choice.setChoices("Exit without saving?")
+	if sidebarMenu != SidebarOption.TYPE.SCORE: 
+		choice.setContent("[img]res://resources/uiTrimIcons/exit.tres[/img] Exit Game", "This will send you to the main menu. Make sure to save your game first.")
+		choice.setChoices("Exit without saving?")
+	else:
+		choice.setContent("[img]res://resources/uiTrimIcons/exit.tres[/img] Exit Completed Game", 
+				"This will send you to the main menu.")
+		if Global.loadSlot != 0: choice.content.text += "You may not be able to return, since this save slot, slot " + str(Global.loadSlot) + " will be wiped!"
+		choice.setChoices("Finish game?")
 	var result = await choice.getChoice()
-	if result: get_tree().change_scene_to_file("res://scenes/mainMenu.tscn")
-	else: return
+	if result: 
+		if sidebarMenu == SidebarOption.TYPE.SCORE and Global.loadSlot != 0: deleteSlot(Global.loadSlot)
+		Event.loadScene.emit("res://scenes/mainMenu.tscn")#get_tree().change_scene_to_file("res://scenes/mainMenu.tscn")
+	else: 
+		scoringPanel.visible = false
 
 func directToPostConfirmation(option : SidebarOption.TYPE):
 	match option:
@@ -519,8 +654,14 @@ func postConfirmation(confirm : bool, option : SidebarOption.TYPE, building, sta
 					subtractCost(building)
 					Event.create_building.emit(Global.selectedTile, building, startActivated)
 			SidebarOption.TYPE.NEXT_TURN:
-				Event.next_turn.emit()
-				updateResourcebar()
+				if Global.turn == Global.gameLength: 
+					Event.deselect_cursor.emit()
+					Global.score += Global.budgets[Global.RESOURCE.WEALTH]+Global.budgets[Global.RESOURCE.INDUSTRY]+Global.budgets[Global.RESOURCE.INFLUENCE]
+					makeSidebar(SidebarOption.TYPE.SCORE)
+					return
+				else:
+					Event.next_turn.emit()
+					updateResourcebar()
 			SidebarOption.TYPE.DEMOLISH:
 				Event.demolish_building.emit()
 			SidebarOption.TYPE.ACTIVATE:
