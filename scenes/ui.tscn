@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dbtsa16q8xity"]
+[gd_scene load_steps=35 format=3 uid="uid://dbtsa16q8xity"]
 
 [ext_resource type="Script" uid="uid://6rn12kqhycn2" path="res://scripts/ui.gd" id="1_pbmwc"]
 [ext_resource type="PackedScene" uid="uid://d3keppgqfjpxv" path="res://scenes/resource.tscn" id="2_rp04g"]
@@ -15,7 +15,10 @@
 [ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="10_7dvkv"]
 [ext_resource type="Script" uid="uid://bct3e1pla1lec" path="res://scripts/minimap.gd" id="10_vdcm2"]
 [ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="13_h1mc3"]
+[ext_resource type="Texture2D" uid="uid://cnt7d86t2w2cd" path="res://resources/uiTrimIcons/market.tres" id="15_f7tlh"]
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="16_cof4p"]
+[ext_resource type="Texture2D" uid="uid://cy0thl1iac3tu" path="res://resources/uiTrimIcons/save.tres" id="16_jkdwc"]
+[ext_resource type="Texture2D" uid="uid://c0r788qkatqrk" path="res://resources/uiTrimIcons/act.tres" id="17_rlppe"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wxiw1"]
 content_margin_left = 20.0
@@ -61,6 +64,38 @@ events = [SubResource("InputEventKey_ktti3")]
 font = ExtResource("13_h1mc3")
 font_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jkdwc"]
+texture = ExtResource("3_eqhnk")
+texture_margin_left = 21.0
+texture_margin_top = 21.0
+texture_margin_bottom = 21.0
+region_rect = Rect2(640, 0, 75, 96)
+modulate_color = Color(0.95, 0.95, 0.95, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlppe"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycmcx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lvkan"]
 content_margin_left = 20.0
 content_margin_top = 20.0
@@ -92,15 +127,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pbmwc")
-sidebar = NodePath("sidebarBackdrop")
+sidebar = NodePath("")
 resourcebar = NodePath("resourceBackdrop")
-sidebarOptions = NodePath("sidebarBackdrop/ScrollContainer/options")
+sidebarOptions = NodePath("sidebar/sidebarBackdrop/ScrollContainer/options")
 resourcebarOptions = NodePath("resourceBackdrop/spacerSorter/resources")
 resourceCategory = NodePath("resourceCategory")
 categoryName = NodePath("resourceCategory/categorySelector/categoryName")
 minimap = NodePath("minimapBox")
 notifications = NodePath("notificationContainer")
-sidebarCover = NodePath("sidebarBackdrop/sidebarCover")
+sidebarCover = NodePath("sidebar/sidebarBackdrop/sidebarCover")
 scoringPanel = NodePath("Scoring Panel")
 resourceBlueprint = ExtResource("2_rp04g")
 optionBlueprint = ExtResource("3_yukjw")
@@ -199,7 +234,81 @@ resource = 30
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="sidebarBackdrop" type="PanelContainer" parent="."]
+[node name="sidebar" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 943.0
+offset_right = 1280.0
+offset_bottom = 535.0
+
+[node name="categories" type="VBoxContainer" parent="sidebar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="buffer" type="Control" parent="sidebar/categories"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="market" type="Button" parent="sidebar/categories"]
+modulate = Color(0.7162962, 0.7162962, 0.7162962, 1)
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_cof4p")
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jkdwc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rlppe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ycmcx")
+toggle_mode = true
+shortcut = SubResource("Shortcut_cgfq5")
+icon = ExtResource("15_f7tlh")
+
+[node name="save" type="Button" parent="sidebar/categories"]
+modulate = Color(0.7162962, 0.7162962, 0.7162962, 1)
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_cof4p")
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jkdwc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rlppe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ycmcx")
+toggle_mode = true
+shortcut = SubResource("Shortcut_cgfq5")
+icon = ExtResource("16_jkdwc")
+
+[node name="tech" type="Button" parent="sidebar/categories"]
+modulate = Color(0.7162962, 0.7162962, 0.7162962, 1)
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_cof4p")
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jkdwc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rlppe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ycmcx")
+toggle_mode = true
+shortcut = SubResource("Shortcut_cgfq5")
+icon = ExtResource("17_rlppe")
+
+[node name="politics" type="Button" parent="sidebar/categories"]
+modulate = Color(0.7162962, 0.7162962, 0.7162962, 1)
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_cof4p")
+theme_override_colors/icon_normal_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jkdwc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rlppe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ycmcx")
+toggle_mode = true
+shortcut = SubResource("Shortcut_cgfq5")
+icon = ExtResource("17_rlppe")
+
+[node name="sidebarBackdrop" type="PanelContainer" parent="sidebar"]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 11
@@ -207,24 +316,24 @@ anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -288.0
-offset_bottom = -184.0
+offset_bottom = 185.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_lvkan")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="sidebarBackdrop"]
+[node name="ScrollContainer" type="ScrollContainer" parent="sidebar/sidebarBackdrop"]
 layout_mode = 2
 
-[node name="options" type="VBoxContainer" parent="sidebarBackdrop/ScrollContainer"]
+[node name="options" type="VBoxContainer" parent="sidebar/sidebarBackdrop/ScrollContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="option" parent="sidebarBackdrop/ScrollContainer/options" instance=ExtResource("3_yukjw")]
+[node name="option" parent="sidebar/sidebarBackdrop/ScrollContainer/options" instance=ExtResource("3_yukjw")]
 layout_mode = 2
 
-[node name="sidebarCover" type="Panel" parent="sidebarBackdrop"]
+[node name="sidebarCover" type="Panel" parent="sidebar/sidebarBackdrop"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -298,6 +407,7 @@ render_target_update_mode = 4
 position = Vector2(64, 80)
 
 [node name="Scoring Panel" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
