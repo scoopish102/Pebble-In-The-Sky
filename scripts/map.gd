@@ -3,6 +3,7 @@ extends Node2D
 class_name Map
 
 @export var tileBlueprint : PackedScene
+@export var demoTiles : bool = false #are these tiles just for demo? aka main menu or minimap?
 var altitudeMap = {}
 var terrainMap = {}
 var rawMap = {}
@@ -224,6 +225,7 @@ func checkEllipseBounds(x : int, y : int, w : int, h : int):
 
 func initMapWithCallback(callback: Callable):
 	tileMap.clear()
+	#print(demoTiles)
 	var tileInstance : Tile
 	var neighborAltitudes = []
 	var count = 0
@@ -232,6 +234,7 @@ func initMapWithCallback(callback: Callable):
 	for width in range(0, Global.mapSize.x):
 		for height in range(0, Global.mapSize.y):
 			tileInstance = tileBlueprint.instantiate()
+			tileInstance.demoTile = demoTiles
 			tileInstance.tile = Vector2i(width, height)
 			tileInstance.altitude = altitudeMap[tileInstance.tile]
 			tileInstance.raw = rawMap[tileInstance.tile]
@@ -267,6 +270,7 @@ func initMap():
 	for width in range(0, Global.mapSize.x):
 		for height in range(0, Global.mapSize.y):
 			tileInstance = tileBlueprint.instantiate()
+			tileInstance.demoTile = demoTiles
 			tileInstance.tile = Vector2i(width, height)
 			tileInstance.altitude = altitudeMap[tileInstance.tile]
 			tileInstance.raw = rawMap[tileInstance.tile]
@@ -279,7 +283,9 @@ func initMap():
 			tileInstance.diversifyModulate()
 			tileInstance.updateBuilding(getSpecificNeighbors(tileInstance.tile))
 			tileInstance.initialized = true
-			if tileInstance.tile in buildingMap: tileInstance.building = buildingMap[tileInstance.tile]
+			if tileInstance.tile in buildingMap: 
+				tileInstance.building = buildingMap[tileInstance.tile]
+				tileInstance.resetAltitudeDiversification()
 			else: tileInstance.building = Global.BUILDING.EMPTY
 			tileMap[tileInstance.tile] = tileInstance
 			add_child(tileInstance)

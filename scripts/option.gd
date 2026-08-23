@@ -86,7 +86,7 @@ func quickTradeLabel(res: Global.RESOURCE):
 	else: label.text = "Selling "
 	label.text += str(Global.trades[res])
 	if res == Global.RESOURCE.CIVGOODS:
-		label.text += " [img]" + Global.resIcons[res] + "[/img] Civilian Goods"
+		label.text += " [img]" + Global.resIcons[res] + "[/img] Civ. Goods"
 	else: label.text += " [img]" + Global.resIcons[res] + "[/img] " + str(Global.RESOURCE.keys()[res]).replace(" ", "_").capitalize()
 
 func _ready(): 

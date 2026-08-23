@@ -31,6 +31,7 @@ func _ready():
 	ui.makeSidebar(SidebarOption.TYPE.MAIN)
 	map.updateAllBuildings()
 	#print(map.activationMap)
+	ui.nextTurnButton.initiate(Global.turn, Global.gameLength)
 	tween = get_tree().create_tween()
 	tween.set_parallel(false)
 	tween.tween_property($canvas/Transition, "material:shader_parameter/radius", 1.0, 1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

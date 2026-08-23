@@ -6,6 +6,9 @@ var buildingCount = 0
 var cityCount = 0
 var mineCount = 0
 
+var hideBuildings = false
+var shadeUnselected = true
+
 var loadSlot = 0
 
 var screenSize = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"),
@@ -28,6 +31,9 @@ var turn = 0
 var gameLength = 60 #normally 60 is best
 
 var score = 0
+
+func calculateTextboxHeight(width, text, lineHeight = 32):
+	return (ceil(len(text)/(width/8)) * lineHeight)
 
 enum ACHIEVEMENTS {
 	build10,build20,build30,build40,build50,build60,build70,build80,build90,build100,
@@ -133,7 +139,7 @@ var resourceDescriptions = {
 	RESOURCE.IRON: "A common metal ore, essential for Steel production.",
 	RESOURCE.COPPER: "A conductive metal ore used for wiring and Electronics.",
 	RESOURCE.ZINC: "A soft metal ore used in alloys and galvanization.",
-	RESOURCE.ALUMINUM: "A lightweight metal ore with wide industrial applications.",
+	RESOURCE.ALUMINUM: "A lightweight metal ore with aerospace applications.",
 	RESOURCE.GOLD: "A rare and valuable metal used in Electronics.",
 	RESOURCE.URANIUM: "A radioactive ore used to fuel nuclear reactors.",
 	RESOURCE.LITHIUM: "A reactive metal essential for battery production.",
@@ -249,7 +255,24 @@ enum TERRAIN {
 	ICE,
 	CARBON,
 	PHOSPHORUS,
-	NITROGEN
+	NITROGEN,
+	ALUMINUM
+}
+
+var terrainDescriptions = {
+	TERRAIN.PLAIN: "Unremarkable plains pocked with bumpy craters and gray, dusty regolith.",
+	TERRAIN.SEA: "A vast body of dark, reflective water, melted from ice.",
+	TERRAIN.IRON: "A deposit of Iron, a common metal ore essential for Steel production.",
+	TERRAIN.COPPER: "A deposit of Copper, a conductive metal ore used for wiring and Electronics.",
+	TERRAIN.ZINC: "A deposit of Zinc, a soft metal ore used in alloys and galvanization.",
+	TERRAIN.GOLD: "A deposit of Gold, a rare and valuable metal used in Electronics.",
+	TERRAIN.URANIUM: "A deposit of Uranium, a radioactive ore used to fuel nuclear reactors.",
+	TERRAIN.LITHIUM: "A deposit of Lithium, a reactive metal essential for battery production.",
+	TERRAIN.ICE: "A surface deposit of Ice. It can be melted into Water, a ubiquitous resource.",
+	TERRAIN.CARBON: "A deposit of Carbon, a dark mineral used in Steel production.",
+	TERRAIN.PHOSPHORUS: "A pale amber deposit of frozen Phosphorus encased in a deposit of Ice.",
+	TERRAIN.NITROGEN: "A chalky white buildup of frozen Nitrogen encased in a deposit of Ice.",
+	TERRAIN.ALUMINUM: "A deposit of Aluminum, a lightweight metal ore with aerospace applications."
 }
 
 enum BUILDING {

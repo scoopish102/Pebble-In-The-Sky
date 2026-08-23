@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://qbwms1yhjyw0" path="res://scripts/yna.gd" id="1_dknk8"]
 [ext_resource type="Script" uid="uid://xdv74gbrqthk" path="res://scripts/option.gd" id="1_xfqdh"]
-[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="2_p4kr8"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.8.16.png" id="2_p4kr8"]
 [ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="4_1sgan"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_is8kj"]
