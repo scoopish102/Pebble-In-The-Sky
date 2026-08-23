@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://d4d5lohx4tmyt"]
 
-[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ehums"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.8.16.png" id="1_ehums"]
 [ext_resource type="Script" uid="uid://boc1l3cxug2tw" path="res://scripts/infobox.gd" id="2_1too7"]
 [ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="3_hcbst"]
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="4_h1n6h"]

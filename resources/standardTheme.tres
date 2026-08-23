@@ -1,7 +1,7 @@
-[gd_resource type="Theme" load_steps=16 format=3 uid="uid://tcq20j1ueh3t"]
+[gd_resource type="Theme" load_steps=25 format=3 uid="uid://tcq20j1ueh3t"]
 
 [ext_resource type="StyleBox" uid="uid://d1xe4gvcw48jq" path="res://resources/optionStyleBox.tres" id="1_6xlmj"]
-[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_ddgra"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.8.16.png" id="2_6xlmj"]
 [ext_resource type="FontFile" uid="uid://s67b8ntcm0he" path="res://assets/Perfect DOS VGA 437 Win.ttf" id="3_6xlmj"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_y084k"]
@@ -40,7 +40,7 @@ region_rect = Rect2(640, 0, 96, 96)
 modulate_color = Color(0.75, 0.75, 0.75, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8niu7"]
-texture = ExtResource("1_ddgra")
+texture = ExtResource("2_6xlmj")
 texture_margin_left = 21.0
 texture_margin_top = 21.0
 texture_margin_right = 21.0
@@ -71,6 +71,44 @@ texture_margin_bottom = 21.0
 region_rect = Rect2(640, 0, 96, 96)
 modulate_color = Color(0.82916665, 1, 0.75, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6xlmj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fbno5"]
+texture = ExtResource("2_6xlmj")
+texture_margin_left = 25.0
+texture_margin_top = 7.0
+texture_margin_right = 25.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(736, 96, 32, 32)
+modulate_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1181y"]
+texture = ExtResource("2_6xlmj")
+texture_margin_left = 25.0
+texture_margin_top = 7.0
+texture_margin_right = 25.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(736, 96, 32, 32)
+modulate_color = Color(0.95, 0.95, 0.95, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dn6i7"]
+texture = ExtResource("2_6xlmj")
+texture_margin_left = 25.0
+texture_margin_top = 7.0
+texture_margin_right = 25.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(736, 96, 32, 32)
+modulate_color = Color(0.95, 0.95, 0.95, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aqso4"]
+texture = ExtResource("2_6xlmj")
+texture_margin_left = 25.0
+texture_margin_top = 7.0
+texture_margin_right = 25.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(736, 96, 32, 32)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddgra"]
 content_margin_left = 8.0
 content_margin_top = 2.0
@@ -82,6 +120,46 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6xlmj"]
+bg_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y084k"]
+bg_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5tn0"]
+bg_color = Color(0.17, 0.17, 0.17, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w51wq"]
+content_margin_left = 2.0
+content_margin_top = 0.0
+content_margin_right = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.5019608, 0.5019608, 0.5019608, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [resource]
 default_font = ExtResource("3_6xlmj")
@@ -97,5 +175,17 @@ ProgressBar/font_sizes/font_size = 16
 ProgressBar/styles/background = SubResource("StyleBoxTexture_ht7ku")
 ProgressBar/styles/fill = SubResource("StyleBoxTexture_hnnik")
 RichTextLabel/colors/default_color = Color(0.23137255, 0.23137255, 0.23137255, 1)
+TabContainer/constants/icon_separation = 0
+TabContainer/constants/side_margin = 0
+TabContainer/constants/tab_separation = 0
+TabContainer/styles/panel = SubResource("StyleBoxEmpty_6xlmj")
+TabContainer/styles/tab_disabled = SubResource("StyleBoxTexture_fbno5")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxTexture_1181y")
+TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_dn6i7")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_aqso4")
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ddgra")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_6xlmj")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_y084k")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_v5tn0")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_w51wq")

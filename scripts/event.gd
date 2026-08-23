@@ -46,3 +46,11 @@ signal updateProgressBar(percent)
 signal loadScene(nextScene)
 @warning_ignore("unused_signal")
 signal achieve(achievement)
+@warning_ignore("unused_signal")
+signal tileDeselected
+@warning_ignore("unused_signal")
+signal tileSelected(tile: Vector2i, terrain, building, activation: bool, altitude)
+@warning_ignore("unused_signal")
+signal tileSelectedNoArgs
+@warning_ignore("unused_signal")
+signal updateTileAppearances

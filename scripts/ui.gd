@@ -1,6 +1,6 @@
 extends Control
 
-@export var sidebar : PanelContainer
+@export var sidebar : Control
 @export var resourcebar : Control
 @export var sidebarOptions : VBoxContainer
 @export var resourcebarOptions : HBoxContainer
@@ -10,6 +10,8 @@ extends Control
 @export var notifications : Control
 @export var sidebarCover : Panel
 @export var scoringPanel : Panel
+@export var categoryButtons : Array[Button]
+@export var nextTurnButton : Panel
 
 @export var resourceBlueprint : PackedScene
 @export var optionBlueprint : PackedScene
@@ -24,6 +26,9 @@ extends Control
 @export var scoringPanelTitle : RichTextLabel
 @export var scoringPanelContent : RichTextLabel
 @export var leaderboard : RichTextLabel
+
+@export var showBuildingIcon: Texture
+@export var hideBuildingIcon: Texture
 
 var leaders = [
 	"1. Leto II",
@@ -95,6 +100,10 @@ func _ready():
 	Event.trade_order.connect(tradeConfirmed)
 	Event.direct_confirmation.connect(directToPostConfirmation)
 	Event.cancel_trade_confirmation.connect(cancelTradeConfirmation)
+	#Event.tileSelected.connect(openTileInfo)
+	#Event.tileDeselected.connect(closeTileInfo)
+	get_tree().get_root().size_changed.connect(windowSizeChanged)
+	windowSizeChanged()
 	makeSidebar(SidebarOption.TYPE.MAIN)
 	scoringPanel.visible = false
 	#updateResourcebar()
@@ -108,6 +117,53 @@ func _process(_delta):
 	if Input.is_action_just_pressed("6"): changeResourceMenu(5)
 	if Input.is_action_just_pressed("7"): changeResourceMenu(6)
 	if Input.is_action_just_pressed("8"): changeResourceMenu(7)
+
+#func openTileInfo(tile, terrain, building, activation, altitude): pass
+#func closeTileInfo(): pass
+
+var showSidebar = false
+var stringToType = {
+	&"market":SidebarOption.TYPE.MARKET, &"tech":SidebarOption.TYPE.MARKET,
+	&"politics":SidebarOption.TYPE.MARKET, &"save":SidebarOption.TYPE.SAVE,
+	&"build":SidebarOption.TYPE.BUILD
+}
+
+func _on_button_toggled(toggled_on, emitter, type: StringName):
+	if toggled_on:
+		if not showSidebar: openSidebar(stringToType[type])
+		else: 
+			for button in categoryButtons: 
+				if button != emitter: button.set_pressed_no_signal(false)
+			makeSidebar(stringToType[type])
+	else: 
+		#print("lumbagos")
+		closeSidebar()
+
+func windowSizeChanged():
+	var screenSize = get_viewport_rect().size
+	if showSidebar: sidebar.position.x = screenSize.x-sidebar.size.x
+	else: sidebar.position.x = screenSize.x
+
+var tween : Tween
+
+func openSidebar(type: SidebarOption.TYPE): 
+	showSidebar = true
+	makeSidebar(type)
+	var screenSize = get_viewport_rect().size
+	if tween: tween.kill()
+	tween = get_tree().create_tween()
+	tween.tween_property(sidebar, "position:x", screenSize.x-sidebar.size.x, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+
+func closeSidebar(): 
+	showSidebar = false
+	for button in categoryButtons:
+		button.set_pressed_no_signal(false)
+	var screenSize = get_viewport_rect().size
+	if tween: tween.kill()
+	tween = get_tree().create_tween()
+	tween.tween_property(sidebar, "position:x", screenSize.x, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
 
 func changeResourceMenu(index: int):
 	categoryIndex = index
@@ -184,6 +240,7 @@ func createBuildingOption(building : Global.BUILDING):
 	sidebarOptions.add_child(option)
 
 func displayCurrentTrades():
+	createSidebarLabel("Current Trades")
 	var currentTrades = 0
 	for resource in Global.trades.keys(): 
 		if Global.trades[resource] != 0:
@@ -196,6 +253,12 @@ func displayCurrentTrades():
 				"\nTrade routes are created when you buy or sell resources on the market." + 
 				"\nIncrease your maximum trade capacity by building Spaceports.")
 		sidebarOptions.add_child(info)
+
+func createSidebarLabel(text):
+	var slabel = sLabelBlueprint.instantiate()
+	slabel.label.text = text
+	sidebarOptions.add_child(slabel)
+	return slabel
 
 func quickTradeInterface(resource : Global.RESOURCE):
 	var option = createOption(SidebarOption.TYPE.QUICKTRADE)
@@ -226,51 +289,60 @@ func makeSidebar(option : SidebarOption.TYPE):
 	match option:
 		SidebarOption.TYPE.MAIN:
 			#generateAchievementLog()
-			createOption(SidebarOption.TYPE.BUILD)
-			createOption(SidebarOption.TYPE.ACT)
-			createOption(SidebarOption.TYPE.MARKET)
-			createOption(SidebarOption.TYPE.NEXT_TURN)
-			createOption(SidebarOption.TYPE.SAVE)
-			createOption(SidebarOption.TYPE.EXIT)
+			#createOption(SidebarOption.TYPE.BUILD)
+			#createOption(SidebarOption.TYPE.ACT)
+			#createOption(SidebarOption.TYPE.MARKET)
+			#createOption(SidebarOption.TYPE.NEXT_TURN)
+			#createOption(SidebarOption.TYPE.SAVE)
+			#createOption(SidebarOption.TYPE.EXIT)
+			pass
 		SidebarOption.TYPE.BUILD:
+			createSidebarLabel("Build Menu")
 			createOption(SidebarOption.TYPE.COLONY)
 			createOption(SidebarOption.TYPE.POWER)
 			createOption(SidebarOption.TYPE.HARVEST)
 			createOption(SidebarOption.TYPE.PRODUCTION)
 			createOption(SidebarOption.TYPE.MANUFACTORY)
-			backOption(SidebarOption.TYPE.MAIN)
+			#backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.ACT:
 			createOption(SidebarOption.TYPE.DEMOLISH)
 			createActivateOption()
-			backOption(SidebarOption.TYPE.MAIN)
+			#backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.MARKET:
+			createSidebarLabel("Market Menu")
 			createOption(SidebarOption.TYPE.CURRENT_TRADES)
 			createMarket()
-			backOption(SidebarOption.TYPE.MAIN)
+			#backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.CURRENT_TRADES:
 			displayCurrentTrades()
 			backOption(SidebarOption.TYPE.MARKET)
 		SidebarOption.TYPE.SAVE:
+			createSidebarLabel("Save and Exit")
 			createOption(SidebarOption.TYPE.SLOT_1)
 			createOption(SidebarOption.TYPE.SLOT_2)
 			createOption(SidebarOption.TYPE.SLOT_3)
-			backOption(SidebarOption.TYPE.MAIN)
+			createOption(SidebarOption.TYPE.EXIT)
+			#backOption(SidebarOption.TYPE.MAIN)
 		SidebarOption.TYPE.COLONY:
+			createSidebarLabel("Colony Buildings")
 			createBuildingOption(Global.BUILDING.CITY)
 			createBuildingOption(Global.BUILDING.ROAD)
 			createBuildingOption(Global.BUILDING.SPACEPORT)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.POWER:
+			createSidebarLabel("Power Buildings")
 			createBuildingOption(Global.BUILDING.SOLAR_FARM)
 			createBuildingOption(Global.BUILDING.NUCLEAR_PLANT)
 			createBuildingOption(Global.BUILDING.FUSION_PLANT)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.HARVEST:
+			createSidebarLabel("Harvesters")
 			createBuildingOption(Global.BUILDING.MINE)
 			createBuildingOption(Global.BUILDING.QUARRY)
 			createBuildingOption(Global.BUILDING.ICE_MINE)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.PRODUCTION:
+			createSidebarLabel("Production Buildings")
 			createBuildingOption(Global.BUILDING.STEEL_MILL)
 			createBuildingOption(Global.BUILDING.CONCRETE_PLANT)
 			createBuildingOption(Global.BUILDING.BRASS_MILL)
@@ -282,11 +354,13 @@ func makeSidebar(option : SidebarOption.TYPE):
 			createBuildingOption(Global.BUILDING.ELECTROLYZER)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.MANUFACTORY:
+			createSidebarLabel("Manufactories")
 			createBuildingOption(Global.BUILDING.ELECTRONICS_FACTORY)
 			createBuildingOption(Global.BUILDING.CIVILIAN_FACTORY)
 			backOption(SidebarOption.TYPE.BUILD)
 		SidebarOption.TYPE.SCORE:
 			scoringPanel.visible = true
+			closeSidebar()
 			scoringPanelTitle.text = "Colony of" + Global.colonyName + "- [color=000099ff]" + str(Global.score) + "[img]res://resources/resIcons/score.tres[/img] Score[/color]"
 			leaderboard.text = generateLeaderboard()
 			scoringPanelContent.text = generateAchievementLog()
@@ -537,6 +611,22 @@ func updateBuildingConfirmation():
 		infobox.neighbors = selectedNeighbors
 		infobox.updateText()
 
+func quickNotif(title : String, content : String, option : String = "Okay."):
+	var notif := singleOptionNotificationBlueprint.instantiate()
+	notifications.add_child(notif)
+	notif.size.x = 380
+	notif.centerOnScreen()
+	notif.setContent(title, content)
+	notif.setOption(option)
+
+func quickConfirm(title : String, content : String):
+	var notif := choiceNotificationBlueprint.instantiate()
+	notifications.add_child(notif)
+	notif.size.x = 380
+	notif.centerOnScreen()
+	notif.setContent(title, content)
+	notif.setChoices("Confirm Action?")
+
 func cancelTradeConfirmation(resource):
 	var tradeCannotCancel = ((Global.reserves[Global.RESOURCE.MONEY] + Global.budgets[Global.RESOURCE.MONEY] - 
 			Global.trades[resource] * Global.resourcePrices[resource]) < 0 or 
@@ -545,38 +635,44 @@ func cancelTradeConfirmation(resource):
 	if tradeCannotCancel: 
 		var notif := singleOptionNotificationBlueprint.instantiate()
 		notifications.add_child(notif)
-		notif.size = Vector2(380, 300)
+		notif.size.x = 420
 		notif.centerOnScreen()
 		var ttext = "Currently "
 		if Global.trades[resource] > 0: ttext += "buying "
 		else: ttext += "selling "
-		ttext += str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[resource] + "[/img] per turn."
+		ttext += str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[resource] + "[/img] "
+		if resource == Global.RESOURCE.CIVGOODS: ttext += "Civilian Goods per turn."
+		else: ttext += (camelConversion(str(Global.RESOURCE.keys()[resource]))) + " per turn."
 		#ttext += "\nThis consumes " + str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.TRADE] + "[/img] Trade Capacity."
 		ttext += "\nThis trade "
 		if Global.trades[resource] > 0: ttext += "costs "
 		else: ttext += "sells for "
-		ttext += str(abs(Global.trades[resource]*Global.resourcePrices[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.MONEY] + "[/img] per turn."
+		ttext += str(abs(Global.trades[resource]*Global.resourcePrices[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.MONEY] + "[/img] Money per turn."
 		if (Global.reserves[resource] + Global.budgets[resource] - 
 			Global.trades[resource] * Global.resourcePrices[resource]) < 0:
 			ttext += "\nYou cannot cancel this trade, as your colony relies on the resources gained from this trade."
 		if (Global.reserves[Global.RESOURCE.MONEY] + Global.budgets[Global.RESOURCE.MONEY] - 
 			Global.trades[resource] * Global.resourcePrices[resource]) < 0:
 			ttext += "\nYour colony relies on the profit gained from this trade."
-		notif.setContent("[color=990000ff]Cannot Cancel Trade Route.[/color]", ttext)
+		notif.setContent("[color=990000ff]Cannot Cancel Trade Route.[/color]", ttext, 36)
+		#notif.fixHeight(48)
 		notif.setOption("Okay.")
 		return
 	else:
 		var choice := choiceNotificationBlueprint.instantiate()
 		notifications.add_child(choice)
-		choice.size = Vector2(380, 256)
+		choice.size.x = 420
 		choice.centerOnScreen()
 		var ttext = "Currently "
 		if Global.trades[resource] > 0: ttext += "buying "
 		else: ttext += "selling "
-		ttext += str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[resource] + "[/img] per turn."
+		ttext += str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[resource] + "[/img] "
+		if resource == Global.RESOURCE.CIVGOODS: ttext += "Civilian Goods every turn."
+		else: ttext += (camelConversion(str(Global.RESOURCE.keys()[resource]))) + " per turn."
 		ttext += "\nCancelling this trade route will free up " + str(abs(Global.trades[resource])) + " [img]" + Global.resIcons[Global.RESOURCE.TRADE] + "[/img] Trade Capacity."
-		choice.setContent("[img]"+Global.resIcons[resource]+"[/img]"+" Trade Route Cancellation", ttext)
+		choice.setContent("[img]"+Global.resIcons[resource]+"[/img]"+" Trade Route Cancellation", ttext, 36)
 		choice.setChoices("Cancel This Trade Route?")
+		#choice.fixHeight(36)
 		var result = await choice.getChoice()
 		if result:
 			Global.trades[resource] = 0
@@ -588,7 +684,7 @@ func cancelTradeConfirmation(resource):
 func confirmSave(slot):
 	var choice := choiceNotificationBlueprint.instantiate()
 	notifications.add_child(choice)
-	choice.size = Vector2(256, 216)
+	choice.size.x = 256
 	choice.setContent("[img]res://resources/uiTrimIcons/save.tres[/img] Save Game", "This will save your game on Slot " + str(slot) + ".")
 	choice.setChoices("Proceed?")
 	choice.centerOnScreen()
@@ -614,7 +710,7 @@ func deleteSlot(slot: int):
 func confirmExit():
 	var choice := choiceNotificationBlueprint.instantiate()
 	notifications.add_child(choice)
-	choice.size = Vector2(300, 256)
+	choice.size.x = 256
 	choice.centerOnScreen()
 	if sidebarMenu != SidebarOption.TYPE.SCORE: 
 		choice.setContent("[img]res://resources/uiTrimIcons/exit.tres[/img] Exit Game", "This will send you to the main menu. Make sure to save your game first.")
@@ -628,8 +724,8 @@ func confirmExit():
 	if result: 
 		if sidebarMenu == SidebarOption.TYPE.SCORE and Global.loadSlot != 0: deleteSlot(Global.loadSlot)
 		Event.loadScene.emit("res://scenes/mainMenu.tscn")#get_tree().change_scene_to_file("res://scenes/mainMenu.tscn")
-	else: 
-		scoringPanel.visible = false
+	else: return
+		#scoringPanel.visible = false
 
 func directToPostConfirmation(option : SidebarOption.TYPE):
 	match option:
@@ -644,6 +740,15 @@ func directToPostConfirmation(option : SidebarOption.TYPE):
 			await confirmExit()
 	Event.deselect_cursor.emit()
 	makeSidebar(sidebarMenu)
+
+func endGame():
+	Event.deselect_cursor.emit()
+	Global.score += Global.budgets[Global.RESOURCE.WEALTH]+Global.budgets[Global.RESOURCE.INDUSTRY]+Global.budgets[Global.RESOURCE.INFLUENCE]
+	makeSidebar(SidebarOption.TYPE.SCORE)
+
+func beginNextTurn():
+	Event.next_turn.emit()
+	updateResourcebar()
 
 func postConfirmation(confirm : bool, option : SidebarOption.TYPE, building, startActivated=true):
 	#print("postconfirm")
@@ -688,3 +793,13 @@ func _on_notification_container_child_exiting_tree(_node):
 	if notifications.get_child_count() - 1 == 0:
 		#print("oy") 
 		sidebarCover.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _on_buildings_toggled(toggled_on):
+	Global.hideBuildings = not toggled_on
+	Event.updateTileAppearances.emit()
+	if toggled_on: minimap.showbuildingButton.icon = showBuildingIcon
+	else: minimap.showbuildingButton.icon = hideBuildingIcon
+
+func _on_shade_toggled(toggled_on):
+	Global.shadeUnselected = toggled_on
+	Event.updateTileAppearances.emit()

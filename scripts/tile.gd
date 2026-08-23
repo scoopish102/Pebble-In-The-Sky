@@ -14,6 +14,8 @@ var selected = false
 var hover = false
 var normalHeight : float
 
+@export var demoTile = false #if this tile is just being used as a demonstration, e.g. minimap or main menu
+
 @export var building : Global.BUILDING = Global.BUILDING.EMPTY
 
 @export var subtiles : Array[Subtile]
@@ -22,7 +24,29 @@ var normalHeight : float
 @export var overall : AnimatedSprite2D
 
 func _ready():
-	pass
+	Event.tileSelectedNoArgs.connect(processModulate.bind(true))
+	Event.tileDeselected.connect(processModulate.bind(false))
+	Event.updateTileAppearances.connect(updateAppearances)
+	for subtile in subtiles:
+		subtile.demoTile = demoTile
+		subtile.tileCoord = tile
+
+func updateAppearances():
+	if not demoTile:
+		if not Global.hideBuildings: overall.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		else: overall.self_modulate = Color(1.0, 1.0, 1.0, 0.2)
+	processModulate(Global.selected)
+
+func processModulate(sel): 
+	if demoTile or not Global.shadeUnselected: 
+		modulate = Color(1.0, 1.0, 1.0, 1.0)
+		return
+	if sel:
+		if selected: 
+			modulate = Color(1.0, 1.0, 1.0, 1.0)
+			overall.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		else: modulate = Color(0.6, 0.6, 0.6, 1.0)
+	else: modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 func _process(_delta):
 	if not initialized: return

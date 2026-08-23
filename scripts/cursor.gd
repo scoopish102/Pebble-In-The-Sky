@@ -45,6 +45,16 @@ func select():
 	modulate = Color(255, 0, 0)
 	Event.update_confirmation.emit()
 	Event.update_demolish_confirmation.emit(tile)
+	var terrain = false
+	if tile in map.terrainMap: terrain = map.terrainMap[tile]
+	var building = false
+	if tile in map.buildingMap: building = map.buildingMap[tile]
+	var activation = false
+	if tile in map.activationMap: activation = map.activationMap[tile]
+	var altitude = false
+	if tile in map.altitudeMap: altitude = map.altitudeMap[tile]
+	Event.tileSelected.emit(tile, terrain, building, activation, altitude)
+	Event.tileSelectedNoArgs.emit()
 	#print(tile)
 	#print(Global.budgets)
 
@@ -61,6 +71,7 @@ func deselect():
 	modulate = Color(255, 250, 0)
 	Event.update_confirmation.emit()
 	Event.update_demolish_confirmation.emit(tile)
+	Event.tileDeselected.emit()
 	
 func alignAltitude(_tile):
 	if map.tileMap[tile].waterlogged: 

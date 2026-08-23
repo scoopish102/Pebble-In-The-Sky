@@ -5,10 +5,22 @@ class_name Subtile
 @export var tile : AnimatedSprite2D
 @export var terrain : AnimatedSprite2D
 @export var building : AnimatedSprite2D
+var tileCoord : Vector2i
+var demoTile = false
 
 func _ready():
 	if randi()%2 == 0:
 		scale.x *= -1
+	Event.updateTileAppearances.connect(updateAppearances)
+	Event.tileSelectedNoArgs.connect(updateAppearances)
+	Event.tileDeselected.connect(updateAppearances)
+
+func updateAppearances():
+	if not demoTile: 
+		if not Global.hideBuildings: building.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		else: building.self_modulate = Color(1.0, 1.0, 1.0, 0.2)
+		if Global.selected and Global.selectedTile == tileCoord: 
+			building.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 func updateTerrain(_terrain):
 	terrain.set_animation(Global.TERRAIN.keys()[_terrain])

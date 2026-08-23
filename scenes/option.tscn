@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ddxwn18d7v2xv"]
 
 [ext_resource type="Script" uid="uid://xdv74gbrqthk" path="res://scripts/option.gd" id="1_d68u3"]
-[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="2_s84fu"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.8.16.png" id="2_s84fu"]
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="3_0chu7"]
 
 [node name="option" type="Control" node_paths=PackedStringArray("hitbox", "defaultSprite", "hoverSprite", "disabledSprite", "label")]
@@ -66,8 +66,7 @@ patch_margin_bottom = 32
 [node name="disabled" type="NinePatchRect" parent="default"]
 visible = false
 self_modulate = Color(0.627451, 0.627451, 0.627451, 1)
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2

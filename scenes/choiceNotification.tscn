@@ -5,11 +5,23 @@
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="3_i13ru"]
 
 [node name="ChoiceNotification" node_paths=PackedStringArray("choiceTitle", "confirmButton", "cancelButton") instance=ExtResource("1_8ge3t")]
-offset_bottom = 256.0
+anchor_top = 0.157
+anchor_bottom = 0.157
+offset_top = 0.16001129
+offset_bottom = 256.16
 script = ExtResource("2_b8564")
 choiceTitle = NodePath("Backdrop/VBoxContainer/MarginContainer/VBoxContainer/nullContainer/Backdrop_MarginContainer_VBoxContainer#ChoiceTitle")
 confirmButton = NodePath("Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#Yes")
 cancelButton = NodePath("Backdrop_MarginContainer_VBoxContainer#Choices/Backdrop_MarginContainer_VBoxContainer_Choices#No")
+
+[node name="VBoxContainer" parent="Backdrop" index="0"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MarginContainer" parent="Backdrop/VBoxContainer" index="2"]
 size_flags_vertical = 3

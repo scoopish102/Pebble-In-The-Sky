@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dh5syg6bedl81" path="res://scenes/singleOptionNotification.tscn" id="5_ldpc3"]
 [ext_resource type="Shader" uid="uid://dggd7bb42vlj2" path="res://scripts/starbackdrop.gdshader" id="6_1anpv"]
 [ext_resource type="PackedScene" uid="uid://cmy67ylw4r8ip" path="res://scenes/loadingNotification.tscn" id="6_dtd21"]
-[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="6_tov5d"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.8.16.png" id="6_tov5d"]
 [ext_resource type="Texture2D" uid="uid://du65fex3k0rvf" path="res://resources/uiTrimIcons/play.tres" id="6_y35fp"]
 [ext_resource type="Script" uid="uid://b8htoyh8j8sjq" path="res://scripts/stars.gd" id="7_3wx87"]
 [ext_resource type="Texture2D" uid="uid://dvw7jaucol7nf" path="res://resources/uiTrimIcons/load.tres" id="7_dj72i"]
@@ -27,7 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://b1pip2e8wvs44" path="res://assets/uiTrims.6.9.png" id="17_5p8yk"]
 [ext_resource type="Texture2D" uid="uid://bxbikkrtkrvg0" path="res://resources/logoLetters/T.tres" id="18_3wx87"]
 [ext_resource type="Texture2D" uid="uid://cnmrxkqxvfb8m" path="res://resources/logoLetters/H.tres" id="19_5p8yk"]
-[ext_resource type="Texture2D" uid="uid://c71lng06jkjo8" path="res://assets/uiTrims.7.30.png" id="19_q6vq2"]
+[ext_resource type="Texture2D" uid="uid://bm3ktyx3f2s7o" path="res://assets/uiTrims.8.8.png" id="19_q6vq2"]
 [ext_resource type="Texture2D" uid="uid://8mgslx1n45oh" path="res://resources/logoLetters/S.tres" id="20_un3av"]
 [ext_resource type="Texture2D" uid="uid://ddwus5wxhfau2" path="res://resources/logoLetters/K.tres" id="21_dtd21"]
 [ext_resource type="Texture2D" uid="uid://dq6ubxg7t60fk" path="res://resources/logoLetters/Y.tres" id="22_q6vq2"]
@@ -173,18 +173,22 @@ render_target_update_mode = 4
 [node name="menu" type="Node2D" parent="Tiles/TileContainer/SubViewport"]
 script = ExtResource("12_808lr")
 tileBlueprint = ExtResource("24_tlicg")
+demoTiles = true
 
 [node name="ss1" type="Node2D" parent="Tiles/TileContainer/SubViewport"]
 script = ExtResource("12_808lr")
 tileBlueprint = ExtResource("24_tlicg")
+demoTiles = true
 
 [node name="ss2" type="Node2D" parent="Tiles/TileContainer/SubViewport"]
 script = ExtResource("12_808lr")
 tileBlueprint = ExtResource("24_tlicg")
+demoTiles = true
 
 [node name="ss3" type="Node2D" parent="Tiles/TileContainer/SubViewport"]
 script = ExtResource("12_808lr")
 tileBlueprint = ExtResource("24_tlicg")
+demoTiles = true
 
 [node name="cursor" parent="Tiles/TileContainer/SubViewport" node_paths=PackedStringArray("map") instance=ExtResource("9_1anpv")]
 visible = false

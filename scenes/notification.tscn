@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://dubkr27umy28b"]
 
 [ext_resource type="Script" uid="uid://baynsjf2giebl" path="res://scripts/notification.gd" id="1_8xvt8"]
-[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.10.18.png" id="1_et4bn"]
+[ext_resource type="Texture2D" uid="uid://bi5cguwqwq8vk" path="res://assets/ui.8.16.png" id="1_et4bn"]
 [ext_resource type="Theme" uid="uid://tcq20j1ueh3t" path="res://resources/standardTheme.tres" id="2_8xvt8"]
-[ext_resource type="Texture2D" uid="uid://c71lng06jkjo8" path="res://assets/uiTrims.7.30.png" id="5_8ldpm"]
+[ext_resource type="Texture2D" uid="uid://bm3ktyx3f2s7o" path="res://assets/uiTrims.8.8.png" id="5_8ldpm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0yy87"]
 atlas = ExtResource("1_et4bn")
@@ -13,23 +13,33 @@ region = Rect2(640, 0, 96, 96)
 atlas = ExtResource("5_8ldpm")
 region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tafmc"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yejxv"]
 load_path = "res://.godot/imported/uiTrims.6.3.png-7818ef67f7648d1c948c091bf68d1407.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_syajt"]
-atlas = SubResource("CompressedTexture2D_tafmc")
+atlas = SubResource("CompressedTexture2D_yejxv")
 region = Rect2(32, 0, 16, 16)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1fyay"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8ldpm"]
 load_path = "res://.godot/imported/uiTrims.6.3.png-7818ef67f7648d1c948c091bf68d1407.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2iyk2"]
-atlas = SubResource("CompressedTexture2D_1fyay")
+atlas = SubResource("CompressedTexture2D_8ldpm")
 region = Rect2(0, 0, 16, 16)
 
 [node name="Notification" type="VBoxContainer" node_paths=PackedStringArray("title", "exitButton", "content")]
-offset_right = 295.0
-offset_bottom = 238.0
+anchors_preset = -1
+anchor_left = 0.38500002
+anchor_top = 0.335
+anchor_right = 0.38500002
+anchor_bottom = 0.335
+offset_left = -0.3000183
+offset_top = -0.2000122
+offset_right = 294.69998
+offset_bottom = 237.79999
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
 theme_override_constants/separation = 0
 script = ExtResource("1_8xvt8")
 title = NodePath("Backdrop/VBoxContainer/HBoxContainer/Title")
@@ -51,11 +61,8 @@ axis_stretch_vertical = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Backdrop"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 295.0
+offset_bottom = 238.0
 theme_override_constants/separation = 0
 
 [node name="Buffer" type="Control" parent="Backdrop/VBoxContainer"]
