@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://6fwdjhwe1s06"]
+[gd_scene load_steps=11 format=3 uid="uid://6fwdjhwe1s06"]
 
 [ext_resource type="Script" uid="uid://5el1ykfmg6ku" path="res://scripts/world.gd" id="1_wjt5s"]
-[ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="2_ea1j2"]
 [ext_resource type="Script" uid="uid://ba2diyby82fov" path="res://scripts/game.gd" id="2_gh404"]
 [ext_resource type="Script" uid="uid://djlynsxl2ljed" path="res://scripts/camera.gd" id="3_13y1w"]
-[ext_resource type="Script" uid="uid://ba7tn63bxb664" path="res://scripts/map.gd" id="4_4fw7i"]
+[ext_resource type="PackedScene" uid="uid://bybb71a6paok8" path="res://scenes/map.tscn" id="5_4mrxx"]
 [ext_resource type="PackedScene" uid="uid://cp4vwm6sh6d5l" path="res://scenes/cursor.tscn" id="5_5xvi1"]
 [ext_resource type="PackedScene" uid="uid://dbtsa16q8xity" path="res://scenes/ui.tscn" id="6_d88ih"]
 [ext_resource type="Shader" uid="uid://dggd7bb42vlj2" path="res://scripts/starbackdrop.gdshader" id="7_4mrxx"]
@@ -39,7 +38,7 @@ script = ExtResource("1_wjt5s")
 
 [node name="game" type="Node" parent="." node_paths=PackedStringArray("map", "camera", "ui", "cursor")]
 script = ExtResource("2_gh404")
-map = NodePath("../map")
+map = NodePath("")
 camera = NodePath("../camera")
 ui = NodePath("../canvas/ui")
 cursor = NodePath("../cursor")
@@ -60,12 +59,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="map" type="Node2D" parent="."]
-script = ExtResource("4_4fw7i")
-tileBlueprint = ExtResource("2_ea1j2")
+[node name="map" parent="." instance=ExtResource("5_4mrxx")]
 
 [node name="cursor" parent="." node_paths=PackedStringArray("map") instance=ExtResource("5_5xvi1")]
-map = NodePath("../map")
+map = NodePath("")
 
 [node name="canvas" type="CanvasLayer" parent="."]
 

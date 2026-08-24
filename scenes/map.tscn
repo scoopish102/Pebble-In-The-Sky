@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=4 uid="uid://bybb71a6paok8"]
+
+[ext_resource type="Script" uid="uid://ba7tn63bxb664" path="res://scripts/map.gd" id="1_paxxb"]
+[ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="2_gldc4"]
+[ext_resource type="TileSet" uid="uid://cmc0ye3sbvcr0" path="res://resources/baseTileset.tres" id="3_gldc4"]
+
+[node name="map" type="Node2D" node_paths=PackedStringArray("base", "shrubs")]
+script = ExtResource("1_paxxb")
+tileBlueprint = ExtResource("2_gldc4")
+base = NodePath("base")
+shrubs = NodePath("shrubs")
+
+[node name="base" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAD///3/AQAAAAAAAAD///7/AQAAAAAAAAD/////AQAAAAAAAAD//wAAAQAAAAAAAAAAAP3/AQAAAAAAAAAAAP7/AQAAAAAAAAAAAP//AQAAAAAAAAAAAAAAAQAAAAAAAAABAP3/AQAAAAAAAAABAP7/AQAAAAAAAAABAP//AQAAAAAAAAABAAAAAQAAAAAAAAACAP3/AQAAAAAAAAACAP7/AQAAAAAAAAACAP//AQAAAAAAAAACAAAAAQAAAAAAAAA=")
+tile_set = ExtResource("3_gldc4")
+
+[node name="shrubs" type="TileMapLayer" parent="."]
+tile_set = ExtResource("3_gldc4")
+
+[node name="buildings" type="TileMapLayer" parent="."]
+tile_set = ExtResource("3_gldc4")

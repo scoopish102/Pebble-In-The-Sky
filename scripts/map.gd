@@ -8,6 +8,9 @@ var altitudeMap = {}
 var terrainMap = {}
 var rawMap = {}
 var tileMap = {} #contains indexed references to ALL tile nodes, organized by tile position
+#alternatively for PM mode:
+@export var base : TileMapLayer #the actual physical appearnace of the bottom square base
+@export var shrubs : TileMapLayer #the shrubbery on top, like resource deposits or craters
 var buildingMap = {}
 var activationMap = {}
 var noise = preload("res://resources/altitudeNoise.tres")
@@ -127,6 +130,7 @@ func generateMap():
 	guaranteedOres()
 	generatePoles()
 	generateColonyName()
+	print(altitudeMap)
 
 func generateColonyName() -> String:
 	var colonyName = "Pebble"
@@ -260,6 +264,15 @@ func initMapWithCallback(callback: Callable):
 				callback.call(float(totalCount) / (Global.mapSize.x * Global.mapSize.y))
 	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
 	return spawn
+
+func initMapPM():
+	base.clear()
+	shrubs.clear()
+	var coords : Vector2i
+	for width in range(0, Global.mapSize.x):
+		for height in range(0, Global.mapSize.y):
+			coords = Vector2(width, height)
+			base.set_cell(coords, 0, Vector2(0, 0))
 
 func initMap():
 	tileMap.clear()
