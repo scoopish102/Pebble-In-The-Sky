@@ -76,7 +76,8 @@ func toggleActivation(tile):
 
 func updateAllBuildings():
 	for tile in buildingMap:
-		tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
+		pass
+		#tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
 	Event.update_resources.emit()
 
 func demolish(tile):
@@ -89,14 +90,15 @@ func demolish(tile):
 func updateRoads():
 	for tile in buildingMap.keys():
 		if buildingMap[tile] == Global.BUILDING.ROAD:
-			tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
+			#tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
+			pass
 
 func createBuilding(tile : Vector2i, building : Global.BUILDING, startActivated=true):
 	buildingMap[tile] = building
 	activationMap[tile] = startActivated
-	tileMap[tile].building = building
-	tileMap[tile].updateBuilding(getSpecificNeighbors(tile), startActivated)
-	tileMap[tile].resetAltitudeDiversification()
+	#tileMap[tile].building = building
+	#tileMap[tile].updateBuilding(getSpecificNeighbors(tile), startActivated)
+	#tileMap[tile].resetAltitudeDiversification()
 	Global.score += Global.buildingScores[building]
 	Global.buildingCount += 1
 	if building == Global.BUILDING.MINE or building == Global.BUILDING.ICE_MINE: Global.mineCount += 1
@@ -120,6 +122,7 @@ func generateMap():
 		for height in range(0, Global.mapSize.y):
 			rawNoise = noise.get_noise_2dv(Vector2i(width, height) + randomOffset)
 			rawMap[Vector2i(width, height)] = rawNoise
+			#print(rawNoise)
 			if rawNoise >= 0.25: rawNoise = 3
 			elif rawNoise >= 0: rawNoise = 2
 			elif rawNoise >= -0.25: rawNoise = 1
@@ -130,7 +133,7 @@ func generateMap():
 	guaranteedOres()
 	generatePoles()
 	generateColonyName()
-	print(altitudeMap)
+	#print(altitudeMap)
 
 func generateColonyName() -> String:
 	var colonyName = "Pebble"
@@ -265,14 +268,123 @@ func initMapWithCallback(callback: Callable):
 	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
 	return spawn
 
+var shrubAtlas = {
+	Global.TERRAIN.PLAIN : Vector2i(0, 0),
+	Global.TERRAIN.IRON : Vector2i(0, 1),
+	Global.TERRAIN.ZINC : Vector2i(0, 2),
+	Global.TERRAIN.GOLD : Vector2i(0, 3),
+	Global.TERRAIN.URANIUM : Vector2i(0, 4),
+	Global.TERRAIN.PHOSPHORUS : Vector2i(0, 5),
+	Global.TERRAIN.CARBON : Vector2i(2, 1),
+	Global.TERRAIN.LITHIUM : Vector2i(2, 2),
+	Global.TERRAIN.COPPER : Vector2i(2, 3),
+	Global.TERRAIN.ICE : Vector2i(2, 4),
+	Global.TERRAIN.NITROGEN : Vector2i(2, 5)
+}
+
+func getDigit(number, digit) -> int:
+	return int(abs(number) / pow(10, digit)) % 10
+
 func initMapPM():
 	base.clear()
 	shrubs.clear()
 	var coords : Vector2i
+	var subaltitudes : Array
+	var raw : int
+	var atLeastOne = false
 	for width in range(0, Global.mapSize.x):
 		for height in range(0, Global.mapSize.y):
-			coords = Vector2(width, height)
-			base.set_cell(coords, 0, Vector2(0, 0))
+			atLeastOne = false
+			coords = Vector2i(width, height)
+			subaltitudes = calculateAltTile(altitudeMap[coords], diversifyAltitude(coords))
+			base.set_cell(coords*2, 0, Vector2i(0, 0), subaltitudes[0]) #north
+			base.set_cell(coords*2+Vector2i(0,1), 0, Vector2i(0, 0), subaltitudes[1]) #west
+			base.set_cell(coords*2+Vector2i(1,0), 0, Vector2i(0, 0), subaltitudes[2]) #east
+			base.set_cell(coords*2+Vector2i(1,1), 0, Vector2i(0, 0), subaltitudes[3]) #south
+			raw = rawMap[coords] * 1000000
+			if terrainMap[coords] == Global.TERRAIN.PLAIN:
+				if getDigit(raw, 0) <= 4: shrubs.set_cell(coords*2, 0, Vector2i(getDigit(raw,0)%3+1, 0), subaltitudes[0])
+				if getDigit(raw, 1) <= 4: shrubs.set_cell(coords*2+Vector2i(0,1), 0, Vector2i(getDigit(raw,1)%3+1, 0), subaltitudes[1])
+				if getDigit(raw, 2) <= 4: shrubs.set_cell(coords*2+Vector2i(1,0), 0, Vector2i(getDigit(raw,2)%3+1, 0), subaltitudes[2])
+				if getDigit(raw, 3) <= 4: shrubs.set_cell(coords*2+Vector2i(1,1), 0, Vector2i(getDigit(raw,3)%3+1, 0), subaltitudes[3])
+			else:
+				#print(terrainMap[coords])
+				if getDigit(raw, 0) <= 4: 
+					shrubs.set_cell(coords*2, 0, shrubAtlas[terrainMap[coords]] + Vector2i(getDigit(raw,0)%2,0), subaltitudes[0])
+					atLeastOne = true
+				if getDigit(raw, 0) <= 4: 
+					shrubs.set_cell(coords*2+Vector2i(0,1), 0, shrubAtlas[terrainMap[coords]] + Vector2i(getDigit(raw,1)%2,0), subaltitudes[1])
+					atLeastOne = true
+				if getDigit(raw, 0) <= 4: 
+					shrubs.set_cell(coords*2+Vector2i(1,0), 0, shrubAtlas[terrainMap[coords]] + Vector2i(getDigit(raw,2)%2,0), subaltitudes[2])
+					atLeastOne = true
+				if getDigit(raw, 0) <= 4: 
+					shrubs.set_cell(coords*2+Vector2i(1,1), 0, shrubAtlas[terrainMap[coords]] + Vector2i(getDigit(raw,3)%2,0), subaltitudes[3])
+					atLeastOne = true
+				if not atLeastOne:
+					#print(getDigit(raw,0)%2, getDigit(raw,1)%2)
+					shrubs.set_cell(coords*2+Vector2i(getDigit(raw,0)%2,getDigit(raw,1)%2), 0, shrubAtlas[terrainMap[coords]] + Vector2i(getDigit(raw,2)%2,0), subaltitudes[getDigit(raw,0)%2*2+getDigit(raw,1)%2])
+	var campos = Vector2(0, 0)
+	if not base.get_used_cells().is_empty():
+		# 1. Get the map coordinates of the first tile
+		var first_tile_coords = base.get_used_cells()[0]
+		
+		# 2. Convert map coordinates to local position (centered on the tile)
+		var local_pos = base.map_to_local(first_tile_coords)
+		
+		# 3. Convert local position to global world position
+		var global_pos = base.to_global(local_pos)
+		campos = global_pos
+		
+		print("The global position of the first tile is: ", global_pos)
+	else:
+		print("The layer is completely empty.")
+	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
+	return [spawn, campos]
+
+func calculateAltTile(altitude, neighborAltitudes):
+	var N = neighborAltitudes[0]
+	var W = neighborAltitudes[1]
+	var E = neighborAltitudes[2]
+	var S = neighborAltitudes[3]
+	#if not waterlogged: 
+	#	position.y -= (altitude-1) * Global.height * 2
+	#else: 
+	position.y -= Global.height * (Global.seaLevel-2)
+	var subAlts = [altitude*2, altitude*2, altitude*2, altitude*2]
+	if N is int: 
+		if N > altitude: 
+			subAlts[0] -= 1
+			subAlts[2] -= 1
+		elif N < altitude:
+			subAlts[0] += 1
+			subAlts[2] += 1
+	if E is int: 
+		if E > altitude: 
+			subAlts[3] -= 1
+			subAlts[2] -= 1
+		elif E < altitude:
+			subAlts[3] += 1
+			subAlts[2] += 1
+	if S is int: 
+		if S > altitude: 
+			subAlts[3] -= 1
+			subAlts[1] -= 1
+		elif S < altitude:
+			subAlts[3] += 1
+			subAlts[1] += 1
+	if W is int: 
+		if W > altitude: 
+			subAlts[0] -= 1
+			subAlts[1] -= 1
+		elif W < altitude:
+			subAlts[0] += 1
+			subAlts[1] += 1
+	subAlts[0] = max(min(8, subAlts[0]), 0)
+	subAlts[1] = max(min(8, subAlts[1]), 0)
+	subAlts[2] = max(min(8, subAlts[2]), 0)
+	subAlts[3] = max(min(8, subAlts[3]), 0)
+	return subAlts
 
 func initMap():
 	tileMap.clear()

@@ -194,7 +194,7 @@ func initTiles():
 	map.generateMap()
 	#var ln = createLoadingNotification(Vector2(480, 216), "Loading Map", "Please wait while the map loads.", "Close Notification")
 	#var callback = Callable(self, "reportProgress")
-	var spawn = await map.initMap()
+	var spawn = await map.initMapPM()
 	if Global.loadSlot == 0: 
 		map.starterColony(spawn)
 	#map.updateAllBuildings()
@@ -227,8 +227,8 @@ func initTiles():
 func selectNewTile(tile: Vector2i):
 	cursor.deselect()
 	cursor.tile = tile
-	cursor.position = map.tileMap[tile].position + Vector2(Global.tileSize.x*Global.mapSize.x/8, -Global.tileSize.y*Global.mapSize.y/3)
-	cursor.display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
+	#cursor.position = map.tileMap[tile].position + Vector2(Global.tileSize.x*Global.mapSize.x/8, -Global.tileSize.y*Global.mapSize.y/3)
+	#cursor.display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
 	cursor.select()
 
 func _on_new_game_mouse_entered():
@@ -344,7 +344,7 @@ func preloadWorldPreviews(slot: int):
 	pmap.global_position.y = -Global.tileSize.y*Global.mapSize.y/5
 	#var ln = createLoadingNotification(Vector2(480, 216), "Loading Map", "Please wait while the map loads.", "Close Notification")
 	#var callback = Callable(self, "reportProgress")
-	await pmap.initMap()
+	await pmap.initMapPM()
 	pmap.updateAllBuildings()
 	#ln.progressBar.value = 100
 	loaded = true

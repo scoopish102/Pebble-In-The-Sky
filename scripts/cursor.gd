@@ -24,9 +24,9 @@ func update(minimap):
 			return
 	if not tile == Vector2i(-1, -1):
 		visible = true
-		position = map.tileMap[tile].position
-		display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
-		minimap.copyFrom(map.tileMap[tile])
+		#position = map.tileMap[tile].position
+		#display.position.y = map.tileMap[tile].display.position.y - Global.tileSize.y/4
+		#aminimap.copyFrom(map.tileMap[tile])
 		alignAltitude(tile)
 		if Input.is_action_just_pressed("ui_tileselect") and not uiSelect: 
 			select()
@@ -36,11 +36,12 @@ func update(minimap):
 	Event.update_activate_confirmation.emit(tile)
 
 func select():
-	#Event.trade_order.emit(Global.RESOURCE.STEEL, 0)
+	pass
+	"""#Event.trade_order.emit(Global.RESOURCE.STEEL, 0)
 	#print(Global.trades[Global.RESOURCE.STEEL])
 	Event.update_resources.emit()
-	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight - 20
-	map.tileMap[tile].selected = true
+	#map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight - 20
+	#map.tileMap[tile].selected = true
 	Global.selected = true
 	modulate = Color(255, 0, 0)
 	Event.update_confirmation.emit()
@@ -57,6 +58,7 @@ func select():
 	Event.tileSelectedNoArgs.emit()
 	#print(tile)
 	#print(Global.budgets)
+	"""
 
 func deselect():
 	if tile == Vector2i(-1, -1): 
@@ -65,8 +67,8 @@ func deselect():
 		Event.update_confirmation.emit()
 		Event.update_demolish_confirmation.emit(tile)
 		return
-	map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight
-	map.tileMap[tile].selected = false
+	#map.tileMap[tile].display.position.y = map.tileMap[tile].normalHeight
+	#map.tileMap[tile].selected = false
 	Global.selected = false
 	modulate = Color(255, 250, 0)
 	Event.update_confirmation.emit()
@@ -74,14 +76,15 @@ func deselect():
 	Event.tileDeselected.emit()
 	
 func alignAltitude(_tile):
-	if map.tileMap[tile].waterlogged: 
-		subcursors[0].position = Vector2(0, 0)
-		subcursors[1].position = Vector2(-Global.tileSize.x/4, Global.tileSize.y/4)
-		subcursors[2].position = Vector2(Global.tileSize.x/4, Global.tileSize.y/4)
-		subcursors[3].position = Vector2(0, Global.tileSize.y/2)
-	else:
-		for index in range(0, len(subcursors)):
-			subcursors[index].position = map.tileMap[_tile].subtiles[index].position
+	#if map.tileMap[tile].waterlogged: 
+	#	subcursors[0].position = Vector2(0, 0)
+	#	subcursors[1].position = Vector2(-Global.tileSize.x/4, Global.tileSize.y/4)
+	#	subcursors[2].position = Vector2(Global.tileSize.x/4, Global.tileSize.y/4)
+	#	subcursors[3].position = Vector2(0, Global.tileSize.y/2)
+	#else:
+	#	for index in range(0, len(subcursors)):
+	#		subcursors[index].position = map.tileMap[_tile].subtiles[index].position
+	pass
 
 func tileToPosition(_tile: Vector2i):
 	var returnPosition = Vector2(0, 0)

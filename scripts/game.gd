@@ -78,6 +78,7 @@ func nextTurn():
 func updateBudgets():
 	resetBudgets()
 	var budgetChange = Global.budgets.duplicate()
+	if map.buildingMap.size() < 1: return
 	for building in map.buildingMap:
 		#print(building)
 		if not map.activationMap[building]: continue
