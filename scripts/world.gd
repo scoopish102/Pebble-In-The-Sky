@@ -23,10 +23,10 @@ func _ready():
 		#print(map.buildingMap)
 	#game.initResources()
 	var spawn = await map.initMapPM()
-	if Global.loadSlot == 0: 
-		map.starterColony(spawn[0])
 	map.global_position = Vector2(-32, 0)
-	game.camera.goTo(spawn[0])
+	if Global.loadSlot == 0: 
+		map.starterColony(spawn)
+	game.camera.goTo(spawn)
 	game.updateBudgets()
 	ui.updateResourcebar()
 	ui.makeSidebar(SidebarOption.TYPE.MAIN)

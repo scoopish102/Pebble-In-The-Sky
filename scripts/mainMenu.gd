@@ -195,6 +195,7 @@ func initTiles():
 	#var ln = createLoadingNotification(Vector2(480, 216), "Loading Map", "Please wait while the map loads.", "Close Notification")
 	#var callback = Callable(self, "reportProgress")
 	var spawn = await map.initMapPM()
+	map.global_position = Vector2(480, -480)
 	if Global.loadSlot == 0: 
 		map.starterColony(spawn)
 	#map.updateAllBuildings()
@@ -212,6 +213,7 @@ func initTiles():
 	if abs(ran) == 2: map.createBuilding(Vector2i(spawn.x, spawn.y - ran/2), Global.BUILDING.ROAD, true)
 	ran = randi_range(1, 2) * [1, -1].pick_random()
 	spawn.x += ran
+	print("sh")
 	map.createBuilding(spawn, Global.BUILDING.CIVILIAN_FACTORY, true)
 	if abs(ran) == 2: map.createBuilding(Vector2i(spawn.x - ran/2, spawn.y), Global.BUILDING.ROAD, true)
 	"""self.save = {"buildings":map.getMapCode(map.buildingMap, true),
@@ -345,6 +347,7 @@ func preloadWorldPreviews(slot: int):
 	#var ln = createLoadingNotification(Vector2(480, 216), "Loading Map", "Please wait while the map loads.", "Close Notification")
 	#var callback = Callable(self, "reportProgress")
 	await pmap.initMapPM()
+	pmap.global_position = Vector2(-32, 0)
 	pmap.updateAllBuildings()
 	#ln.progressBar.value = 100
 	loaded = true

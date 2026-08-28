@@ -1,0 +1,188 @@
+[gd_scene load_steps=22 format=3 uid="uid://c3jbaaef50l8e"]
+
+[ext_resource type="Script" uid="uid://da0bro7xnfn4g" path="res://scripts/building.gd" id="1_lm2ef"]
+[ext_resource type="SpriteFrames" uid="uid://dp6gq6nks1u1j" path="res://resources/buildingset.tres" id="2_f5uvq"]
+[ext_resource type="Texture2D" uid="uid://cpdhj7fioh77j" path="res://assets/building/buildings.road.5.6.png" id="3_f5uvq"]
+[ext_resource type="Script" uid="uid://r2gc2bqty284" path="res://scripts/buildingSubtile.gd" id="3_gof7m"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7utx"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6p3j2"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtpg2"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a2bny"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_284l3"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j3iir"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j8k5k"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8vld"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jm5cm"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vknvr"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdkp0"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(256, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8xw3"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(384, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lkxpj"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lf0mp"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufjw7"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(256, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ngql"]
+atlas = ExtResource("3_f5uvq")
+region = Rect2(384, 384, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jy7pm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"EMPTY",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7utx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6p3j2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gtpg2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a2bny")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_284l3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j3iir")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j8k5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8vld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jm5cm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vknvr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdkp0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8xw3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lkxpj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lf0mp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufjw7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ngql")
+}],
+"loop": false,
+"name": &"ROAD",
+"speed": 0.0
+}]
+
+[node name="tile" type="Node2D" node_paths=PackedStringArray("subtiles", "display", "overall")]
+y_sort_enabled = true
+script = ExtResource("1_lm2ef")
+subtiles = [NodePath("display/up"), NodePath("display/left"), NodePath("display/right"), NodePath("display/down")]
+display = NodePath("display")
+overall = NodePath("display/overallBuilding")
+metadata/_edit_vertical_guides_ = [-64.0]
+metadata/_edit_horizontal_guides_ = [51.0]
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+y_sort_enabled = true
+rect = Rect2(-64, -32, 128, 96)
+
+[node name="display" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="up" type="AnimatedSprite2D" parent="display"]
+y_sort_enabled = true
+sprite_frames = ExtResource("2_f5uvq")
+animation = &"BRASS_MILL"
+offset = Vector2(0, -32)
+script = ExtResource("3_gof7m")
+
+[node name="left" type="AnimatedSprite2D" parent="display"]
+y_sort_enabled = true
+position = Vector2(-32, 16)
+sprite_frames = ExtResource("2_f5uvq")
+animation = &"BRASS_MILL"
+offset = Vector2(0, -32)
+script = ExtResource("3_gof7m")
+
+[node name="right" type="AnimatedSprite2D" parent="display"]
+y_sort_enabled = true
+position = Vector2(32, 16)
+sprite_frames = ExtResource("2_f5uvq")
+animation = &"BRASS_MILL"
+offset = Vector2(0, -32)
+script = ExtResource("3_gof7m")
+
+[node name="down" type="AnimatedSprite2D" parent="display"]
+y_sort_enabled = true
+position = Vector2(0, 32)
+sprite_frames = ExtResource("2_f5uvq")
+animation = &"BRASS_MILL"
+offset = Vector2(0, -32)
+script = ExtResource("3_gof7m")
+
+[node name="overallBuilding" type="AnimatedSprite2D" parent="display"]
+y_sort_enabled = true
+position = Vector2(0, 32)
+sprite_frames = SubResource("SpriteFrames_jy7pm")
+animation = &"ROAD"
+autoplay = "EMPTY"

@@ -3,6 +3,7 @@ extends Node2D
 class_name Map
 
 @export var tileBlueprint : PackedScene
+@export var buildingTileBlueprint : PackedScene
 @export var demoTiles : bool = false #are these tiles just for demo? aka main menu or minimap?
 var altitudeMap = {}
 var terrainMap = {}
@@ -11,6 +12,8 @@ var tileMap = {} #contains indexed references to ALL tile nodes, organized by ti
 #alternatively for PM mode:
 @export var base : TileMapLayer #the actual physical appearnace of the bottom square base
 @export var shrubs : TileMapLayer #the shrubbery on top, like resource deposits or craters
+@export var btileContainer : Node2D
+var buildingTileMap = {}
 var buildingMap = {}
 var activationMap = {}
 var noise = preload("res://resources/altitudeNoise.tres")
@@ -76,8 +79,7 @@ func toggleActivation(tile):
 
 func updateAllBuildings():
 	for tile in buildingMap:
-		pass
-		#tileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
+		if tile in buildingTileMap: buildingTileMap[tile].updateBuilding(getSpecificNeighbors(tile), activationMap[tile])
 	Event.update_resources.emit()
 
 func demolish(tile):
@@ -99,6 +101,23 @@ func createBuilding(tile : Vector2i, building : Global.BUILDING, startActivated=
 	#tileMap[tile].building = building
 	#tileMap[tile].updateBuilding(getSpecificNeighbors(tile), startActivated)
 	#tileMap[tile].resetAltitudeDiversification()
+	if tile in buildingTileMap: 
+		buildingTileMap[tile].building = building
+		buildingTileMap[tile].updateBuilding(getSpecificNeighbors(tile))
+	else:
+		var btile : BuildingTile
+		btile = buildingTileBlueprint.instantiate()
+		btile.demoTile = demoTiles
+		btile.tile = tile
+		btile.altitude = altitudeMap[tile]
+		btile.raw = rawMap[tile]
+		btile.updateBuilding(getSpecificNeighbors(tile))
+		btile.initialized = true
+		btile.building = buildingMap[tile]
+		buildingTileMap[tile] = btile
+		btileContainer.add_child(btile)
+		btile.position = (base.map_to_local(tile))
+		print(btile.global_position)
 	Global.score += Global.buildingScores[building]
 	Global.buildingCount += 1
 	if building == Global.BUILDING.MINE or building == Global.BUILDING.ICE_MINE: Global.mineCount += 1
@@ -323,24 +342,24 @@ func initMapPM():
 					atLeastOne = true
 				if not atLeastOne:
 					#print(getDigit(raw,0)%2, getDigit(raw,1)%2)
-					shrubs.set_cell(coords*2+Vector2i(getDigit(raw,0)%2,getDigit(raw,1)%2), 0, shrubAtlas[terrainMap[coords]] + Vector2i(getDigit(raw,2)%2,0), subaltitudes[getDigit(raw,0)%2*2+getDigit(raw,1)%2])
-	var campos = Vector2(0, 0)
-	if not base.get_used_cells().is_empty():
-		# 1. Get the map coordinates of the first tile
-		var first_tile_coords = base.get_used_cells()[0]
-		
-		# 2. Convert map coordinates to local position (centered on the tile)
-		var local_pos = base.map_to_local(first_tile_coords)
-		
-		# 3. Convert local position to global world position
-		var global_pos = base.to_global(local_pos)
-		campos = global_pos
-		
-		print("The global position of the first tile is: ", global_pos)
-	else:
-		print("The layer is completely empty.")
+					shrubs.set_cell(coords*2+Vector2i(getDigit(raw,0)%2,getDigit(raw,1)%2), 0, shrubAtlas[terrainMap[coords]]
+							 + Vector2i(getDigit(raw,2)%2,0), subaltitudes[getDigit(raw,0)%2*2+getDigit(raw,1)%2])
+	var btile : BuildingTile
+	for tile in buildingMap:
+		btile = buildingTileBlueprint.instantiate()
+		btile.demoTile = demoTiles
+		btile.tile = tile
+		btile.altitude = altitudeMap[tile]
+		btile.raw = rawMap[tile]
+		btile.updateBuilding(getSpecificNeighbors(tile))
+		btile.initialized = true
+		btile.building = buildingMap[tile]
+		buildingTileMap[tile] = btile
+		btileContainer.add_child(btile)
+		btile.position = (base.map_to_local(tile))
+		print(tile, btile.global_position)
 	var spawn = Vector2i(Global.mapSize.x/2, Global.mapSize.y/2)
-	return [spawn, campos]
+	return spawn
 
 func calculateAltTile(altitude, neighborAltitudes):
 	var N = neighborAltitudes[0]
@@ -350,7 +369,7 @@ func calculateAltTile(altitude, neighborAltitudes):
 	#if not waterlogged: 
 	#	position.y -= (altitude-1) * Global.height * 2
 	#else: 
-	position.y -= Global.height * (Global.seaLevel-2)
+	#position.y -= Global.height * (Global.seaLevel-2)
 	var subAlts = [altitude*2, altitude*2, altitude*2, altitude*2]
 	if N is int: 
 		if N > altitude: 
@@ -471,8 +490,14 @@ func diversifyAltitude(tile: Vector2i):
 	var E = false
 	var S = false
 	var W = false
-	if tile.y > 0: N = altitudeMap[Vector2i(tile.x, tile.y-1)]
+	if tile.y > 0: S = altitudeMap[Vector2i(tile.x, tile.y-1)]
 	if tile.x < Global.mapSize.x-1: E = altitudeMap[Vector2i(tile.x+1, tile.y)]
-	if tile.y < Global.mapSize.y-1: S = altitudeMap[Vector2i(tile.x, tile.y+1)]
+	if tile.y < Global.mapSize.y-1: N = altitudeMap[Vector2i(tile.x, tile.y+1)]
 	if tile.x > 0: W = altitudeMap[Vector2i(tile.x-1, tile.y)]
 	return [N, E, S, W]
+
+func flatten(tile: Vector2i):
+	base.set_cell(tile*2, 0, Vector2i(0, 0), altitudeMap[tile]) #north
+	base.set_cell(tile*2+Vector2i(0,1), 0, Vector2i(0, 0), altitudeMap[tile]) #west
+	base.set_cell(tile*2+Vector2i(1,0), 0, Vector2i(0, 0), altitudeMap[tile]) #east
+	base.set_cell(tile*2+Vector2i(1,1), 0, Vector2i(0, 0), altitudeMap[tile]) #south
