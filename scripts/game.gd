@@ -192,7 +192,4 @@ func updateReserves():
 	for resource in Global.RESOURCE.values():
 		if resource in [Global.RESOURCE.TRADE]: continue
 		Global.reserves[resource] += Global.budgets[resource]
-	Global.score += Global.budgets[Global.RESOURCE.WEALTH] / 100
-	Global.score += Global.budgets[Global.RESOURCE.INDUSTRY] / 100
-	Global.score += Global.budgets[Global.RESOURCE.INFLUENCE] / 100
 	Event.update_confirmation.emit()

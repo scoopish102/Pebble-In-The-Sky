@@ -317,7 +317,7 @@ texture_margin_right = 54.0
 texture_margin_bottom = 54.0
 region_rect = Rect2(128, 0, 128, 128)
 
-[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions", "resourceCategory", "categoryName", "minimap", "notifications", "sidebarCover", "scoringPanel", "categoryButtons", "nextTurnButton", "scoringPanelTitle", "scoringPanelContent", "leaderboard")]
+[node name="ui" type="Control" node_paths=PackedStringArray("sidebar", "resourcebar", "sidebarOptions", "resourcebarOptions", "resourceCategory", "categoryName", "minimap", "notifications", "sidebarCover", "scoringPanel", "categoryButtons", "nextturn", "scoringPanelTitle", "scoringPanelContent", "leaderboard")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -336,7 +336,7 @@ notifications = NodePath("notificationContainer")
 sidebarCover = NodePath("sidebar/sidebarBackdrop/sidebarCover")
 scoringPanel = NodePath("Scoring Panel")
 categoryButtons = [NodePath("sidebar/categories/build"), NodePath("sidebar/categories/market"), NodePath("sidebar/categories/tech"), NodePath("sidebar/categories/politics"), NodePath("sidebar/categories/save")]
-nextTurnButton = NodePath("next turn")
+nextturn = NodePath("next turn")
 resourceBlueprint = ExtResource("2_rp04g")
 optionBlueprint = ExtResource("3_yukjw")
 ynaBlueprint = ExtResource("3_074kx")

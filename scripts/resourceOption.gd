@@ -20,7 +20,7 @@ func update():
 	if resource == Global.RESOURCE.CIVGOODS:
 		nameLabel.text = "[img]" + Global.resIcons[resource] + "[/img] Civilian Goods"
 	else: nameLabel.text = "[img]" + Global.resIcons[resource] + "[/img] " + str(Global.RESOURCE.keys()[resource]).replace(" ", "_").capitalize()
-	if resource == Global.RESOURCE.SCORE: budgetLabel.text = str(Global.score)
+	if resource == Global.RESOURCE.SCORE: budgetLabel.text = str(Global.score + Global.budgets[Global.RESOURCE.WEALTH] + Global.budgets[Global.RESOURCE.INFLUENCE] + Global.budgets[Global.RESOURCE.INDUSTRY])
 	else: budgetLabel.text = str(Global.budgets[resource])
 	if not resource in [Global.RESOURCE.WEALTH,Global.RESOURCE.INDUSTRY,Global.RESOURCE.INFLUENCE,Global.RESOURCE.SCORE]:
 		if Global.budgets[resource] > 0: budgetLabel.modulate = Color(0, 2, 0)

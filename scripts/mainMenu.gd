@@ -26,6 +26,8 @@ class_name MainMenu extends Control
 @export var ss3 : Map
 @export var cursor : Cursor
 
+var performanceMode = false
+
 @export var notifications : Control
 
 var loaded = false
@@ -33,6 +35,7 @@ var loaded = false
 var tween : Tween
 
 func _ready():
+	if RenderingServer.get_current_rendering_method() == "gl_compatibility": performanceMode = true
 	$Transition.material.set_shader_parameter("radius", 0.0)
 	Global.otherNames.clear()
 	mainMenu.visible = true
@@ -44,9 +47,21 @@ func _ready():
 	$Transition.visible = true
 	loaded = false
 	await initTiles()
-	await preloadWorldPreviews(1)
-	await preloadWorldPreviews(2)
-	await preloadWorldPreviews(3)
+	if not performanceMode:
+		await preloadWorldPreviews(1)
+		await preloadWorldPreviews(2)
+		await preloadWorldPreviews(3)
+		loadMainMenuSave()
+	else: 
+		ss1.queue_free()
+		ss2.queue_free()
+		ss3.queue_free()
+		$"SaveSlots/Panel/MarginContainer/VBoxContainer/1/Secondaries/Preview".disabled = true
+		$"SaveSlots/Panel/MarginContainer/VBoxContainer/1/Secondaries/Preview".tooltip_text = "Turn off performance mode to enable save slot previews."
+		$"SaveSlots/Panel/MarginContainer/VBoxContainer/2/Secondaries/Preview".disabled = true
+		$"SaveSlots/Panel/MarginContainer/VBoxContainer/2/Secondaries/Preview".tooltip_text = "Turn off performance mode to enable save slot previews."
+		$"SaveSlots/Panel/MarginContainer/VBoxContainer/3/Secondaries/Preview".disabled = true
+		$"SaveSlots/Panel/MarginContainer/VBoxContainer/3/Secondaries/Preview".tooltip_text = "Turn off performance mode to enable save slot previews."
 	slot1.disabled = not checkSlot(1)
 	slot2.disabled = not checkSlot(2)
 	slot3.disabled = not checkSlot(3)
@@ -56,7 +71,6 @@ func _ready():
 	$"SaveSlots/Panel/MarginContainer/VBoxContainer/2/Secondaries/Trash".disabled = not checkSlot(2)
 	$"SaveSlots/Panel/MarginContainer/VBoxContainer/3/Secondaries/Preview".disabled = not checkSlot(3)
 	$"SaveSlots/Panel/MarginContainer/VBoxContainer/3/Secondaries/Trash".disabled = not checkSlot(3)
-	loadMainMenuSave()
 	tween = get_tree().create_tween()
 	tween.set_parallel(false)
 	tween.tween_property($Transition, "material:shader_parameter/radius", 1.0, 1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -299,6 +313,7 @@ func loadWorldPreview(slot: int):
 		3: ss3.visible = true
 
 func preloadWorldPreviews(slot: int):
+	if performanceMode: return
 	if not checkSlot(slot): return
 	mapID = slot
 	loaded = false

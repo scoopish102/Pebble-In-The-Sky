@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bybb71a6paok8"]
+
+[ext_resource type="Script" uid="uid://ba7tn63bxb664" path="res://scripts/map.gd" id="1_paxxb"]
+[ext_resource type="PackedScene" uid="uid://jfym8s2dj5yl" path="res://scenes/tile.tscn" id="2_gldc4"]
+
+[node name="map" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_paxxb")
+tileBlueprint = ExtResource("2_gldc4")

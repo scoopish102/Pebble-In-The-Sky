@@ -11,7 +11,7 @@ extends Control
 @export var sidebarCover : Panel
 @export var scoringPanel : Panel
 @export var categoryButtons : Array[Button]
-@export var nextTurnButton : Panel
+@export var nextturn : Panel
 
 @export var resourceBlueprint : PackedScene
 @export var optionBlueprint : PackedScene
@@ -346,7 +346,7 @@ func makeSidebar(option : SidebarOption.TYPE):
 			createBuildingOption(Global.BUILDING.STEEL_MILL)
 			createBuildingOption(Global.BUILDING.CONCRETE_PLANT)
 			createBuildingOption(Global.BUILDING.BRASS_MILL)
-			createBuildingOption(Global.BUILDING.PLASTIC_REFINERY)
+			createBuildingOption(Global.BUILDING.POLYMER_REFINERY)
 			createBuildingOption(Global.BUILDING.FERTILIZER_FACTORY)
 			createBuildingOption(Global.BUILDING.YEAST_VATS)
 			createBuildingOption(Global.BUILDING.FARM)
